@@ -1,3 +1,8 @@
 itemGroup.GRtab=Genetics Reborn
 
 item.GlassSyringe.name=Glass Syringe
+
+item.enderingot.name=Ender Ingot
+item.enderpickaxe.name= Ender Pickaxe
+itemGroup.extrastuff =Extra Stuff
+tile.enderblock.name=Ender Block
