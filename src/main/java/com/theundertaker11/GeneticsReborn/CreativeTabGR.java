@@ -1,5 +1,7 @@
 package com.theundertaker11.GeneticsReborn;
 
+import com.theundertaker11.GeneticsReborn.items.GRItems;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -17,6 +19,6 @@ public final class CreativeTabGR extends CreativeTabs
     @SideOnly(Side.CLIENT)
     public Item getTabIconItem()
     {
-        return Items.ARROW;
+        return GRItems.GlassSyringe;
     }
 }

@@ -15,7 +15,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.theundertaker11.GeneticsReborn.blocks.GRBlocks;
 import com.theundertaker11.GeneticsReborn.crafting.CraftingManager;
+import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.proxy.CommonProxy;
 
 @Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.NAME)
@@ -36,10 +38,10 @@ public class GeneticsReborn {
 		config.load();
 		config.addCustomCategoryComment("Items", "Set any values to false to disable the recipe(s) for this item.");
 		//QuarryRadius = config.getInt("Radius of Quarry", "Quarry", 8, 3, 50, "Changes the radius of the Quarry(Mines to bedrock in that radius)");
-		
 		config.save();
 
-		
+		GRItems.init();
+		GRBlocks.init();
 
 	}
 
