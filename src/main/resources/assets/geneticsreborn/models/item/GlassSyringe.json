@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "kitchensink:items/angelAlloy"
+        "layer0": "GeneticsReborn:items/GlassSyringe"
     }
 }
 

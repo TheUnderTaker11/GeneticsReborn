@@ -2,7 +2,7 @@
     "forge_marker": 1,
     "defaults": {
         "textures": {
-            "all": "kitchensink:blocks/BabyBlueBlock"
+            "all": "kitchensink:blocks/CellAnalyser"
         }
     },
     "variants": {
