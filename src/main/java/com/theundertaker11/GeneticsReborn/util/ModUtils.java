@@ -1,5 +1,12 @@
-package com.theundertaker11.GeneticsReborn;
+package com.theundertaker11.GeneticsReborn.util;
 
+import javax.annotation.Nullable;
+
+import com.theundertaker11.GeneticsReborn.api.capability.GeneCapabilityProvider;
+import com.theundertaker11.GeneticsReborn.api.capability.IGenes;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -38,4 +45,28 @@ public class ModUtils{
         }
         return tag;
     }
+	/**
+	 * Checks the player given has the item given, ignores NBT/Damage, only checks the actual item.
+	 * @param player
+	 * @param item
+	 * @return
+	 */
+	public static boolean playerHasItem(EntityPlayer player, Item item) {
+		for(int i=0;i<player.inventory.getSizeInventory();i++)
+		{
+			if(player.inventory.getStackInSlot(i)!=null&&player.inventory.getStackInSlot(i).getItem()==item) return true;
+		}
+		return false;
+	}
+	/**
+	 * Gets the IGenes capability from the player.
+	 * Can return a null.
+	 * @param player
+	 * @return
+	 */
+	@Nullable
+	public static IGenes getIGenes(EntityPlayer player)
+	{
+		return player.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
+	}
 }

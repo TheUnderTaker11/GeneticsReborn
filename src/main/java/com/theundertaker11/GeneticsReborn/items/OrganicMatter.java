@@ -2,7 +2,7 @@ package com.theundertaker11.GeneticsReborn.items;
 
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.ModUtils;
+import com.theundertaker11.GeneticsReborn.util.ModUtils;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

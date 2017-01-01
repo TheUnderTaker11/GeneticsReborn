@@ -2,7 +2,7 @@
     "forge_marker": 1,
     "defaults": {
         "textures": {
-            "all": "kitchensink:blocks/CellAnalyser"
+            "all": "geneticsreborn:blocks/CellAnalyser"
         }
     },
     "variants": {

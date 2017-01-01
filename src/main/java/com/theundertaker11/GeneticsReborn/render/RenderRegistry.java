@@ -1,6 +1,7 @@
 package com.theundertaker11.GeneticsReborn.render;
 
 import com.theundertaker11.GeneticsReborn.Reference;
+import com.theundertaker11.GeneticsReborn.items.GRItems;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -9,8 +10,9 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class RenderRegistry {
 	
-	//This is for if an item or block doesn't extend My item/block base
+	//This is for if an item or block doesn't extend My item/block base, or need special renders for metadata
 	public static void Render(){
+		regWithMetaAndName(GRItems.GlassSyringe, 1, "GlassSyringeFull");
 	}
 	//Registers the item if no meta data/first meta data(0)
 	public static void reg(Item item) {

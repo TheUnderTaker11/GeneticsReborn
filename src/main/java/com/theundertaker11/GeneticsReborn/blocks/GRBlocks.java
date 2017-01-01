@@ -1,10 +1,9 @@
 package com.theundertaker11.GeneticsReborn.blocks;
 
+import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.CellAnalyser;
 import com.theundertaker11.GeneticsReborn.render.IItemModelProvider;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 

@@ -1,3 +1,9 @@
 itemGroup.GRtab=Genetics Reborn
 
 item.GlassSyringe.name=Glass Syringe
+item.GlassSyringeFull.name=Glass Syringe(Full)
+item.Plasmid.name=DNA Plasmid
+item.MetalScraper.name=Metal Scraper
+item.advancedScraper.name=Advanced Scraper
+
+tile.CellAnalyser.name=Cell Analyser
