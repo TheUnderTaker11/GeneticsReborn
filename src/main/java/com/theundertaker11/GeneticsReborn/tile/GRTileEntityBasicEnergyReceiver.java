@@ -10,6 +10,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -22,10 +24,11 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 	protected int maxReceive;
 	protected int overclockers;
 	protected boolean isActive;
+	protected int ticksCooking;
 	
 	public GRTileEntityBasicEnergyReceiver()
 	{
-		this.maxReceive = 200;
+		this.maxReceive = 20000;
 	}
 	//If you overwrite either of these make sure to call the super
 	@Override
@@ -100,6 +103,26 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 		double frac = 0;
 		frac = (this.energy/this.capacity);
 		return frac;
+	}
+	
+	/**
+	 * Adds an overclocker and removes 1 from the players inventory
+	 * @param player
+	 */
+	public void addOverclocker(EntityPlayer player)
+	{
+		if(this.overclockers<10)
+		{
+			this.overclockers++;
+			player.getHeldItem(EnumHand.MAIN_HAND).stackSize -= 1;
+			if(player.getHeldItem(EnumHand.MAIN_HAND).stackSize<1) player.setHeldItem(EnumHand.MAIN_HAND, null);
+		}
+		else player.addChatMessage(new TextComponentString("Max Overclockers is 10."));
+	}
+	
+	public int getOverclockerCount()
+	{
+		return this.overclockers;
 	}
 	
 	public boolean isUseableByPlayer(EntityPlayer playerIn) {

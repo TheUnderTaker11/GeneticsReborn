@@ -33,7 +33,7 @@ import net.minecraftforge.items.SlotItemHandler;
 		// These store cache values, used by the server to only update the client side tile entity when values have changed
 		private int cachedEnergyUsed;
 		private int cachedEnergyStored;
-		private final int EnergyNeeded = GRTileEntityCellAnalyser.ENERGY_NEEDED;
+		private int cachedOverclockers;
 
 		// must assign a slot index to each of the slots used by the GUI.
 		// For this container, we can see the furnace fuel, input, and output slots as well as the player inventory slots and the hotbar.
@@ -125,102 +125,60 @@ import net.minecraftforge.items.SlotItemHandler;
 			return tileInventory.isUseableByPlayer(player);
 		}
 
-		// This is where you specify what happens when a player shift clicks a slot in the gui
-		//  (when you shift click a slot in the TileEntity Inventory, it moves it to the first available position in the hotbar and/or
-		//    player inventory.  When you you shift-click a hotbar or player inventory item, it moves it to the first available
-		//    position in the TileEntity inventory - either input or fuel as appropriate for the item you clicked)
-		// At the very least you must override this and return null or the game will crash when the player shift clicks a slot
-		// returns null if the source slot is empty, or if none of the source slot items could be moved.
-		//   otherwise, returns a copy of the source stack
+		//Always make sure it returns null if nothing should happen, and after stuff has happened make it return a copy
+		//of the stack
 		@Override
 		public ItemStack transferStackInSlot(EntityPlayer player, int sourceSlotIndex)
 		{
 			ItemStack itemstack = null;
-	        Slot slot = this.inventorySlots.get(sourceSlotIndex);
+	        Slot slot = (Slot)this.inventorySlots.get(sourceSlotIndex);
+	        if(slot == null || !slot.getHasStack()) return null;
+	        if(tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)==null) return null;
+	        IItemHandler input = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+	        
+	        ItemStack sourceStack = slot.getStack();
+	        ItemStack copyOfStack = sourceStack.copy();
 
-	        if (slot != null && slot.getHasStack()) {
-	            ItemStack itemstack1 = slot.getStack();
-	            itemstack = itemstack1.copy();
-
-	            if (sourceSlotIndex < GRTileEntityCellAnalyser.getSIZE()) {
-	                if (!this.mergeItemStack(itemstack1, GRTileEntityCellAnalyser.getSIZE(), this.inventorySlots.size(), true)) {
-	                    return null;
-	                }
-	            }else if (!this.mergeItemStack(itemstack1, 0, GRTileEntityCellAnalyser.getSIZE(), false)) {
-	                return null;
-	            }
-
-	            if (itemstack1.stackSize == 0) {
-	                slot.putStack(null);
-	            } else {
-	                slot.onSlotChanged();
-	            }
+	        if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX && sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT)
+	        {
+	        	if(sourceStack.getItem()==GRItems.OrganicMatter)
+	        	{
+	        		if (input.insertItem(0, sourceStack, true)!=null){
+						return null;
+					}
+	        		else
+	        		{
+	        			input.insertItem(0, sourceStack, false);
+	        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+	        		}
+	        	}
+	        	else return null;
 	        }
-	        return itemstack;
-			/*
-			Slot sourceSlot = (Slot)inventorySlots.get(sourceSlotIndex);
-			if (sourceSlot == null || !sourceSlot.getHasStack()) return null;
-			ItemStack sourceStack = sourceSlot.getStack();
-			ItemStack copyOfSourceStack = sourceStack.copy();
-
-			// Check if the slot clicked is one of the vanilla container slots
-			if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX && sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-				// This is a vanilla container slot so merge the stack into one of the furnace slots
-				// If the stack is smeltable try to merge merge the stack into the input slots
-				if (GRTileEntityCellAnalyser.getSmeltingResultForItem(sourceStack) != null){
-					if (!mergeItemStack(sourceStack, FIRST_INPUT_SLOT_INDEX, FIRST_INPUT_SLOT_INDEX + INPUT_SLOTS_COUNT, false)){
-						return null;
-					}
-				}	else if (GRTileEntityCellAnalyser.getItemBurnTime(sourceStack) > 0) {
-					if (!mergeItemStack(sourceStack, FIRST_FUEL_SLOT_INDEX, FIRST_FUEL_SLOT_INDEX + FUEL_SLOTS_COUNT, true)) {
-						// Setting the boolean to true places the stack in the bottom slot first
-						return null;
-					}
-				}	else {
-					return null;
+	        else if(sourceSlotIndex==INPUT_SLOT_INDEX||sourceSlotIndex==OUTPUT_SLOT_INDEX)
+	        {
+	        	if (player.inventory.addItemStackToInventory(sourceStack)){
+	        		player.inventory.setInventorySlotContents(sourceSlotIndex, null);
 				}
-			} else if (sourceSlotIndex >= FIRST_FUEL_SLOT_INDEX && sourceSlotIndex < FIRST_FUEL_SLOT_INDEX + FURNACE_SLOTS_COUNT) {
-				// This is a furnace slot so merge the stack into the players inventory: try the hotbar first and then the main inventory
-				//   because the main inventory slots are immediately after the hotbar slots, we can just merge with a single call
-				if (!mergeItemStack(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
-					return null;
-				}
-			} else {
-				System.err.print("Invalid slotIndex:" + sourceSlotIndex);
-				return null;
-			}
-
-			// If stack size == 0 (the entire stack was moved) set slot contents to null
-			if (sourceStack.stackSize == 0) {
-				sourceSlot.putStack(null);
-			} else {
-				sourceSlot.onSlotChanged();
-			}
-
-			sourceSlot.onPickupFromSlot(player, sourceStack);
-			return copyOfSourceStack;
-			*/
-		}
+        		else
+        		{
+        			return null;
+        		}
+	        }else return null;
+	        return copyOfStack;
+		}	
+		
 
 		/* Client Synchronization */
-
-		// This is where you check if any values have changed and if so send an update to any clients accessing this container
-		// The container itemstacks are tested in Container.detectAndSendChanges, so we don't need to do that
-		// We iterate through all of the TileEntity Fields to find any which have changed, and send them.
-		// You don't have to use fields if you don't wish to; just manually match the ID in sendProgressBarUpdate with the value in
-		//   updateProgressBar()
-		// The progress bar values are restricted to shorts.  If you have a larger value (eg int), it's not a good idea to try and split it
-		//   up into two shorts because the progress bar values are sent independently, and unless you add synchronisation logic at the
-		//   receiving side, your int value will be wrong until the second short arrives.  Use a custom packet instead.
 		@Override
 		public void detectAndSendChanges() {
 			super.detectAndSendChanges();
 
 			boolean fieldHasChanged = false;
-			if (cachedEnergyUsed != tileInventory.getField(0)||cachedEnergyStored!=tileInventory.getField(1))
+			if (cachedEnergyUsed != tileInventory.getField(0)||cachedEnergyStored!=tileInventory.getField(1)||cachedOverclockers!=tileInventory.getField(2))
 			{
 				this.cachedEnergyUsed = tileInventory.getField(0);
 				this.cachedEnergyStored = tileInventory.getField(1);
+				this.cachedOverclockers = tileInventory.getField(2);
 				fieldHasChanged = true;
 			}
 
@@ -231,6 +189,7 @@ import net.minecraftforge.items.SlotItemHandler;
 					// Note that although sendProgressBarUpdate takes 2 ints on a server these are truncated to shorts
 					listener.sendProgressBarUpdate(this, 0, this.cachedEnergyUsed);
 					listener.sendProgressBarUpdate(this, 1, this.cachedEnergyStored);
+					listener.sendProgressBarUpdate(this, 2, this.cachedOverclockers);
 				}
 				
 			}
@@ -240,23 +199,10 @@ import net.minecraftforge.items.SlotItemHandler;
 		// values given to sendProgressBarUpdate.  In this case we are using fields so we just pass them to the tileEntity.
 		@SideOnly(Side.CLIENT)
 		@Override
-		public void updateProgressBar(int id, int data) {
-			System.out.println("ID:"+id+" Data"+data);
+		public void updateProgressBar(int id, int data)
+		{
 			tileInventory.setField(id, data);
 		}
-
-		// SlotFuel is a slot for fuel items
-		/*public class SlotFuel extends Slot {
-			public SlotFuel(IInventory inventoryIn, int index, int xPosition, int yPosition) {
-				super(inventoryIn, index, xPosition, yPosition);
-			}
-
-			// if this function returns false, the player won't be able to insert the given item into this slot
-			@Override
-			public boolean isItemValid(ItemStack stack) {
-				return GRTileEntityCellAnalyser.isItemValidForFuelSlot(stack);
-			}
-		}*/
 
 		// SlotSmeltableInput is a slot for input items
 		public class SlotSmeltableInput extends SlotItemHandler {

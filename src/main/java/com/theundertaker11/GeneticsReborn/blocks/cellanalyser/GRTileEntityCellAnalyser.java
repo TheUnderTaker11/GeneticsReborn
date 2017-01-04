@@ -1,6 +1,8 @@
 package com.theundertaker11.GeneticsReborn.blocks.cellanalyser;
 
+import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
+import com.theundertaker11.GeneticsReborn.util.ModUtils;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
@@ -20,69 +22,45 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver implements ITickable{
 	
-	
-	/**The number of ticks the current item has been cooking*/
-	private static int energyUsed;
-	public static final short ENERGY_NEEDED = 5000;
-	private boolean cachedisActive = false;
+	public static final short TICKS_NEEDED = 400;
 	
 	public GRTileEntityCellAnalyser(){
 		super();
 	}
 	
-	// - see if the fuel has run out, and if so turn the furnace "off" and slowly uncook the current item (if any)
-	// - see if any of the items have finished smelting
-	// It runs both on the server and the client.
 	@Override
 	public void update()
 	{
 		// If there is nothing to smelt or there is no room in the output, reset energyUsed and return
+		int rfpertick = (20+(this.overclockers*20));
 		if (canSmelt()) 
 		{
-			// If there is enough energy, keep cooking the item
-			if (this.energy > 20)//TODO add overclocker ability
+			if (this.energy > rfpertick)
 			{
-				useEnergy();
-				energyUsed +=20;//TODO add overclocker ability
+				this.energy -= rfpertick;
+				ticksCooking++;
+				markDirty();
 			}
 			// Just in case
-			if (energyUsed < 0) energyUsed = 0;
+			if (ticksCooking < 0) ticksCooking = 0;
 
-			// If energyUsed has reached maxCookTime smelt the item and reset energyUsed
-			if (energyUsed >= ENERGY_NEEDED) {
+			if (ticksCooking >= (TICKS_NEEDED-(this.overclockers*39))){
 				smeltItem();
-				energyUsed = 0;
+				ticksCooking = 0;
 			}
 		}
-		else energyUsed = 0;
-		// when it turns on, force the block to re-render, otherwise the change in state will not be visible.
-		// The block update (for renderer) is only required on client side
-		if (cachedisActive != this.isActive)
-		{
-			cachedisActive = this.isActive;
-			if (worldObj.isRemote)
-			{
-				IBlockState iblockstate = this.worldObj.getBlockState(this.getPos());
-				final int FLAGS = 3;  // I'm not sure what these flags do, exactly.
-				worldObj.notifyBlockUpdate(pos, iblockstate, iblockstate, FLAGS);
-			}
-		}
+		else ticksCooking = 0;
 	}
 		
-	//TODO This will be used to do the % chance for getting certain genes, for testing it just returns diamond
 	public static ItemStack getSmeltingResultForItem(ItemStack stack)
 	{
-			return new ItemStack(Items.DIAMOND); 
-	}
-
-	/**
-	 * 	for each fuel slot: decreases the burn time, checks if burnTimeRemaining = 0 and tries to consume a new piece of fuel if one is available
-	 *  return the number of fuel slots which are burning
-	 */
-	private void useEnergy()
-	{
-		this.energy -=20;//TODO add overclocker ability
-		markDirty();
+		if(stack!=null&&stack.getItem()==GRItems.OrganicMatter&&stack.getTagCompound()!=null)
+		{
+			ItemStack result = new ItemStack(GRItems.Cell);
+			ModUtils.getTagCompound(result).setString("entityName", ModUtils.getTagCompound(stack).getString("entityName"));
+			return result;
+		}
+		return null;
 	}
 
 	/**
@@ -91,9 +69,6 @@ public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver im
 	 */
 	private boolean canSmelt() {return smeltItem(false);}
 
-	/**
-	 * Smelt an input item into an output slot, if possible
-	 */
 	private void smeltItem() {smeltItem(true);}
 	
 	/**
@@ -146,9 +121,7 @@ public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver im
 
 	public double percComplete()
 	{
-		System.out.println("EnergyUsed:"+this.energyUsed+" EnergyNeeded:"+this.ENERGY_NEEDED);
-		System.out.println("The number it is spitting out is"+(double)(this.energyUsed/this.ENERGY_NEEDED));
-		return (double)(this.energyUsed/this.ENERGY_NEEDED);
+		return (double)((double)this.ticksCooking/(double)(TICKS_NEEDED-(this.overclockers*39)));
 	}
 	
 	@Override
@@ -164,28 +137,32 @@ public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver im
 		super.readFromNBT(compound);
 	}
 	
-	private static final byte ENERGY_USED_FIELD_ID = 0;
+	private static final byte TICKS_COOKING_FIELD_ID = 0;
 	private static final byte ENERGY_STORED_FIELD_ID = 1;
+	private static final byte OVERCLOCKERS_FIELD_ID = 2;
 	
-	private static final byte NUMBER_OF_FIELDS = 2;
+	private static final byte NUMBER_OF_FIELDS = 3;
 
 	//@Override
 	public int getField(int id) {
-		if (id == ENERGY_USED_FIELD_ID) return energyUsed;
+		if (id == TICKS_COOKING_FIELD_ID) return ticksCooking;
 		if (id == ENERGY_STORED_FIELD_ID) return this.getEnergyStored(null);
-		System.err.println("Invalid field ID in TileInventorySmelting.getField:" + id);
+		if(id==OVERCLOCKERS_FIELD_ID) return this.overclockers;
+		System.err.println("Invalid field ID in GRTileEntity.getField:" + id);
 		return 0;
 	}
 
 	//@Override
 	public void setField(int id, int value)
 	{
-		if (id == ENERGY_USED_FIELD_ID) {
-			energyUsed = (short)value;
+		if (id == TICKS_COOKING_FIELD_ID) {
+			ticksCooking = (short)value;
 		} else if (id == ENERGY_STORED_FIELD_ID){
 			this.energy = (short)value;
+		}else if(id==OVERCLOCKERS_FIELD_ID){
+			this.overclockers = (short)value;
 		}else {
-			System.err.println("Invalid field ID in TileInventorySmelting.setField:" + id);
+			System.err.println("Invalid field ID in GRTileEntity.setField:" + id);
 		}
 	}
 

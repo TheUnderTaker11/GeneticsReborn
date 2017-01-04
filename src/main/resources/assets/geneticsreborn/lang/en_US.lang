@@ -4,6 +4,9 @@ item.GlassSyringe.name=Glass Syringe
 item.GlassSyringeFull.name=Glass Syringe(Full)
 item.Plasmid.name=DNA Plasmid
 item.MetalScraper.name=Metal Scraper
-item.advancedScraper.name=Advanced Scraper
-
+item.AdvancedScraper.name=Advanced Scraper
+item.OrganicMatter.name=Organic Matter
+item.Cell.name=Cell
+item.Overclocker.name=Overclocker
+item.DragonHealthCrystal.name=Dragon Health Crystal
 tile.CellAnalyser.name=Cell Analyser

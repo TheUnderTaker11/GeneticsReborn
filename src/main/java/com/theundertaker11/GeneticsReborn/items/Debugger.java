@@ -35,7 +35,7 @@ public class Debugger extends ItemBase{
 		else
 		{
 			genes.removeGene(EnumGenes.ENDER_DRAGON_HEALTH);
-			playerIn.addChatMessage(new TextComponentString("Added gene"));
+			playerIn.addChatMessage(new TextComponentString("Removed gene"));
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }

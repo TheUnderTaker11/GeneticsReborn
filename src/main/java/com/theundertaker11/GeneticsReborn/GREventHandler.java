@@ -10,12 +10,15 @@ import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
@@ -34,14 +37,17 @@ public class GREventHandler {
 	private static int flightticktimer;
 	private static List<String> PlayersWithFlight = new ArrayList<String>();
 	
-	//I use this to scrape entities, basic or advanced.
+	/**
+	 * I use this to scrape entities, with basic or advanced scraper.
+	 * Also at the bottom it is used to handle the wooly and milky genes
+	 */
 	@SubscribeEvent
 	public void rightClickEntity(EntityInteract event)
 	{
 		EntityPlayer player = event.getEntityPlayer();
 		Entity target = event.getTarget();
 		World world = event.getWorld();
-		if(event.getHand()==EnumHand.MAIN_HAND&&!event.getWorld().isRemote&&player.getHeldItemMainhand()!=null)
+		if(event.getHand()==EnumHand.MAIN_HAND&&!world.isRemote&&player.getHeldItemMainhand()!=null)
 		{
 			if(target instanceof EntityLivingBase)
 			{
@@ -58,7 +64,7 @@ public class GREventHandler {
 					event.getWorld().spawnEntityInWorld(entity);
 				}
 				//Gives more info than other one for use in cloning, but makes items not stack.
-				if(player.getHeldItemMainhand().getItem()==GRItems.advancedScraper)
+				if(player.getHeldItemMainhand().getItem()==GRItems.AdvancedScraper)
 				{
 					livingtarget.attackEntityFrom(DamageSource.causePlayerDamage(player), 1.0F);
 					player.getHeldItemMainhand().damageItem(1, player);
@@ -76,16 +82,45 @@ public class GREventHandler {
 					event.getWorld().spawnEntityInWorld(entity);
 				}
 			}
+			
+			//START WOOLY/MILK GENES
+			if(target instanceof EntityPlayer)
+			{
+				EntityPlayer targetplayer = (EntityPlayer)target;
+				if(ModUtils.getIGenes(targetplayer)!=null)
+				{
+					IGenes targetplayergenes = ModUtils.getIGenes(targetplayer);
+					
+					if(player.getHeldItemMainhand().getItem() instanceof ItemShears&&targetplayergenes.hasGene(EnumGenes.WOOLY))
+					{
+						ItemStack wool = new ItemStack(Blocks.WOOL, 1);
+						EntityItem entitywool = new EntityItem(event.getWorld(), targetplayer.getPosition().getX(), targetplayer.getPosition().getY(), targetplayer.getPosition().getZ(), wool);
+						world.spawnEntityInWorld(entitywool);
+					}
+				
+					if(player.getHeldItemMainhand().getItem()==Items.BUCKET&&targetplayergenes.hasGene(EnumGenes.MILKY))
+					{
+						if((player.getHeldItemMainhand().stackSize-1)<=0) player.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(Items.MILK_BUCKET));
+						else if(!player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET))) player.dropItem(Items.MILK_BUCKET, 1);
+					}
+				}
+			}
 		}
 	}
-	//Just a counter
+	
+	/**
+	 * Just a counter
+	 * 
+	 */
 	@SubscribeEvent
 	public void GameTick(TickEvent event)
 	{
 		if(flightticktimer<1000) ++flightticktimer;
 	}
 
-	//This handles the enabling/disabling of flight and fire immunity based on player genes.
+	/**
+	 * This handles the enabling/disabling of flight and fire immunity based on player genes.
+	 */
 	@SubscribeEvent
 	public void WorldTick(WorldTickEvent event)
 	{
@@ -118,9 +153,11 @@ public class GREventHandler {
 		}
 	}
 	
-	//This handles the eat grass gene.
+	/**
+	 * This handles the eat grass gene.
+	 */
 	@SubscribeEvent
-	public void onPlayerRightClickBlock(PlayerInteractEvent event)
+	public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
 	{
 		EntityPlayer player = event.getEntityPlayer();
 		if(player.getFoodStats().needFood()==true&&event.getEntityPlayer().getHeldItemMainhand()==null&&ModUtils.getIGenes(player)!=null&&event.getWorld().getBlockState(event.getPos()).getBlock()==Blocks.GRASS)
@@ -134,8 +171,10 @@ public class GREventHandler {
 		}
 	}
 	
-	//This handles fire immunity and the dragon health crystal protecting you.
-	//It checks the fire first so taking fire damage with that gene won't still take from health crystal duribility
+	/**
+	 *This handles fire immunity and the dragon health crystal protecting you.
+	 *It checks the fire first so taking fire damage with that gene won't still take from health crystal duribility 
+	 */
 	@SubscribeEvent
 	public void onHurt(LivingHurtEvent event)
 	{
@@ -175,7 +214,9 @@ public class GREventHandler {
 		 }
 	}
 	
-	//This makes players keep genes on death(If enabled in config)
+	/**
+	 * This makes players keep genes on death(If enabled in config)
+	 */
 	@SubscribeEvent
 	 public void onPlayerClone(PlayerEvent.Clone event)
 	 {
