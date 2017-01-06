@@ -12,8 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class Genes implements IGenes{
 
-	public static final int TotalNumberOfGenes = 22;
-	private List<EnumGenes> EnumGenesList = new ArrayList<EnumGenes>();
+	public static final int TotalNumberOfGenes = EnumGenes.values().length;
+	public List<EnumGenes> EnumGenesList = new ArrayList<EnumGenes>();
 	
 	@Override
 	public void addGene(EnumGenes gene)

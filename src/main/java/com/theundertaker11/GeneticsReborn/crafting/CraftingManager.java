@@ -17,17 +17,29 @@ public class CraftingManager {
 				" xy",
 				"x  ", 'x', "stickWood", 'y', "ingotIron"});
 		GameRegistry.addRecipe(MetalScraper);
+		
 		IRecipe AdvScraper = new ShapedOreRecipe(new ItemStack(GRItems.AdvancedScraper), new Object[]{
 				"  y",
 				" x ",
 				"x  ", 'x', GRItems.MetalScraper, 'y', "gemDiamond"});
 		GameRegistry.addRecipe(AdvScraper);
+		
 		IRecipe GlassSyringe = new ShapedOreRecipe(new ItemStack(GRItems.GlassSyringe), new Object[]{
 				" z ",
 				"xax",
 				"xyx", 'x', "blockGlass", 'a', Items.GLASS_BOTTLE, 'y', Items.ARROW, 'z', Blocks.PISTON});
 		GameRegistry.addRecipe(GlassSyringe);
-		//IRecipe Overclocker = new ShapedOreRecipe(new ItemStack(GRItems.AdvancedScraper), new Object[] {"x  ", " x ", "  y", 'x', GRItems.MetalScraper, 'y', "gemDiamond"});
-		//GameRegistry.addRecipe(Overclocker);
+		
+		IRecipe Overclocker = new ShapedOreRecipe(new ItemStack(GRItems.AdvancedScraper), new Object[] {
+				"zyz",
+				"yxy",
+				"zyz", 'x', Items.CLOCK, 'y', "gemLapis", 'z', GRItems.Cell});
+		GameRegistry.addRecipe(Overclocker);
+		
+		IRecipe Plasmid = new ShapedOreRecipe(new ItemStack(GRItems.AdvancedScraper), new Object[] {
+				"zzz",
+				"z z",
+				"zzz", 'z', GRItems.DNAHelix});
+		GameRegistry.addRecipe(Plasmid);
 	}
 }

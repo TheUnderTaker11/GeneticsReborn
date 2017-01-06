@@ -9,4 +9,10 @@ item.OrganicMatter.name=Organic Matter
 item.Cell.name=Cell
 item.Overclocker.name=Overclocker
 item.DragonHealthCrystal.name=Dragon Health Crystal
+item.DNAHelix.name=DNA Helix
+
 tile.CellAnalyser.name=Cell Analyser
+tile.DNAExtractor.name=DNA Extractor
+tile.DNADecrypter.name=DNA Decrypter
+tile.PlasmidInfuser.name=Plasmid Infuser
+tile.BloodPurifier.name=Blood Purifier

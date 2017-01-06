@@ -3,6 +3,7 @@ package com.theundertaker11.GeneticsReborn.api.capability;
 public enum EnumGenes{
 	DRAGONS_BREATH,//TODO
 	EAT_GRASS,
+	EMERALD_HEART,//TODO
 	ENDER_DRAGON_HEALTH,
 	FIRE_PROOF,
 	FLY,
@@ -24,4 +25,3 @@ public enum EnumGenes{
 	WITHER_HIT, //TODO
 	WITHER_PROOF; //TODO
 }
-//Total number of genes is in the Genes.java class, make sure you change that if adding/removing a gene!

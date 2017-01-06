@@ -10,6 +10,7 @@ public class GRItems {
 
 	public static Item AdvancedScraper;
 	public static Item Cell;
+	public static Item DNAHelix;
 	public static Item DragonHealthCrystal;
 	public static Item GlassSyringe;
 	public static Item MetalScraper;
@@ -23,10 +24,11 @@ public class GRItems {
 		Debugger = register(new Debugger("Debugger"));
 		GlassSyringe = register(new GlassSyringe("GlassSyringe"));
 		MetalScraper = register(new DamageableItemBase("MetalScraper", 200, true));
-		AdvancedScraper = register(new DamageableItemBase("advancedScraper", 50, true));
+		AdvancedScraper = register(new DamageableItemBase("AdvancedScraper", 50, true));
 		Overclocker = register(new ItemBase("Overclocker"));
 		OrganicMatter = register(new OrganicMatter("OrganicMatter"));
 		Cell = register(new OrganicMatter("Cell"));
+		DNAHelix = register(new DNAHelix("DNAHelix"));
 		
 		Plasmid = register(new Plasmid("Plasmid"));
 		

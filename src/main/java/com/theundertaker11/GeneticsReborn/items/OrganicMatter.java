@@ -24,7 +24,7 @@ public class OrganicMatter extends ItemBase {
 		else tooltip.add("Cell type: Blank");
     }
 	
-	/* Code for use later to spawn the type of mod the organic matter was caught from
+	/* Code for use later to spawn the type of mob the organic matter was caught from
 	  
 	  NBTBase mobCompound = tagCompound.getTag("mob");
                 String type = tagCompound.getString("type");

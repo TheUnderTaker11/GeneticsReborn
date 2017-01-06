@@ -29,12 +29,12 @@ public class Debugger extends ItemBase{
 		IGenes genes = playerIn.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
 		if(!playerIn.isSneaking())
 		{
-			genes.addGene(EnumGenes.ENDER_DRAGON_HEALTH);
+			genes.addGene(EnumGenes.EAT_GRASS);
 			playerIn.addChatMessage(new TextComponentString("Added gene"));
 		}
 		else
 		{
-			genes.removeGene(EnumGenes.ENDER_DRAGON_HEALTH);
+			genes.removeGene(EnumGenes.EAT_GRASS);
 			playerIn.addChatMessage(new TextComponentString("Removed gene"));
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);

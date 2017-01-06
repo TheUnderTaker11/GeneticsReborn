@@ -42,7 +42,7 @@ public class CellAnalyser extends StorageBlockBase{
 			if(playerIn.getHeldItem(EnumHand.MAIN_HAND)!=null&&playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem()==GRItems.Overclocker)
 			{
 				GRTileEntityCellAnalyser tile = (GRTileEntityCellAnalyser)tEntity;
-				tile.addOverclocker(playerIn);
+				tile.addOverclocker(playerIn, 10);
 			}
 			else playerIn.openGui(GeneticsReborn.instance, GuiHandler.CellAnalyserGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}

@@ -23,7 +23,6 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 	protected int energy;
 	protected int maxReceive;
 	protected int overclockers;
-	protected boolean isActive;
 	protected int ticksCooking;
 	
 	public GRTileEntityBasicEnergyReceiver()
@@ -39,7 +38,6 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
         compound.setTag("outputitem", itemStackHandlerOutput.serializeNBT());
         compound.setInteger("Energy", this.energy);
         compound.setInteger("overclockers", this.overclockers);
-        compound.setBoolean("isActive", this.isActive);
         return compound;
         
     }
@@ -63,7 +61,6 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
         }
 		this.energy = compound.getInteger("Energy");
 		this.overclockers = compound.getInteger("overclockers");
-		this.isActive = compound.getBoolean("isActive");
 		if (energy > capacity){
 			energy = capacity;
 		}
@@ -109,15 +106,15 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 	 * Adds an overclocker and removes 1 from the players inventory
 	 * @param player
 	 */
-	public void addOverclocker(EntityPlayer player)
+	public void addOverclocker(EntityPlayer player, int maxOverclockers)
 	{
-		if(this.overclockers<10)
+		if(this.overclockers<maxOverclockers)
 		{
 			this.overclockers++;
 			player.getHeldItem(EnumHand.MAIN_HAND).stackSize -= 1;
 			if(player.getHeldItem(EnumHand.MAIN_HAND).stackSize<1) player.setHeldItem(EnumHand.MAIN_HAND, null);
 		}
-		else player.addChatMessage(new TextComponentString("Max Overclockers is 10."));
+		else player.addChatMessage(new TextComponentString("Max Overclockers is "+maxOverclockers));
 	}
 	
 	public int getOverclockerCount()

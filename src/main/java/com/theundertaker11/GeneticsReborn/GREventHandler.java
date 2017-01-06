@@ -6,6 +6,7 @@ import java.util.List;
 import com.theundertaker11.GeneticsReborn.api.capability.EnumGenes;
 import com.theundertaker11.GeneticsReborn.api.capability.GeneCapabilityProvider;
 import com.theundertaker11.GeneticsReborn.api.capability.IGenes;
+import com.theundertaker11.GeneticsReborn.items.DamageableItemBase;
 import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
 
@@ -13,7 +14,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityPigZombie;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -44,43 +51,47 @@ public class GREventHandler {
 	@SubscribeEvent
 	public void rightClickEntity(EntityInteract event)
 	{
-		EntityPlayer player = event.getEntityPlayer();
-		Entity target = event.getTarget();
-		World world = event.getWorld();
-		if(event.getHand()==EnumHand.MAIN_HAND&&!world.isRemote&&player.getHeldItemMainhand()!=null)
+		if(event.getHand()==EnumHand.MAIN_HAND&&!event.getWorld().isRemote&&event.getEntityPlayer().getHeldItemMainhand()!=null)
 		{
-			if(target instanceof EntityLivingBase)
+			EntityPlayer player = event.getEntityPlayer();
+			Entity target = event.getTarget();
+			World world = event.getWorld();
+			//THE MOST SPECIAL SNOWFLAKE, DOESNT EVEN EXTEND ENTITYLIVINGBASE...
+			if(target instanceof EntityDragonPart&&player.getHeldItemMainhand().getItem() instanceof DamageableItemBase) 
+			{
+				if(player.getHeldItemMainhand().getItem()==GRItems.MetalScraper||player.getHeldItemMainhand().getItem()==GRItems.AdvancedScraper)
+				{
+					ItemStack organicmatter = new ItemStack(GRItems.OrganicMatter, 1);
+					target.attackEntityFrom(DamageSource.causePlayerDamage(player), 0.5F);
+					ModUtils.getTagCompound(organicmatter).setString("entityName", "Ender Dragon");
+					player.getHeldItemMainhand().damageItem(1, player);
+					EntityItem entity = new EntityItem(player.getEntityWorld(), target.getPosition().getX(), target.getPosition().getY(), target.getPosition().getZ(), organicmatter);
+					player.getEntityWorld().spawnEntityInWorld(entity);
+				}
+			}
+			//Glad thats over.
+			
+			if((target instanceof EntityLivingBase&&!(target instanceof EntityPlayer))&&player.getHeldItemMainhand().getItem() instanceof DamageableItemBase)
 			{
 				EntityLivingBase livingtarget = (EntityLivingBase)target;
-				if(player.getHeldItemMainhand().getItem()==GRItems.MetalScraper)
-				{
-					livingtarget.attackEntityFrom(DamageSource.causePlayerDamage(player), 0.25F);
-					player.getHeldItemMainhand().damageItem(1, player);
+				String name = livingtarget.getName();
 				
-					//Begin setting NBT to the item.
-					ItemStack organicmatter = new ItemStack(GRItems.OrganicMatter, 1);
-					ModUtils.getTagCompound(organicmatter).setString("entityName", livingtarget.getName());
-					EntityItem entity = new EntityItem(event.getWorld(), livingtarget.getPosition().getX(), livingtarget.getPosition().getY(), livingtarget.getPosition().getZ(), organicmatter);
-					event.getWorld().spawnEntityInWorld(entity);
-				}
-				//Gives more info than other one for use in cloning, but makes items not stack.
-				if(player.getHeldItemMainhand().getItem()==GRItems.AdvancedScraper)
+				//Start special snowflakes.
+				if(livingtarget instanceof EntitySkeleton)
 				{
-					livingtarget.attackEntityFrom(DamageSource.causePlayerDamage(player), 1.0F);
-					player.getHeldItemMainhand().damageItem(1, player);
-					
-					//Begin setting NBT to the item.
-					ItemStack organicmatter = new ItemStack(GRItems.OrganicMatter, 1);
-					NBTTagCompound entitytag = new NBTTagCompound();
-					NBTTagCompound itemtag = ModUtils.getTagCompound(organicmatter);
-					livingtarget.writeToNBT(entitytag);
-					
-					itemtag.setTag("mobTag", entitytag);
-					itemtag.setString("type", livingtarget.getClass().getCanonicalName());
-					itemtag.setString("entityName", livingtarget.getName());
-					EntityItem entity = new EntityItem(event.getWorld(), livingtarget.getPosition().getX(), livingtarget.getPosition().getY(), livingtarget.getPosition().getZ(), organicmatter);
-					event.getWorld().spawnEntityInWorld(entity);
+					EntitySkeleton skeleton = (EntitySkeleton)livingtarget;
+					if(skeleton.func_189771_df()==SkeletonType.WITHER)
+					{
+						name = "Wither Skeleton";
+					}
 				}
+				if(livingtarget instanceof EntityPigZombie)
+				{
+					name="Zombie Pigman";
+				}
+				
+				//End special snowflakes.
+				ModUtils.scrapeEntity(player, livingtarget, name);
 			}
 			
 			//START WOOLY/MILK GENES
@@ -94,14 +105,20 @@ public class GREventHandler {
 					if(player.getHeldItemMainhand().getItem() instanceof ItemShears&&targetplayergenes.hasGene(EnumGenes.WOOLY))
 					{
 						ItemStack wool = new ItemStack(Blocks.WOOL, 1);
+						player.getHeldItemMainhand().damageItem(1, player);
 						EntityItem entitywool = new EntityItem(event.getWorld(), targetplayer.getPosition().getX(), targetplayer.getPosition().getY(), targetplayer.getPosition().getZ(), wool);
 						world.spawnEntityInWorld(entitywool);
 					}
 				
 					if(player.getHeldItemMainhand().getItem()==Items.BUCKET&&targetplayergenes.hasGene(EnumGenes.MILKY))
 					{
+						
 						if((player.getHeldItemMainhand().stackSize-1)<=0) player.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(Items.MILK_BUCKET));
-						else if(!player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET))) player.dropItem(Items.MILK_BUCKET, 1);
+						else 
+						{
+							if(!player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET))) player.dropItem(Items.MILK_BUCKET, 1);
+							player.getHeldItemMainhand().stackSize=(player.getHeldItemMainhand().stackSize-1);
+						}
 					}
 				}
 			}

@@ -13,7 +13,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentString;
@@ -32,6 +35,11 @@ public class GlassSyringe extends ItemBase {
 	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
 		tooltip.add("Right click to draw blood, shift right click to inject blood");
+		if(stack.getTagCompound()!=null&&stack.getItemDamage()==1)
+		{
+			if(stack.getTagCompound().getBoolean("pure")) tooltip.add("This blood is purified");
+			else tooltip.add("This blood is contaminated");
+		}
     }
 	
 	@Override
@@ -43,30 +51,35 @@ public class GlassSyringe extends ItemBase {
 		if(!playerIn.isSneaking()&&stack.getItemDamage()==0) 
 		{
 			stack.setItemDamage(1);
-			if(GeneticsReborn.playerGeneSharing)
-			{
-				stack = Genes.setNBTStringsFromPlayerGenes(stack, playerIn);	
-			}
+			playerIn.attackEntityFrom(DamageSource.generic, 2);
+			tag.setBoolean("pure", false);
+			tag.setString("owner", playerIn.getName());
+			Genes.setNBTStringsFromPlayerGenes(stack, playerIn);
 		}
-		else if(stack.getItemDamage()==1){
+		Boolean configallows=true;
+		if(!GeneticsReborn.playerGeneSharing)
+		{
+			configallows = tag.getString("owner").equals(playerIn.getName());
+		}
+		if(configallows&&stack.getItemDamage()==1&&tag.getBoolean("pure"))
+		{
 			stack.setItemDamage(0);
-			if(GeneticsReborn.playerGeneSharing)
-			{
-				IGenes genes = playerIn.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
-				for(int i=0;i<Genes.TotalNumberOfGenes;i++)
+			playerIn.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.blindness), 60, 1)));
+			playerIn.attackEntityFrom(DamageSource.generic, 1);
+			IGenes genes = playerIn.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
+			tag.removeTag("pure");
+			for(int i=0;i<Genes.TotalNumberOfGenes;i++)
+		 	{
+		 		String nbtname = "Null";
+		 		if(tag.hasKey(i+""))
 		 		{
-		 			String nbtname = "Null";
-		 			if(tag.hasKey(i+""))
-		 			{
-		 				nbtname = tag.getString(i+"");
-		 			}
-		 			if(Genes.getGeneFromString(nbtname)!=null)	
-		 			{
-		 				genes.addGene(Genes.getGeneFromString(nbtname));
-		 			}
+		 			nbtname = tag.getString(i+"");
 		 		}
-			}
-			
+		 		if(Genes.getGeneFromString(nbtname)!=null)	
+		 		{
+		 			genes.addGene(Genes.getGeneFromString(nbtname));
+		 		}
+		 	}	
 		}
 		
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);

@@ -40,13 +40,6 @@ public class GuiCellAnalyser extends GuiContainer {
 	final int COOK_BAR_WIDTH = 80;
 	final int COOK_BAR_HEIGHT = 17;
 
-	final int FLAME_XPOS = 54;
-	final int FLAME_YPOS = 80;
-	final int FLAME_ICON_U = 176;   // texture position of flame icon
-	final int FLAME_ICON_V = 0;
-	final int FLAME_WIDTH = 14;
-	final int FLAME_HEIGHT = 14;
-	final int FLAME_X_SPACING = 18;
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int x, int y) {
@@ -61,12 +54,6 @@ public class GuiCellAnalyser extends GuiContainer {
 		// draw the cook progress bar
 		drawTexturedModalRect(guiLeft + COOK_BAR_XPOS, guiTop + COOK_BAR_YPOS, COOK_BAR_ICON_U, COOK_BAR_ICON_V,
 						              (int)(cookProgress * COOK_BAR_WIDTH), COOK_BAR_HEIGHT);
-
-		// draw the fuel remaining bar for each fuel slot flame
-		double energyRemainingFrac = tileEntity.fractionOfEnergyRemaining();
-		int yOffset = (int)((1.0 - energyRemainingFrac) * FLAME_HEIGHT);
-		drawTexturedModalRect(guiLeft + FLAME_XPOS + FLAME_X_SPACING * 0, guiTop + FLAME_YPOS + yOffset,
-														FLAME_ICON_U, FLAME_ICON_V + yOffset, FLAME_WIDTH, FLAME_HEIGHT - yOffset);
 	}
 
 	@Override
@@ -76,7 +63,15 @@ public class GuiCellAnalyser extends GuiContainer {
 		final int LABEL_XPOS = 5;
 		final int LABEL_YPOS = 5;
 		fontRendererObj.drawString("Cell Analyser", LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());
-
+		
+		final int POWER_XPOS = 35;
+		final int POWER_YPOS = 40;
+		fontRendererObj.drawString(("Power: "+tileEntity.getEnergyStored(null)+"/"+tileEntity.capacity+" RF"), POWER_XPOS, POWER_YPOS, Color.darkGray.getRGB());
+		
+		final int OVERCLOCKERCOUNT_XPOS = 36;
+		final int OVERCLOCKERCOUNT_YPOS = 87;
+		fontRendererObj.drawString(("Overclockers: "+tileEntity.getOverclockerCount()), OVERCLOCKERCOUNT_XPOS, OVERCLOCKERCOUNT_YPOS, Color.darkGray.getRGB());
+		
 		List<String> hoveringText = new ArrayList<String>();
 
 		// If the mouse is over the progress bar add the progress bar hovering text
@@ -87,14 +82,6 @@ public class GuiCellAnalyser extends GuiContainer {
 			hoveringText.add(cookPercentage + "%");
 		}
 
-		// If the mouse is over one of the burn time indicator add the burn time indicator hovering text
-	
-		if (isInRect(guiLeft + FLAME_XPOS + FLAME_X_SPACING * 0, guiTop + FLAME_YPOS, FLAME_WIDTH, FLAME_HEIGHT, mouseX, mouseY))
-		{
-				hoveringText.add("Energy:");
-				hoveringText.add(tileEntity.getEnergyStored(null) + "/20000 RF");
-		}
-		
 		// If hoveringText is not empty draw the hovering text
 		if (!hoveringText.isEmpty()){
 			drawHoveringText(hoveringText, mouseX - guiLeft, mouseY - guiTop, fontRendererObj);
