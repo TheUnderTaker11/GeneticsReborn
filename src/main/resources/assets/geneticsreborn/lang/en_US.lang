@@ -1,3 +1,18 @@
 itemGroup.GRtab=Genetics Reborn
 
 item.GlassSyringe.name=Glass Syringe
+item.GlassSyringeFull.name=Glass Syringe(Full)
+item.Plasmid.name=DNA Plasmid
+item.MetalScraper.name=Metal Scraper
+item.AdvancedScraper.name=Advanced Scraper
+item.OrganicMatter.name=Organic Matter
+item.Cell.name=Cell
+item.Overclocker.name=Overclocker
+item.DragonHealthCrystal.name=Dragon Health Crystal
+item.DNAHelix.name=DNA Helix
+
+tile.CellAnalyser.name=Cell Analyser
+tile.DNAExtractor.name=DNA Extractor
+tile.DNADecrypter.name=DNA Decrypter
+tile.PlasmidInfuser.name=Plasmid Infuser
+tile.BloodPurifier.name=Blood Purifier

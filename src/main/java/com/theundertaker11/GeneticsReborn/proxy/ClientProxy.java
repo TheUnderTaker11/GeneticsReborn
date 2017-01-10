@@ -1,6 +1,7 @@
 package com.theundertaker11.GeneticsReborn.proxy;
 
 import com.theundertaker11.GeneticsReborn.Reference;
+import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.render.RenderRegistry;
 
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -19,6 +20,12 @@ public class ClientProxy extends CommonProxy {
 	public void registerRenders()
 	{
 		RenderRegistry.Render();
+		
+		
+		String modelName = Reference.MODID + ":" + "GlassSyringeFull";
+		ResourceLocation GlassSyringeTextures = new ResourceLocation(modelName);
+		
+		ModelBakery.registerItemVariants(GRItems.GlassSyringe, GlassSyringeTextures);
 	}
 
 }

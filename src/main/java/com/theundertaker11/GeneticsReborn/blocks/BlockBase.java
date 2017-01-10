@@ -22,7 +22,7 @@ public class BlockBase extends Block implements IItemModelProvider{
     }
 
     public BlockBase(String name) {
-        this(name, Material.ROCK, 0.5f, 0.5f);
+        this(name, Material.IRON, 0.5f, 0.5f);
     }
 
 	@Override

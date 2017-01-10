@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "geneticsreborn:blocks/PlasmidInfuser_Front",
+    "down": "geneticsreborn:blocks/Machine_Side",
+    "up": "geneticsreborn:blocks/Machine_Side",
+    "east": "geneticsreborn:blocks/Machine_Side",
+    "west": "geneticsreborn:blocks/Machine_Side",
+    "north": "geneticsreborn:blocks/PlasmidInfuser_Front",
+    "south": "geneticsreborn:blocks/Machine_Side"
+  }
+}

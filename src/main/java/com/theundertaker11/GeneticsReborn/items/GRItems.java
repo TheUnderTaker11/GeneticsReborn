@@ -6,18 +6,33 @@ import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class GRItems {
+	public static Item Debugger;
+
+	public static Item AdvancedScraper;
+	public static Item Cell;
+	public static Item DNAHelix;
+	public static Item DragonHealthCrystal;
 	public static Item GlassSyringe;
 	public static Item MetalScraper;
-	public static Item advancedScraper;
 	public static Item OrganicMatter;
-	public static Item Cell;
+	public static Item Overclocker;
+	public static Item Plasmid;
+	
 	
 	public static void init()
 	{
+		Debugger = register(new Debugger("Debugger"));
 		GlassSyringe = register(new GlassSyringe("GlassSyringe"));
-		MetalScraper = register(new MetalScraper("MetalScraper", 200));
-		advancedScraper = register(new MetalScraper("advancedScraper", 50));
+		MetalScraper = register(new DamageableItemBase("MetalScraper", 200, true));
+		AdvancedScraper = register(new DamageableItemBase("AdvancedScraper", 50, true));
+		Overclocker = register(new ItemBase("Overclocker"));
 		OrganicMatter = register(new OrganicMatter("OrganicMatter"));
+		Cell = register(new OrganicMatter("Cell"));
+		DNAHelix = register(new DNAHelix("DNAHelix"));
+		
+		Plasmid = register(new Plasmid("Plasmid"));
+		
+		DragonHealthCrystal = register(new DamageableItemBase("DragonHealthCrystal", 1000, true));
 	}
 	
 	private static <T extends Item> T register(T item) 

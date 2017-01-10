@@ -27,6 +27,7 @@ public class ItemBase extends Item implements IItemModelProvider{
 		GeneticsReborn.proxy.registerItemRenderer(this, 0, name);
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean hasEffect(ItemStack stack)
 	{
