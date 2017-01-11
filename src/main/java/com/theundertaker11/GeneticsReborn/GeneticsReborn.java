@@ -1,32 +1,31 @@
 package com.theundertaker11.GeneticsReborn;
 
-import net.minecraft.client.Minecraft;
+import com.theundertaker11.GeneticsReborn.api.capability.CapabilityHandler;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.Genes;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.GenesStorage;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
+import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
+import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealth;
+import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealthStorage;
+import com.theundertaker11.GeneticsReborn.blocks.GRBlocks;
+import com.theundertaker11.GeneticsReborn.crafting.CraftingManager;
+import com.theundertaker11.GeneticsReborn.items.GRItems;
+import com.theundertaker11.GeneticsReborn.keybinds.KeybindHandler;
+import com.theundertaker11.GeneticsReborn.packets.GeneticsRebornPacketHandler;
+import com.theundertaker11.GeneticsReborn.proxy.CommonProxy;
+import com.theundertaker11.GeneticsReborn.proxy.GuiProxy;
+import com.theundertaker11.GeneticsReborn.tile.GRTileEntity;
+
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.oredict.OreDictionary;
-
-import com.theundertaker11.GeneticsReborn.api.capability.CapabilityHandler;
-import com.theundertaker11.GeneticsReborn.api.capability.Genes;
-import com.theundertaker11.GeneticsReborn.api.capability.GenesStorage;
-import com.theundertaker11.GeneticsReborn.api.capability.IGenes;
-import com.theundertaker11.GeneticsReborn.blocks.GRBlocks;
-import com.theundertaker11.GeneticsReborn.crafting.CraftingManager;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.proxy.CommonProxy;
-import com.theundertaker11.GeneticsReborn.proxy.GuiProxy;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntity;
 
 @Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.NAME)
 
@@ -35,10 +34,29 @@ public class GeneticsReborn {
 	public static boolean playerGeneSharing;
 	public static boolean keepGenesOnDeath;
 	
+	public static boolean enableDragonsBreath;
 	public static boolean enableEatGrass;
+	public static boolean enableEmeraldHeart;
 	public static boolean enableEnderDragonHealth;
-	public static boolean enableFlight;
 	public static boolean enableFireProof;
+	public static boolean enableFlight;
+	public static boolean enableJumpBoost;
+	public static boolean enableMilky;
+	public static boolean enableMoreHearts;
+	public static boolean enableNightVision;
+	public static boolean enableNoFallDamage;
+	public static boolean enablePoisonProof;
+	public static boolean enableResistance;
+	public static boolean enableSaveInventory;
+	public static boolean enableScareCreepers;
+	public static boolean enableShootFireballs;
+	public static boolean enableSlimy;
+	public static boolean enableSpeed;
+	public static boolean enableTeleporter;
+	public static boolean enableWaterBreathing;
+	public static boolean enableWooly;
+	public static boolean enableWitherHit;
+	public static boolean enableWitherProof;
 	
 	public static CreativeTabs GRtab = new CreativeTabGR(CreativeTabs.getNextID(), "GRtab");
 	@SidedProxy(clientSide = Reference.CLIENTPROXY, serverSide = Reference.SERVERPROXY)
@@ -56,20 +74,42 @@ public class GeneticsReborn {
 		config.load();
 		config.addCustomCategoryComment("General Config", "");
 		config.addCustomCategoryComment("Genes", "Set any values to false to disable that gene.");
-		//QuarryRadius = config.getInt("Radius of Quarry", "Quarry", 8, 3, 50, "Changes the radius of the Quarry(Mines to bedrock in that radius)");
+
 		playerGeneSharing = config.getBoolean("Enable Gene Sharing", "General Config", false, "Setting this to true will enable players being able to take the blood of other players and get all the genes from it.");
 		keepGenesOnDeath = config.getBoolean("Keep genes on death", "General Config", true, "Better keep some back up syringes if this is set to false.");
 		
+		enableDragonsBreath = config.getBoolean("Dragon's Breath", "Genes", true, "");
 		enableEatGrass = config.getBoolean("Eat Grass", "Genes", true, "");
+		enableEmeraldHeart = config.getBoolean("Emerald Heart", "Genes", true, "");
 		enableEnderDragonHealth = config.getBoolean("Ender Dragon Health", "Genes", true, "");
+		enableFireProof = config.getBoolean("Fire-Proof", "Genes", true, "");
 		enableFlight = config.getBoolean("Flight", "Genes", true, "");
-		enableFireProof = config.getBoolean("Fire Proof", "Genes", true, "");
+		enableJumpBoost = config.getBoolean("Jump Boost", "Genes", true, "");
+		enableMilky = config.getBoolean("Milky", "Genes", true, "");
+		enableMoreHearts = config.getBoolean("More Hearts", "Genes", true, "");
+		enableNightVision = config.getBoolean("Night Vision", "Genes", true, "");
+		enableNoFallDamage = config.getBoolean("No Fall Damage", "Genes", true, "");
+		enablePoisonProof = config.getBoolean("Poison Proof", "Genes", true, "");
+		enableResistance = config.getBoolean("Resistance", "Genes", true, "");
+		enableSaveInventory = config.getBoolean("Keep Inventory", "Genes", true, "");
+		enableScareCreepers = config.getBoolean("Scare Creepers", "Genes", true, "");
+		enableShootFireballs = config.getBoolean("Shoot Fireballs", "Genes", true, "");
+		enableSlimy = config.getBoolean("Slimy", "Genes", true, "");
+		enableSpeed = config.getBoolean("Speed", "Genes", true, "");
+		enableTeleporter = config.getBoolean("Teleporter", "Genes", true, "");
+		enableWaterBreathing = config.getBoolean("Water Breathing", "Genes", true, "");
+		enableWooly = config.getBoolean("Wooly", "Genes", true, "");
+		enableWitherHit = config.getBoolean("Wither Hit", "Genes", true, "");
+		enableWitherProof = config.getBoolean("Wither Proof", "Genes", true, "");
+		
 		
 		config.save();
 
 		GRItems.init();
 		GRBlocks.init();
 		GRTileEntity.regTileEntitys();
+		GeneticsRebornPacketHandler.init();
+		KeybindHandler.init();
 	}
 
 	@Mod.EventHandler
@@ -78,9 +118,13 @@ public class GeneticsReborn {
 		CraftingManager.RegisterRecipes();
 		proxy.registerRenders();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
-		MinecraftForge.EVENT_BUS.register(new GREventHandler());
+		CapabilityManager.INSTANCE.register(IMaxHealth.class, new MaxHealthStorage(), MaxHealth.class);
 		CapabilityManager.INSTANCE.register(IGenes.class, new GenesStorage(), Genes.class);
+		
+		MinecraftForge.EVENT_BUS.register(new GREventHandler());
 		MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
+		
+		
 	}
 
 	@Mod.EventHandler

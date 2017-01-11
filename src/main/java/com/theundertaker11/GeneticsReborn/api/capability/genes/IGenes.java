@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.api.capability;
+package com.theundertaker11.GeneticsReborn.api.capability.genes;
 
 import java.util.ArrayList;
 import java.util.List;

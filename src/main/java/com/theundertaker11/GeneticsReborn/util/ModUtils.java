@@ -4,8 +4,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nullable;
 
-import com.theundertaker11.GeneticsReborn.api.capability.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.IGenes;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
+import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
+import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealthCapabilityProvider;
 import com.theundertaker11.GeneticsReborn.items.GRItems;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -18,24 +20,27 @@ import net.minecraft.util.DamageSource;
 
 public class ModUtils{
 	//Potion effect ID's for easy use.
-	public static int moveSpeed = 1;
-	public static int moveSlowness = 2;
-	public static int digSpeed = 3;
-	public static int miningSlowDown = 4;
-	public static int strength = 5;
-	public static int jumpBoost = 8;
-	public static int nausea = 9;
-	public static int regeneration = 10;
-	public static int resistance = 11;
-	public static int fireResistance = 12;
-	public static int waterBreathing = 13;
-	public static int invisibility = 14;
-	public static int blindness = 15;
-	public static int nightVision = 16;
-	public static int hunger = 17;
-	public static int weakness = 18;
-	public static int poison = 19;
-	public static int wither = 20;
+	public static final int moveSpeed = 1;
+	public static final int moveSlowness = 2;
+	public static final int digSpeed = 3;
+	public static final int miningSlowDown = 4;
+	public static final int strength = 5;
+	public static final int jumpBoost = 8;
+	public static final int nausea = 9;
+	public static final int regeneration = 10;
+	public static final int resistance = 11;
+	public static final int fireResistance = 12;
+	public static final int waterBreathing = 13;
+	public static final int invisibility = 14;
+	public static final int blindness = 15;
+	public static final int nightVision = 16;
+	public static final int hunger = 17;
+	public static final int weakness = 18;
+	public static final int poison = 19;
+	public static final int wither = 20;
+	
+	public static final int ATTRIBUTE_MODIFIER_OPERATION_ADD = 0;
+	
 	/**
 	 * This makes it so I don't have to check for null on every tag compound.
 	 * Thanks to the Not Enough Wands mod for this code.
@@ -51,6 +56,29 @@ public class ModUtils{
         }
         return tag;
     }
+	
+	/**
+	 * Teleports a player, given the x, y, z, and dimension ID.
+	 * Works cross-dimensionally(Hence needing dimension ID)
+	 * @param player
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param dimension
+	 */
+	public static void TeleportPlayer(EntityPlayer player, double x, double y, double z, int dimension)
+	{
+		if(player.dimension==dimension)
+		{
+			player.setPositionAndUpdate(x, y, z);
+		}
+		else
+		{
+			player.changeDimension(dimension);
+			player.setPositionAndUpdate(x, y, z);	
+		}
+	}
+	
 	/**
 	 * Checks the player given has the item given, ignores NBT/Damage, only checks the actual item.
 	 * @param player
@@ -74,6 +102,14 @@ public class ModUtils{
 	public static IGenes getIGenes(EntityPlayer player)
 	{
 		return player.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
+	}
+	
+	/**
+	 */
+	@Nullable
+	public static IMaxHealth getIMaxHealth(EntityPlayer player)
+	{
+		return player.getCapability(MaxHealthCapabilityProvider.MAX_HEALTH_CAPABILITY, null);
 	}
 	
 	public static String getGeneNameForShow(String rawname)
@@ -224,6 +260,10 @@ public class ModUtils{
 		String name = "BasicGene";
 		if(number>40) return "GeneticsRebornBasicGene";
 		
+		if(entityName.equals("Iron Golem"))
+		{
+			name="MORE_HEARTS";
+		}
 		if(entityName.equals("Cow"))
 		{
 			if(number<=20) name="EAT_GRASS";

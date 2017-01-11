@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.blocks.dnaextractor;
+package com.theundertaker11.GeneticsReborn.blocks.plasmidinjector;
 
 import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.GRTileEntityCellAnalyser;
 import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.ContainerCellAnalyser.SlotOutput;
@@ -21,15 +21,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-/**
- * I copy any of my other machines from this class, the todo's are just a reminder to myself
- * where I need to change things
- * @author TheUnderTaker11
- *
- */
-public class ContainerDNAExtractor extends Container {
 
-	private GRTileEntityDNAExtractor tileInventory;
+public class ContainerPlasmidInjector extends Container {
+
+	private GRTileEntityPlasmidInjector tileInventory;
 
 	private int cachedEnergyUsed;
 	private int cachedEnergyStored;
@@ -52,7 +47,7 @@ public class ContainerDNAExtractor extends Container {
 	private final int INPUT_SLOT_NUMBER = 0;
 	private final int OUTPUT_SLOT_NUMBER = 0;
 
-	public ContainerDNAExtractor(InventoryPlayer invPlayer, GRTileEntityDNAExtractor tileInventory){//TODO change last param here
+	public ContainerPlasmidInjector(InventoryPlayer invPlayer, GRTileEntityPlasmidInjector tileInventory){
 		this.tileInventory = tileInventory;
 
 		final int SLOT_X_SPACING = 18;
@@ -110,6 +105,7 @@ public class ContainerDNAExtractor extends Container {
         if(slot == null || !slot.getHasStack()) return null;
         if(tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)==null) return null;
         IItemHandler input = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+        IItemHandler output = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
         
         ItemStack sourceStack = slot.getStack();
         ItemStack copyOfStack = sourceStack.copy();
@@ -117,16 +113,35 @@ public class ContainerDNAExtractor extends Container {
         //If it is player's inventory do these things.
         if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX && sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT)
         {
-        	if(sourceStack.getItem()==GRItems.Cell)//TODO change here
+        	if(sourceStack.getItem()==GRItems.Plasmid||sourceStack.getItem()==GRItems.AntiPlasmid)
         	{
-        		if (input.insertItem(0, sourceStack, true)!=null){
-					return null;
-				}
-        		else
+        		if(sourceStack.getTagCompound()!=null&&sourceStack.getTagCompound().getInteger("num")==sourceStack.getTagCompound().getInteger("numNeeded"))
         		{
-        			input.insertItem(0, sourceStack, false);
-        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+        			if(input.insertItem(0, sourceStack, true)!=null){
+						return null;
+					}
+        			else
+        			{
+        				input.insertItem(0, sourceStack, false);
+        				player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+        			}
+        		}else return null;
+        	}
+        	else if(sourceStack.getItem()==GRItems.GlassSyringe&&sourceStack.getTagCompound()!=null&&sourceStack.getItemDamage()==1)
+        	{
+        		if(sourceStack.getTagCompound().getBoolean("pure"))
+        		{
+        			if(output.insertItem(0, sourceStack, true)!=null)
+        			{
+						return null;
+					}
+        			else
+        			{
+        				output.insertItem(0, sourceStack, false);
+        				player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+        			}
         		}
+        		else return null;
         	}
         	else return null;
         }
@@ -196,7 +211,14 @@ public class ContainerDNAExtractor extends Container {
 		// if this function returns false, the player won't be able to insert the given item into this slot
 		@Override
 		public boolean isItemValid(ItemStack stack) {
-			return (stack.getItem()==GRItems.Cell);//TODO change here
+			if(stack.getItem()==GRItems.Plasmid||stack.getItem()==GRItems.AntiPlasmid)
+        	{
+        		if(stack.getTagCompound()!=null&&stack.getTagCompound().getInteger("num")==stack.getTagCompound().getInteger("numNeeded"))
+        		{
+        			return true;
+        		}
+        	}
+			return false;
 		}
 	}
 
@@ -208,6 +230,10 @@ public class ContainerDNAExtractor extends Container {
 
 		@Override
 		public boolean isItemValid(ItemStack stack) {
+			if(stack.getItem()==GRItems.GlassSyringe&&stack.getTagCompound()!=null&&stack.getItemDamage()==1&&stack.getTagCompound().getBoolean("pure"))
+        	{
+				return true;
+        	}
 			return false;
 		}
 	}

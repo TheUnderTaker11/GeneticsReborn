@@ -30,16 +30,18 @@ public class CraftingManager {
 				"xyx", 'x', "blockGlass", 'a', Items.GLASS_BOTTLE, 'y', Items.ARROW, 'z', Blocks.PISTON});
 		GameRegistry.addRecipe(GlassSyringe);
 		
-		IRecipe Overclocker = new ShapedOreRecipe(new ItemStack(GRItems.AdvancedScraper), new Object[] {
+		IRecipe Overclocker = new ShapedOreRecipe(new ItemStack(GRItems.Overclocker), new Object[] {
 				"zyz",
 				"yxy",
 				"zyz", 'x', Items.CLOCK, 'y', "gemLapis", 'z', GRItems.Cell});
 		GameRegistry.addRecipe(Overclocker);
 		
-		IRecipe Plasmid = new ShapedOreRecipe(new ItemStack(GRItems.AdvancedScraper), new Object[] {
+		IRecipe Plasmid = new ShapedOreRecipe(new ItemStack(GRItems.Plasmid), new Object[] {
 				"zzz",
 				"z z",
 				"zzz", 'z', GRItems.DNAHelix});
 		GameRegistry.addRecipe(Plasmid);
+		
+		GameRegistry.addRecipe(new AntiPlasmidCrafting());
 	}
 }

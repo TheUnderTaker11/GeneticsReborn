@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.api.capability;
+package com.theundertaker11.GeneticsReborn.api.capability.genes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class Genes implements IGenes{
 
 	public static final int TotalNumberOfGenes = EnumGenes.values().length;
-	public List<EnumGenes> EnumGenesList = new ArrayList<EnumGenes>();
+	private List<EnumGenes> EnumGenesList = new ArrayList<EnumGenes>();
 	
 	@Override
 	public void addGene(EnumGenes gene)
@@ -78,7 +78,6 @@ public class Genes implements IGenes{
 			String genename = allGenes.get(i).toString();
 			if(nbtstring.equals("GeneticsReborn"+genename))
 			{
-				System.out.println("Get Gene from string worked!");
 				return allGenes.get(i);
 			}
 		}

@@ -1,5 +1,6 @@
-package com.theundertaker11.GeneticsReborn.blocks.dnaextractor;
+package com.theundertaker11.GeneticsReborn.blocks.plasmidinjector;
 
+import com.theundertaker11.GeneticsReborn.api.capability.genes.Genes;
 import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
@@ -11,24 +12,19 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-/**
- * I copy any of my other machines from this class, the todo's are just a reminder to myself
- * where I need to change things
- * @author TheUnderTaker11
- *
- */
-public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver implements ITickable{
+
+public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver implements ITickable{
 	
-	public static final short TICKS_NEEDED = 200;
+	public static final short TICKS_NEEDED = 400;
 	
-	public GRTileEntityDNAExtractor(){
+	public GRTileEntityPlasmidInjector(){
 		super();
 	}
 	
 	@Override
 	public void update()
 	{
-		int rfpertick = (20+(this.overclockers*85));//TODO change here based on power
+		int rfpertick = (20+(this.overclockers*85));
 		if (canSmelt()) 
 		{
 			if (this.energy > rfpertick)
@@ -40,23 +36,12 @@ public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver im
 			// Just in case
 			if (ticksCooking < 0) ticksCooking = 0;
 
-			if (ticksCooking >= (TICKS_NEEDED-(this.overclockers*39))){//TODO change here based on power
+			if (ticksCooking >= (TICKS_NEEDED-(this.overclockers*39))){
 				smeltItem();
 				ticksCooking = 0;
 			}
 		}
 		else ticksCooking = 0;
-	}
-	//TODO change here
-	public static ItemStack getSmeltingResultForItem(ItemStack stack)
-	{
-		if(stack!=null&&stack.getItem()==GRItems.Cell&&stack.getTagCompound()!=null)
-		{
-			ItemStack result = new ItemStack(GRItems.DNAHelix);
-			ModUtils.getTagCompound(result).setString("entityName", ModUtils.getTagCompound(stack).getString("entityName"));
-			return result;
-		}
-		return null;
 	}
 
 	/**
@@ -79,36 +64,75 @@ public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver im
 		IItemHandler inventoryoutput = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
 		
 		// Sees if the input slot is smeltable and if result fits into an output slot (stacking if possible)
-			if (inventory != null&&inventory.getStackInSlot(0)!=null) 
+			if (inventory != null&&inventory.getStackInSlot(0)!=null&&inventoryoutput!=null&&inventoryoutput.getStackInSlot(0)!=null) 
 			{
-				result = getSmeltingResultForItem(inventory.getStackInSlot(0));
-				if (result != null)
+				ItemStack item = inventory.getStackInSlot(0);
+				result = inventoryoutput.getStackInSlot(0);
+				if (item.getTagCompound()!=null)
 				{
-						//Trys to insert into output slot
-						ItemStack inputSlotStack = inventory.getStackInSlot(0);
-						ItemStack outputSlotStack = inventoryoutput.getStackInSlot(0);
-						if (outputSlotStack == null)
+					NBTTagCompound itemtag = ModUtils.getTagCompound(item);
+					if(result.getTagCompound()==null||result.getItemDamage()==0||!(result.getTagCompound().getBoolean("pure")))
+					{
+						return false;
+					}
+					else
+					{
+						NBTTagCompound resulttag = ModUtils.getTagCompound(result);
+						if(itemtag.getInteger("num")==itemtag.getInteger("numNeeded"))
 						{
-							if(inventoryoutput.insertItem(0, result, !performSmelt)==null)
+							if(item.getItem()==GRItems.AntiPlasmid)
 							{
-								inventory.extractItem(0, 1, !performSmelt);
-								markDirty();
-								return true;
+								for(int i=0;i<Genes.TotalNumberOfGenes;i++)
+								 {
+								 	String nbtname = "Null";
+								 	if(resulttag.hasKey(i+"anti"))
+								 	{
+								 		if(resulttag.getString(i+"anti").equals(itemtag.getString("gene")))
+								 		{
+								 			return false;
+								 		}
+								 	}
+								 	else
+								 	{
+								 		if(performSmelt)
+										{
+								 			resulttag.setString(i+"anti", itemtag.getString("gene"));
+								 			resulttag.setBoolean("pure", false);
+								 			inventory.extractItem(0, item.stackSize, false);
+								 			this.markDirty();
+										}
+								 		return true;
+								 	}
+								 }
 							}
-						}else
-						{
-							if(inventoryoutput.insertItem(0, result, true)!=null)
+							else if(item.getItem()==GRItems.Plasmid)
 							{
-								return false;
-							}
-							else
-							{
-								inventoryoutput.insertItem(0, result, !performSmelt);
-								inventory.extractItem(0, 1, !performSmelt);
-								markDirty();
-								return true;
+								for(int i=0;i<Genes.TotalNumberOfGenes;i++)
+								 {
+								 	String nbtname = "Null";
+								 	if(resulttag.hasKey(i+""))
+								 	{
+								 		if(resulttag.getString(i+"").equals(itemtag.getString("gene")))
+								 		{
+								 			return false;
+								 		}
+								 	}
+								 	else
+								 	{
+								 		if(performSmelt)
+										{
+								 			resulttag.setString(i+"", itemtag.getString("gene"));
+								 			resulttag.setBoolean("pure", false);
+								 			inventory.extractItem(0, item.stackSize, false);
+								 			this.markDirty();
+										}
+								 		return true;
+								 	}
+								 }
 							}
 						}
+						else return false;
+					}
 				}
 			}
 		return false;
@@ -116,7 +140,7 @@ public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver im
 
 	public double percComplete()
 	{
-		return (double)((double)this.ticksCooking/(double)(TICKS_NEEDED-(this.overclockers*39)));//TODO change here based on power
+		return (double)((double)this.ticksCooking/(double)(TICKS_NEEDED-(this.overclockers*39)));
 	}
 	
 	@Override

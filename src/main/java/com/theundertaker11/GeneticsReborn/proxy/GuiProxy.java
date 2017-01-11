@@ -15,6 +15,9 @@ import com.theundertaker11.GeneticsReborn.blocks.dnaextractor.GuiDNAExtractor;
 import com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser.ContainerPlasmidInfuser;
 import com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser.GRTileEntityPlasmidInfuser;
 import com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser.GuiPlasmidInfuser;
+import com.theundertaker11.GeneticsReborn.blocks.plasmidinjector.ContainerPlasmidInjector;
+import com.theundertaker11.GeneticsReborn.blocks.plasmidinjector.GRTileEntityPlasmidInjector;
+import com.theundertaker11.GeneticsReborn.blocks.plasmidinjector.GuiPlasmidInjector;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -49,6 +52,10 @@ public class GuiProxy implements IGuiHandler{
         {
         	return new ContainerBloodPurifier(player.inventory, (GRTileEntityBloodPurifier) te);
         }
+        if(te instanceof GRTileEntityPlasmidInjector)
+        {
+        	return new ContainerPlasmidInjector(player.inventory, (GRTileEntityPlasmidInjector) te);
+        }
        //Add new if's for each gui
         return null;
     }
@@ -76,6 +83,10 @@ public class GuiProxy implements IGuiHandler{
         if (te instanceof GRTileEntityBloodPurifier)
         {
             return new GuiBloodPurifier(player.inventory, (GRTileEntityBloodPurifier) te);
+        }
+        if (te instanceof GRTileEntityPlasmidInjector)
+        {
+            return new GuiPlasmidInjector(player.inventory, (GRTileEntityPlasmidInjector) te);
         }
         //Add new if's for each gui
         return null;

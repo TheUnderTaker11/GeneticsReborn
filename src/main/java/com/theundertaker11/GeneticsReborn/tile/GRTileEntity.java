@@ -5,6 +5,7 @@ import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.GRTileEntityCellAn
 import com.theundertaker11.GeneticsReborn.blocks.dnadecrypter.GRTileEntityDNADecrypter;
 import com.theundertaker11.GeneticsReborn.blocks.dnaextractor.GRTileEntityDNAExtractor;
 import com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser.GRTileEntityPlasmidInfuser;
+import com.theundertaker11.GeneticsReborn.blocks.plasmidinjector.GRTileEntityPlasmidInjector;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -17,5 +18,6 @@ public class GRTileEntity {
 		GameRegistry.registerTileEntity(GRTileEntityDNADecrypter.class, "GRTileEntityDNADecrypter");
 		GameRegistry.registerTileEntity(GRTileEntityPlasmidInfuser.class, "GRTileEntityPlasmidInfuser");
 		GameRegistry.registerTileEntity(GRTileEntityBloodPurifier.class, "GRTileEntityBloodPurifier");
+		GameRegistry.registerTileEntity(GRTileEntityPlasmidInjector.class, "GRTileEntityPlasmidInjector");
 	}
 }

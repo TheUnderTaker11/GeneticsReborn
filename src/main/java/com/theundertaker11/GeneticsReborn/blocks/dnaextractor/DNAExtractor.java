@@ -21,12 +21,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-
+/**
+ * I copy any of my other machines from this class, the todo's are just a reminder to myself
+ * where I need to change things
+ * @author TheUnderTaker11
+ *
+ */
 public class DNAExtractor extends StorageBlockBase{
 	
 	public DNAExtractor(String name) {
 		super(name);
 	}
+	
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state)
     {

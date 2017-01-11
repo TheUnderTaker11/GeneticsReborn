@@ -1,7 +1,7 @@
 package com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser;
 
-import com.theundertaker11.GeneticsReborn.api.capability.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.Genes;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.Genes;
 import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
@@ -47,7 +47,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 				this.numNeeded = 0;
 			}
 		}
-		int rfpertick = (20+(this.overclockers*30));
+		int rfpertick = (20+(this.overclockers*85));
 		if (canSmelt()) 
 		{
 			if (this.energy > rfpertick)

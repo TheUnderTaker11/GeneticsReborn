@@ -1,8 +1,8 @@
 package com.theundertaker11.GeneticsReborn.items;
 
-import com.theundertaker11.GeneticsReborn.api.capability.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.IGenes;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.blocks.dnaextractor;
+package com.theundertaker11.GeneticsReborn.blocks.plasmidinjector;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -14,22 +14,17 @@ import java.util.List;
 
 import com.theundertaker11.GeneticsReborn.Reference;
 
-/**
- * I copy any of my other machines from this class, the todo's are just a reminder to myself
- * where I need to change things
- * @author TheUnderTaker11
- *
- */
+
 @SideOnly(Side.CLIENT)
-public class GuiDNAExtractor extends GuiContainer {
+public class GuiPlasmidInjector extends GuiContainer {
 
 	// This is the resource location for the background image
 	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/GuiBasicMachine_bg.png");
-	//TODO Change this and the constructor below.
-	private GRTileEntityDNAExtractor tileEntity;
 
-	public GuiDNAExtractor(InventoryPlayer invPlayer, GRTileEntityDNAExtractor tileInventory){
-		super(new ContainerDNAExtractor(invPlayer, tileInventory));
+	private GRTileEntityPlasmidInjector tileEntity;
+
+	public GuiPlasmidInjector(InventoryPlayer invPlayer, GRTileEntityPlasmidInjector tileInventory){
+		super(new ContainerPlasmidInjector(invPlayer, tileInventory));
 
 		// Set the width and height of the gui
 		xSize = 176;
@@ -68,7 +63,7 @@ public class GuiDNAExtractor extends GuiContainer {
 
 		final int LABEL_XPOS = 5;
 		final int LABEL_YPOS = 5;
-		fontRendererObj.drawString("DNA Extractor", LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());//TODO change this
+		fontRendererObj.drawString("Plasmid Injector", LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());
 		
 		final int POWER_XPOS = 35;
 		final int POWER_YPOS = 40;

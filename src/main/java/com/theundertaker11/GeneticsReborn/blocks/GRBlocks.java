@@ -5,6 +5,7 @@ import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.CellAnalyser;
 import com.theundertaker11.GeneticsReborn.blocks.dnadecrypter.DNADecrypter;
 import com.theundertaker11.GeneticsReborn.blocks.dnaextractor.DNAExtractor;
 import com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser.PlasmidInfuser;
+import com.theundertaker11.GeneticsReborn.blocks.plasmidinjector.PlasmidInjector;
 import com.theundertaker11.GeneticsReborn.render.IItemModelProvider;
 
 import net.minecraft.block.Block;
@@ -17,6 +18,7 @@ public class GRBlocks {
 	public static Block DNADecrypter;
 	public static Block PlasmidInfuser;
 	public static Block BloodPurifier;
+	public static Block PlasmidInjector;
 	
 	public static void init() 
 	{
@@ -25,6 +27,7 @@ public class GRBlocks {
 		DNADecrypter = register(new DNADecrypter("DNADecrypter"));
 		PlasmidInfuser = register(new PlasmidInfuser("PlasmidInfuser"));
 		BloodPurifier = register(new BloodPurifier("BloodPurifier"));
+		PlasmidInjector = register(new PlasmidInjector("PlasmidInjector"));
 	}
 	private static <T extends Block> T register (T block, ItemBlock itemBlock)
 	{

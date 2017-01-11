@@ -25,7 +25,7 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 	@Override
 	public void update()
 	{
-		int rfpertick = (20+(this.overclockers*40));
+		int rfpertick = (20+(this.overclockers*85));
 		if (canSmelt()) 
 		{
 			if (this.energy > rfpertick)

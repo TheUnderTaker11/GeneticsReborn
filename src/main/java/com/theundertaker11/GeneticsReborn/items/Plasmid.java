@@ -23,13 +23,20 @@ public class Plasmid extends ItemBase {
 			String rawname = ModUtils.getTagCompound(stack).getString("gene");
 			String genename = ModUtils.getGeneNameForShow(rawname);
 			tooltip.add("Gene: "+genename);
-			if(ModUtils.getTagCompound(stack).getInteger("num")==ModUtils.getTagCompound(stack).getInteger("numNeeded"))
+			if(stack.getItem()==GRItems.Plasmid)
 			{
-				tooltip.add("Complete!");
+				if(ModUtils.getTagCompound(stack).getInteger("num")==ModUtils.getTagCompound(stack).getInteger("numNeeded"))
+				{
+					tooltip.add("Complete!");
+				}
+				else tooltip.add(ModUtils.getTagCompound(stack).getInteger("num")+"/"+ModUtils.getTagCompound(stack).getInteger("numNeeded"));
 			}
-			else tooltip.add(ModUtils.getTagCompound(stack).getInteger("num")+"/"+ModUtils.getTagCompound(stack).getInteger("numNeeded"));
 		}
 		else tooltip.add("Gene not set.");
+		if(stack.getItem()==GRItems.AntiPlasmid&&stack.getTagCompound()==null)
+		{
+			tooltip.add("Craft with a completed Plasmid to convert it.");
+		}
     }
 
 }

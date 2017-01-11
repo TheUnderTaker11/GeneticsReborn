@@ -32,7 +32,7 @@ public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver im
 	public void update()
 	{
 		// If there is nothing to smelt or there is no room in the output, reset energyUsed and return
-		int rfpertick = (20+(this.overclockers*30));
+		int rfpertick = (20+(this.overclockers*85));
 		if (canSmelt()) 
 		{
 			if (this.energy > rfpertick)
