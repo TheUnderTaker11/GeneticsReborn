@@ -45,9 +45,11 @@ public class GRTileEntityBloodPurifier extends GRTileEntityBasicEnergyReceiver i
 
 	public static ItemStack getSmeltingResultForItem(ItemStack stack)
 	{
-		if(stack!=null&&stack.getItem()==GRItems.GlassSyringe&&stack.getTagCompound()!=null&&stack.getItemDamage()==1)
+		if(stack!=null&&(stack.getItem()==GRItems.GlassSyringe||stack.getItem()==GRItems.MetalSyringe)&&stack.getTagCompound()!=null&&stack.getItemDamage()==1)
 		{
-			ItemStack result = new ItemStack(GRItems.GlassSyringe,1,1);
+			ItemStack result = null;
+			if(stack.getItem()==GRItems.GlassSyringe) result = new ItemStack(GRItems.GlassSyringe,1,1);
+			else result = new ItemStack(GRItems.MetalSyringe,1,1);
 			NBTTagCompound tag = stack.getTagCompound().copy();
 			result.setTagCompound(tag);
 			ModUtils.getTagCompound(result).setBoolean("pure", true);

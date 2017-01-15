@@ -19,7 +19,7 @@ import com.theundertaker11.GeneticsReborn.Reference;
 public class GuiDNADecrypter extends GuiContainer {
 
 	// This is the resource location for the background image
-	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/GuiBasicMachine_bg.png");
+	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/GuiDNADecrypter.png");
 
 	private GRTileEntityDNADecrypter tileEntity;
 

@@ -10,6 +10,7 @@ import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealthCapabilityProvider;
 import com.theundertaker11.GeneticsReborn.items.GRItems;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -80,36 +81,24 @@ public class ModUtils{
 	}
 	
 	/**
-	 * Checks the player given has the item given, ignores NBT/Damage, only checks the actual item.
-	 * @param player
-	 * @param item
-	 * @return
-	 */
-	public static boolean playerHasItem(EntityPlayer player, Item item) {
-		for(int i=0;i<player.inventory.getSizeInventory();i++)
-		{
-			if(player.inventory.getStackInSlot(i)!=null&&player.inventory.getStackInSlot(i).getItem()==item) return true;
-		}
-		return false;
-	}
-	/**
 	 * Gets the IGenes capability from the player.
 	 * Can return a null.
-	 * @param player
+	 * @param entityliving
 	 * @return
 	 */
 	@Nullable
-	public static IGenes getIGenes(EntityPlayer player)
+	public static IGenes getIGenes(EntityLivingBase entityliving)
 	{
-		return player.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
+		return entityliving.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
 	}
 	
 	/**
+	 * Gets the IMaxHealth of the given entity
 	 */
 	@Nullable
-	public static IMaxHealth getIMaxHealth(EntityPlayer player)
+	public static IMaxHealth getIMaxHealth(EntityLivingBase entity)
 	{
-		return player.getCapability(MaxHealthCapabilityProvider.MAX_HEALTH_CAPABILITY, null);
+		return entity.getCapability(MaxHealthCapabilityProvider.MAX_HEALTH_CAPABILITY, null);
 	}
 	
 	public static String getGeneNameForShow(String rawname)
@@ -213,39 +202,6 @@ public class ModUtils{
 		}
 		return genename;
 	}
-	/**
-	 * Scrapes the EntityLivingBase given and drops organic matter with the name given.
-	 * This accounts for metal and advanced scraper.
-	 * @param player Needed to damage scraper
-	 * @param livingtarget Target entity
-	 * @param name name to put on organic matter dropped.
-	 */
-	public static void scrapeEntity(EntityPlayer player, EntityLivingBase livingtarget, String name)
-	{
-		ItemStack organicmatter = new ItemStack(GRItems.OrganicMatter, 1);
-		if(player.getHeldItemMainhand().getItem()==GRItems.MetalScraper)
-		{
-			livingtarget.attackEntityFrom(DamageSource.causePlayerDamage(player), 0.5F);
-			ModUtils.getTagCompound(organicmatter).setString("entityName", name);
-			player.getHeldItemMainhand().damageItem(1, player);
-		}
-		//Gives more info than other one for use in cloning, but makes items not stack.
-		if(player.getHeldItemMainhand().getItem()==GRItems.AdvancedScraper)
-		{
-			livingtarget.attackEntityFrom(DamageSource.causePlayerDamage(player), 1.0F);
-			
-			NBTTagCompound entitytag = livingtarget.getEntityData();
-			NBTTagCompound itemtag = ModUtils.getTagCompound(organicmatter);
-			livingtarget.writeToNBT(entitytag);
-			
-			itemtag.setTag("mobTag", entitytag);
-			itemtag.setString("type", livingtarget.getClass().getCanonicalName());
-			itemtag.setString("entityName", name);
-			player.getHeldItemMainhand().damageItem(1, player);
-		}
-		EntityItem entity = new EntityItem(player.getEntityWorld(), livingtarget.getPosition().getX(), livingtarget.getPosition().getY(), livingtarget.getPosition().getZ(), organicmatter);
-		player.getEntityWorld().spawnEntityInWorld(entity);
-	}
 	
 	/**
 	 * I feed the entityName gotten from the original organic matter into this, along with a
@@ -290,7 +246,7 @@ public class ModUtils{
 		{
 			name="NIGHT_VISION";
 		}
-		if(entityName.equals("Zombie"))
+		if(entityName.equals("Zombie")||entityName.equals("entity.Zombie.name"))
 		{
 			name="RESISTANCE";
 		}
@@ -333,7 +289,7 @@ public class ModUtils{
 		}
 		if(entityName.equals("Witch"))
 		{
-			
+			name="POISON_PROOF";
 		}
 		if(entityName.equals("Endermite"))
 		{

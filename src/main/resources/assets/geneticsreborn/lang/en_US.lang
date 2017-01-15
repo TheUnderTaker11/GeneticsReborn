@@ -12,6 +12,7 @@ item.Overclocker.name=Overclocker
 item.DragonHealthCrystal.name=Dragon Health Crystal
 item.DNAHelix.name=DNA Helix
 item.AntiPlasmid.name=Anti Plasmid
+item.MetalSyringe.name=Metal Syringe
 
 tile.CellAnalyser.name=Cell Analyser
 tile.DNAExtractor.name=DNA Extractor

@@ -11,6 +11,8 @@ import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,12 +26,10 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 public class GlassSyringe extends ItemBase {
-	private static String cachedName;
 	public GlassSyringe(String name){
 		super(name);
 		this.setMaxStackSize(1);
 		this.setMaxDamage(0);
-		this.cachedName = this.getUnlocalizedName();
 	}
 	
 	@Override
@@ -47,28 +47,30 @@ public class GlassSyringe extends ItemBase {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
 		//Returns if nothing should happen.
-		if(worldIn.isRemote||playerIn.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null)==null||hand!=EnumHand.MAIN_HAND) return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+		if(worldIn.isRemote||ModUtils.getIGenes(playerIn)==null||hand!=EnumHand.MAIN_HAND||ModUtils.getIMaxHealth(playerIn)==null) return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		NBTTagCompound tag = ModUtils.getTagCompound(stack);
-		if(!playerIn.isSneaking()&&stack.getItemDamage()==0) 
+		if(!playerIn.isSneaking()&&stack.getItemDamage()==0)
 		{
 			stack.setItemDamage(1);
 			playerIn.attackEntityFrom(DamageSource.generic, 2);
 			tag.setBoolean("pure", false);
 			tag.setString("owner", playerIn.getUUID(playerIn.getGameProfile()).toString());
-			Genes.setNBTStringsFromPlayerGenes(stack, playerIn);
+			Genes.setNBTStringsFromGenes(stack, playerIn);
 		}
-		Boolean configallows=true;
-		if(!GeneticsReborn.playerGeneSharing)
+		else if(playerIn.isSneaking())
 		{
+		 Boolean configallows=true;
+		 if(!GeneticsReborn.playerGeneSharing)
+		 {
 			configallows = tag.getString("owner").equals(playerIn.getUUID(playerIn.getGameProfile()).toString());
-		}
-		if(configallows&&stack.getItemDamage()==1&&tag.getBoolean("pure"))
-		{
+		 }
+		 if(configallows&&stack.getItemDamage()==1&&tag.getBoolean("pure"))
+		 {
 			stack.setItemDamage(0);
 			playerIn.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.blindness), 60, 1)));
 			playerIn.attackEntityFrom(DamageSource.generic, 1);
 			IGenes genes = ModUtils.getIGenes(playerIn);
-			IMaxHealth hearts = ModUtils.getIMaxHealth(playerIn);
+			IMaxHealth hearts = ModUtils.getIMaxHealth((EntityLivingBase)playerIn);
 			tag.removeTag("pure");
 			tag.removeTag("owner");
 			for(int i=0;i<Genes.TotalNumberOfGenes;i++)
@@ -107,8 +109,8 @@ public class GlassSyringe extends ItemBase {
 		 			}
 		 		}
 		 	}
+		 }
 		}
-
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }
 }

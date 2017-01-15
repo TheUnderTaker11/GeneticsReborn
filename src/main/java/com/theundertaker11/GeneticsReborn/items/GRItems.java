@@ -15,6 +15,7 @@ public class GRItems {
 	public static Item DragonHealthCrystal;
 	public static Item GlassSyringe;
 	public static Item MetalScraper;
+	public static Item MetalSyringe;
 	public static Item OrganicMatter;
 	public static Item Overclocker;
 	public static Item Plasmid;
@@ -24,6 +25,7 @@ public class GRItems {
 	{
 		Debugger = register(new Debugger("Debugger"));
 		GlassSyringe = register(new GlassSyringe("GlassSyringe"));
+		MetalSyringe = register(new MetalSyringe("MetalSyringe"));
 		MetalScraper = register(new DamageableItemBase("MetalScraper", 200, true));
 		AdvancedScraper = register(new DamageableItemBase("AdvancedScraper", 50, true));
 		Overclocker = register(new ItemBase("Overclocker"));

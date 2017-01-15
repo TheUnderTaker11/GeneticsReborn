@@ -1,14 +1,9 @@
 package com.theundertaker11.GeneticsReborn;
 
 import com.theundertaker11.GeneticsReborn.api.capability.CapabilityHandler;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.Genes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GenesStorage;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealth;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealthStorage;
 import com.theundertaker11.GeneticsReborn.blocks.GRBlocks;
 import com.theundertaker11.GeneticsReborn.crafting.CraftingManager;
+import com.theundertaker11.GeneticsReborn.event.GREventHandler;
 import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.keybinds.KeybindHandler;
 import com.theundertaker11.GeneticsReborn.packets.GeneticsRebornPacketHandler;
@@ -33,6 +28,7 @@ public class GeneticsReborn {
 
 	public static boolean playerGeneSharing;
 	public static boolean keepGenesOnDeath;
+	public static boolean allowGivingEntityGenes;
 	
 	public static boolean enableDragonsBreath;
 	public static boolean enableEatGrass;
@@ -71,12 +67,41 @@ public class GeneticsReborn {
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		loadConfig(config);
+		
+		GRItems.init();
+		GRBlocks.init();
+		GRTileEntity.regTileEntitys();
+		GeneticsRebornPacketHandler.init();
+		KeybindHandler.init();
+	}
+
+	@Mod.EventHandler
+	public void init(FMLInitializationEvent event)
+	{
+		CraftingManager.RegisterRecipes();
+		proxy.registerRenders();
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
+		CapabilityHandler.init();
+		GREventHandler.init();
+		
+	}
+
+	@Mod.EventHandler
+	public void postInit(FMLPostInitializationEvent event)
+	{
+		
+	}
+	
+	public void loadConfig(Configuration config)
+	{
 		config.load();
 		config.addCustomCategoryComment("General Config", "");
 		config.addCustomCategoryComment("Genes", "Set any values to false to disable that gene.");
 
 		playerGeneSharing = config.getBoolean("Enable Gene Sharing", "General Config", false, "Setting this to true will enable players being able to take the blood of other players and get all the genes from it.");
 		keepGenesOnDeath = config.getBoolean("Keep genes on death", "General Config", true, "Better keep some back up syringes if this is set to false.");
+		allowGivingEntityGenes = config.getBoolean("Allow giving other entities genes", "General Config", true, "If this is enabled players can give animals such as horses genes with the metal syringe");
 		
 		enableDragonsBreath = config.getBoolean("Dragon's Breath", "Genes", true, "");
 		enableEatGrass = config.getBoolean("Eat Grass", "Genes", true, "");
@@ -104,34 +129,5 @@ public class GeneticsReborn {
 		
 		
 		config.save();
-
-		GRItems.init();
-		GRBlocks.init();
-		GRTileEntity.regTileEntitys();
-		GeneticsRebornPacketHandler.init();
-		KeybindHandler.init();
 	}
-
-	@Mod.EventHandler
-	public void init(FMLInitializationEvent event)
-	{
-		CraftingManager.RegisterRecipes();
-		proxy.registerRenders();
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
-		CapabilityManager.INSTANCE.register(IMaxHealth.class, new MaxHealthStorage(), MaxHealth.class);
-		CapabilityManager.INSTANCE.register(IGenes.class, new GenesStorage(), Genes.class);
-		
-		MinecraftForge.EVENT_BUS.register(new GREventHandler());
-		MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
-		
-		
-	}
-
-	@Mod.EventHandler
-	public void postInit(FMLPostInitializationEvent event)
-	{
-		
-	}
-	
-
 }

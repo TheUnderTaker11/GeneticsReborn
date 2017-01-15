@@ -63,11 +63,13 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 		IItemHandler inventory = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler inventoryoutput = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
 		
-		// Sees if the input slot is smeltable and if result fits into an output slot (stacking if possible)
+		
 			if (inventory != null&&inventory.getStackInSlot(0)!=null&&inventoryoutput!=null&&inventoryoutput.getStackInSlot(0)!=null) 
 			{
 				ItemStack item = inventory.getStackInSlot(0);
 				result = inventoryoutput.getStackInSlot(0);
+				if(!(result.getItem()==GRItems.GlassSyringe||result.getItem()==GRItems.MetalSyringe)) return false;
+				
 				if (item.getTagCompound()!=null)
 				{
 					NBTTagCompound itemtag = ModUtils.getTagCompound(item);

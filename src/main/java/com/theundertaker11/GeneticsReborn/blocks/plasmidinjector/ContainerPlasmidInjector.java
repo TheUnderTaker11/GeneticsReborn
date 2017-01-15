@@ -127,7 +127,7 @@ public class ContainerPlasmidInjector extends Container {
         			}
         		}else return null;
         	}
-        	else if(sourceStack.getItem()==GRItems.GlassSyringe&&sourceStack.getTagCompound()!=null&&sourceStack.getItemDamage()==1)
+        	else if((sourceStack.getItem()==GRItems.GlassSyringe||sourceStack.getItem()==GRItems.MetalSyringe)&&sourceStack.getTagCompound()!=null&&sourceStack.getItemDamage()==1)
         	{
         		if(sourceStack.getTagCompound().getBoolean("pure"))
         		{
@@ -230,7 +230,7 @@ public class ContainerPlasmidInjector extends Container {
 
 		@Override
 		public boolean isItemValid(ItemStack stack) {
-			if(stack.getItem()==GRItems.GlassSyringe&&stack.getTagCompound()!=null&&stack.getItemDamage()==1&&stack.getTagCompound().getBoolean("pure"))
+			if((stack.getItem()==GRItems.GlassSyringe||stack.getItem()==GRItems.MetalSyringe)&&stack.getTagCompound()!=null&&stack.getItemDamage()==1&&stack.getTagCompound().getBoolean("pure"))
         	{
 				return true;
         	}

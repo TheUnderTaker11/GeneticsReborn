@@ -1,10 +1,10 @@
 package com.theundertaker11.GeneticsReborn.packets;
 
-import com.theundertaker11.GeneticsReborn.GREventHandler;
 import com.theundertaker11.GeneticsReborn.GeneticsReborn;
 import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
 import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
+import com.theundertaker11.GeneticsReborn.event.GREventHandler;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
 import com.theundertaker11.GeneticsReborn.util.PlayerCooldowns;
 

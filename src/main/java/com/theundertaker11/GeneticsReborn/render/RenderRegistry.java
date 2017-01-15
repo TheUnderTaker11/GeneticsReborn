@@ -14,6 +14,7 @@ public class RenderRegistry {
 	public static void Render(){
 		//If you register a new texture for the same item you have to make another thing in ClientProxy!
 		regWithMetaAndName(GRItems.GlassSyringe, 1, "GlassSyringeFull");
+		regWithMetaAndName(GRItems.MetalSyringe, 1, "MetalSyringeFull");
 	}
 
 	public static void reg(Item item) {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -63,7 +64,7 @@ public class Genes implements IGenes{
 	}
 	///////BELOW THIS LINE ARE THINGS THAT WOULD GO IN MY MODUTILS, BUT I WANT TO KEEP IT ALL IN THE API SECTION//////////////
 	/**
-	 * Given a string it tells if it matches to the gene, used to read the NBT I write to the player.
+	 * Given a string it tells if it matches to the gene, used to read the NBT I write to the capability.
 	 * Format is EnumGene to string with "GeneticsReborn" as the prefix.
 	 * CAN BE NULL
 	 * @param nbtstring "GeneticsReborn"+EnumGene.toString
@@ -84,16 +85,17 @@ public class Genes implements IGenes{
 		return null;
 	}
 	/**
-	 * Give it a stack and a player and it will set the NBTStrings of all the players genes to
-	 * an itemstack and return that.
+	 * Give it a stack and a EntityLivingBase and it will set the NBTStrings of all the players genes to
+	 * the itemstack and return that.
 	 * @param stack
 	 * @param player
 	 * @return
 	 */
-	public static ItemStack setNBTStringsFromPlayerGenes(ItemStack stack, EntityPlayer player)
+	public static ItemStack setNBTStringsFromGenes(ItemStack stack, EntityLivingBase entityLiving)
 	{
+		if(ModUtils.getIGenes(entityLiving)==null) return stack;
 		NBTTagCompound tag = ModUtils.getTagCompound(stack);
-		IGenes genes = player.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
+		IGenes genes = ModUtils.getIGenes(entityLiving);
 		List<EnumGenes> genelist = genes.getGeneList();
 		for(int i=0;i<genes.getGeneNumber();i++)
 		{

@@ -21,11 +21,11 @@ public class ClientProxy extends CommonProxy {
 	{
 		RenderRegistry.Render();
 		
-		
-		String modelName = Reference.MODID + ":" + "GlassSyringeFull";
-		ResourceLocation GlassSyringeTextures = new ResourceLocation(modelName);
+		ResourceLocation GlassSyringeTextures = new ResourceLocation(Reference.MODID + ":" + "GlassSyringeFull");
+		ResourceLocation MetalSyringeTextures = new ResourceLocation(Reference.MODID + ":" + "MetalSyringeFull");
 		
 		ModelBakery.registerItemVariants(GRItems.GlassSyringe, GlassSyringeTextures);
+		ModelBakery.registerItemVariants(GRItems.MetalSyringe, MetalSyringeTextures);
 	}
 
 }

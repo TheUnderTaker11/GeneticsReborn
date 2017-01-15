@@ -8,6 +8,8 @@ import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
 import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -39,15 +41,43 @@ public class Debugger extends ItemBase{
 		IMaxHealth maxhealth = ModUtils.getIMaxHealth(playerIn);
 		if(!playerIn.isSneaking())
 		{
-			genes.addGene(EnumGenes.SCARE_CREEPERS);
-			playerIn.addChatMessage(new TextComponentString("Added genes "));
+
+			genes.addAllGenes();
+			maxhealth.setBonusMaxHealth(20);
+			playerIn.addChatMessage(new TextComponentString("Added genes"));
 		}
 		else
 		{
-			genes.removeGene(EnumGenes.SCARE_CREEPERS);
-			playerIn.addChatMessage(new TextComponentString("Removed genes "));
+			genes.removeAllGenes();
+			maxhealth.setBonusMaxHealth(0);
+			playerIn.addChatMessage(new TextComponentString("Removed genes"));
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }
 	
+	@Override
+	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
+    {
+		if(!player.getEntityWorld().isRemote&&entity instanceof EntityLivingBase)
+		{
+			EntityLivingBase entityLiving = (EntityLivingBase)entity;
+			if(ModUtils.getIGenes(entityLiving)!=null)
+			{
+				IGenes genes = ModUtils.getIGenes(entityLiving);
+				
+				if(!player.isSneaking())
+				{
+					genes.addGene(EnumGenes.MILKY);
+					genes.addGene(EnumGenes.WOOLY);
+					player.addChatMessage(new TextComponentString("Added genes"));
+				}
+				else
+				{
+					genes.removeAllGenes();
+					player.addChatMessage(new TextComponentString("Removed genes"));
+				}
+			}
+		}
+		return true;
+    }
 }

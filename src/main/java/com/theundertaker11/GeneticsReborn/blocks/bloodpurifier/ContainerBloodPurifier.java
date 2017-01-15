@@ -112,7 +112,7 @@ public class ContainerBloodPurifier extends Container {
         //If it is player's inventory do these things.
         if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX && sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT)
         {
-        	if(sourceStack.getItem()==GRItems.GlassSyringe&&sourceStack.getItemDamage()==1)
+        	if((sourceStack.getItem()==GRItems.GlassSyringe||sourceStack.getItem()==GRItems.MetalSyringe)&&sourceStack.getItemDamage()==1)
         	{
         		if (input.insertItem(0, sourceStack, true)!=null){
 					return null;
@@ -191,7 +191,7 @@ public class ContainerBloodPurifier extends Container {
 		// if this function returns false, the player won't be able to insert the given item into this slot
 		@Override
 		public boolean isItemValid(ItemStack stack) {
-			return (stack.getItem()==GRItems.GlassSyringe&&stack.getItemDamage()==1);
+			return ((stack.getItem()==GRItems.GlassSyringe||stack.getItem()==GRItems.MetalSyringe)&&stack.getItemDamage()==1);
 		}
 	}
 
