@@ -9,7 +9,6 @@ import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealth;
 import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealthCapabilityProvider;
 import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealthStorage;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +18,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
 
 public class CapabilityHandler {
 
@@ -40,16 +38,6 @@ public class CapabilityHandler {
 			 
 			 final MaxHealth maxHealth = new MaxHealth((EntityLivingBase) event.getObject());
 			 event.addCapability(MAXHEALTH_CAPABILITY, new MaxHealthCapabilityProvider(maxHealth));
-		 }
-	 }
-	 
-	 @SubscribeEvent
-	 public void onPlayerChangeDim(PlayerChangedDimensionEvent event)
-	 {
-		 final IMaxHealth maxHealth = ModUtils.getIMaxHealth(event.player);
-		 if (maxHealth != null)
-		 {
-			 maxHealth.synchronise();
 		 }
 	 }
 }

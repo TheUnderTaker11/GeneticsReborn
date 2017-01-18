@@ -117,39 +117,37 @@ public class ContainerPlasmidInfuser extends Container{
         {
         	if(sourceStack.getItem()==GRItems.DNAHelix)
         	{
-        		if(input.insertItem(0, sourceStack, false)==null)
-        		{
-        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
-        		}
-        		else if (input.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
+        		if (input.insertItem(0, sourceStack, true)!=null){
 					return null;
 				}
         		else
         		{
-        			player.inventory.setInventorySlotContents(sourceSlotIndex, input.insertItem(0, sourceStack, false));
+        			input.insertItem(0, sourceStack, false);
+        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
         		}
         	}
         	if(sourceStack.getItem()==GRItems.Plasmid)
         	{
-        		if(output.insertItem(0, sourceStack, false)==null)
-        		{
-        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
-        		}
-        		else if (output.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
+        		if (output.insertItem(0, sourceStack, true)!=null){
 					return null;
 				}
         		else
         		{
-        			player.inventory.setInventorySlotContents(sourceSlotIndex, output.insertItem(0, sourceStack, false));
+        			output.insertItem(0, sourceStack, false);
+        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
         		}
         	}
         	else return null;
         }
         else if(sourceSlotIndex==INPUT_SLOT_INDEX||sourceSlotIndex==OUTPUT_SLOT_INDEX)
         {
-        	if (!this.mergeItemStack(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)){
-        		return null;
+        	if (player.inventory.addItemStackToInventory(sourceStack)){
+        		player.inventory.setInventorySlotContents(sourceSlotIndex, null);
 			}
+    		else
+    		{
+    			return null;
+    		}
         }else return null;
         return copyOfStack;
 	}	

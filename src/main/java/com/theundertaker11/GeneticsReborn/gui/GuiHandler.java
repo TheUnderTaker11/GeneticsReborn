@@ -12,5 +12,4 @@ public class GuiHandler{
 	public static final int PlasmidInfuserGuiID = 4;
 	public static final int BloodPurifierGuiID = 5;
 	public static final int PlasmidInjectorGuiID = 6;
-	public static final int CloningMachineGuiID = 7;
 }

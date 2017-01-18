@@ -117,34 +117,29 @@ public class ContainerPlasmidInjector extends Container {
         	{
         		if(sourceStack.getTagCompound()!=null&&sourceStack.getTagCompound().getInteger("num")==sourceStack.getTagCompound().getInteger("numNeeded"))
         		{
-        			if(input.insertItem(0, sourceStack, false)==null)
-            		{
-            			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
-            		}
-            		else if (input.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
-    					return null;
-    				}
-            		else
-            		{
-            			player.inventory.setInventorySlotContents(sourceSlotIndex, input.insertItem(0, sourceStack, false));
-            		}
+        			if(input.insertItem(0, sourceStack, true)!=null){
+						return null;
+					}
+        			else
+        			{
+        				input.insertItem(0, sourceStack, false);
+        				player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+        			}
         		}else return null;
         	}
         	else if((sourceStack.getItem()==GRItems.GlassSyringe||sourceStack.getItem()==GRItems.MetalSyringe)&&sourceStack.getTagCompound()!=null&&sourceStack.getItemDamage()==1)
         	{
         		if(sourceStack.getTagCompound().getBoolean("pure"))
         		{
-        			if(output.insertItem(0, sourceStack, false)==null)
-            		{
-            			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
-            		}
-            		else if (output.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
-    					return null;
-    				}
-            		else
-            		{
-            			player.inventory.setInventorySlotContents(sourceSlotIndex, output.insertItem(0, sourceStack, false));
-            		}
+        			if(output.insertItem(0, sourceStack, true)!=null)
+        			{
+						return null;
+					}
+        			else
+        			{
+        				output.insertItem(0, sourceStack, false);
+        				player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+        			}
         		}
         		else return null;
         	}
@@ -152,9 +147,13 @@ public class ContainerPlasmidInjector extends Container {
         }
         else if(sourceSlotIndex==INPUT_SLOT_INDEX||sourceSlotIndex==OUTPUT_SLOT_INDEX)
         {
-        	if (!this.mergeItemStack(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)){
-        		return null;
+        	if (player.inventory.addItemStackToInventory(sourceStack)){
+        		player.inventory.setInventorySlotContents(sourceSlotIndex, null);
 			}
+    		else
+    		{
+    			return null;
+    		}
         }else return null;
         return copyOfStack;
 	}	

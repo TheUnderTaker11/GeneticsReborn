@@ -18,7 +18,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.text.TextComponentString;
 
 public class MetalSyringe extends ItemBase {
 
@@ -44,12 +43,7 @@ public class MetalSyringe extends ItemBase {
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
-		if(player.getEntityWorld().isRemote) return false;
-		if(!GeneticsReborn.allowGivingEntityGenes) 
-		{
-			player.addChatMessage(new TextComponentString("That is disabled in the config, sorry"));
-			return false;
-		}
+		if(!GeneticsReborn.allowGivingEntityGenes) return false;
 		NBTTagCompound tag = ModUtils.getTagCompound(stack);
 		if(entity instanceof EntityLivingBase&&!(entity instanceof EntityPlayer))
 		{
@@ -90,7 +84,7 @@ public class MetalSyringe extends ItemBase {
 				 		{
 				 			if(gene.equals(EnumGenes.MORE_HEARTS)&&!entitygenes.hasGene(EnumGenes.MORE_HEARTS))
 				 			{
-				 				hearts.setBonusMaxHealth(20);
+				 				hearts.addBonusMaxHealth(20);
 				 			}
 				 			entitygenes.addGene(gene);
 				 		}
