@@ -42,7 +42,6 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
         compound.setInteger("Energy", this.energy);
         compound.setInteger("overclockers", this.overclockers);
         return compound;
-        
     }
 	/**
 	 * 

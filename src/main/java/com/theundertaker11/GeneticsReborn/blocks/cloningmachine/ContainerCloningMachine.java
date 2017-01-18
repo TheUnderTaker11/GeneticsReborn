@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser;
+package com.theundertaker11.GeneticsReborn.blocks.cloningmachine;
 
 import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.GRTileEntityCellAnalyser;
 import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.ContainerCellAnalyser.SlotOutput;
@@ -22,16 +22,15 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerPlasmidInfuser extends Container{
 
-	private GRTileEntityPlasmidInfuser tileInventory;
+public class ContainerCloningMachine extends Container {
+
+	private GRTileEntityCloningMachine tileInventory;
 
 	private int cachedEnergyUsed;
 	private int cachedEnergyStored;
 	private int cachedOverclockers;
-	private int cachedNum;
-	private int cachedNumNeeded;
-	
+
 	private final int HOTBAR_SLOT_COUNT = 9;
 	private final int PLAYER_INVENTORY_ROW_COUNT = 3;
 	private final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
@@ -49,7 +48,7 @@ public class ContainerPlasmidInfuser extends Container{
 	private final int INPUT_SLOT_NUMBER = 0;
 	private final int OUTPUT_SLOT_NUMBER = 0;
 
-	public ContainerPlasmidInfuser(InventoryPlayer invPlayer, GRTileEntityPlasmidInfuser tileInventory){
+	public ContainerCloningMachine(InventoryPlayer invPlayer, GRTileEntityCloningMachine tileInventory){
 		this.tileInventory = tileInventory;
 
 		final int SLOT_X_SPACING = 18;
@@ -107,7 +106,6 @@ public class ContainerPlasmidInfuser extends Container{
         if(slot == null || !slot.getHasStack()) return null;
         if(tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)==null) return null;
         IItemHandler input = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
-        IItemHandler output = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
         
         ItemStack sourceStack = slot.getStack();
         ItemStack copyOfStack = sourceStack.copy();
@@ -115,7 +113,7 @@ public class ContainerPlasmidInfuser extends Container{
         //If it is player's inventory do these things.
         if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX && sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT)
         {
-        	if(sourceStack.getItem()==GRItems.DNAHelix)
+        	if(sourceStack.getItem()==GRItems.Cell)//TODO change here
         	{
         		if(input.insertItem(0, sourceStack, false)==null)
         		{
@@ -127,20 +125,6 @@ public class ContainerPlasmidInfuser extends Container{
         		else
         		{
         			player.inventory.setInventorySlotContents(sourceSlotIndex, input.insertItem(0, sourceStack, false));
-        		}
-        	}
-        	if(sourceStack.getItem()==GRItems.Plasmid)
-        	{
-        		if(output.insertItem(0, sourceStack, false)==null)
-        		{
-        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
-        		}
-        		else if (output.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
-					return null;
-				}
-        		else
-        		{
-        			player.inventory.setInventorySlotContents(sourceSlotIndex, output.insertItem(0, sourceStack, false));
         		}
         	}
         	else return null;
@@ -162,7 +146,6 @@ public class ContainerPlasmidInfuser extends Container{
 
 		boolean fieldHasChanged = false;
 		boolean overclockersChanged = false;
-		boolean numChanged = false;
 		if (cachedEnergyUsed != tileInventory.getField(0)||cachedEnergyStored!=tileInventory.getField(1))
 		{
 			this.cachedEnergyUsed = tileInventory.getField(0);
@@ -173,12 +156,6 @@ public class ContainerPlasmidInfuser extends Container{
 		{
 			this.cachedOverclockers = tileInventory.getField(2);
 			overclockersChanged = true;
-		}
-		if(cachedNum!=tileInventory.getField(3)||cachedNumNeeded!=tileInventory.getField(4))
-		{
-			this.cachedNum = tileInventory.getField(3);
-			this.cachedNumNeeded = tileInventory.getField(4);
-			numChanged = true;
 		}
 
 	// go through the list of listeners (players using this container) and update them if necessary
@@ -193,11 +170,7 @@ public class ContainerPlasmidInfuser extends Container{
 			{
 				listener.sendProgressBarUpdate(this, 2, this.cachedOverclockers);
 			}
-			if(numChanged)
-			{
-				listener.sendProgressBarUpdate(this, 3, this.cachedNum);
-				listener.sendProgressBarUpdate(this, 4, this.cachedNumNeeded);
-			}
+			
 		}
 	}
 
@@ -218,7 +191,7 @@ public class ContainerPlasmidInfuser extends Container{
 		// if this function returns false, the player won't be able to insert the given item into this slot
 		@Override
 		public boolean isItemValid(ItemStack stack) {
-			return (stack.getItem()==GRItems.DNAHelix);
+			return (stack.getItem()==GRItems.Cell);//TODO change here
 		}
 	}
 
@@ -230,7 +203,7 @@ public class ContainerPlasmidInfuser extends Container{
 
 		@Override
 		public boolean isItemValid(ItemStack stack) {
-			return (stack.getItem()==GRItems.Plasmid);
+			return false;
 		}
 	}
 }

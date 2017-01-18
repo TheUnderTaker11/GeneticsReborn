@@ -114,26 +114,25 @@ public class ContainerBloodPurifier extends Container {
         {
         	if((sourceStack.getItem()==GRItems.GlassSyringe||sourceStack.getItem()==GRItems.MetalSyringe)&&sourceStack.getItemDamage()==1)
         	{
-        		if (input.insertItem(0, sourceStack, true)!=null){
+        		if(input.insertItem(0, sourceStack, false)==null)
+        		{
+        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+        		}
+        		else if (input.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
 					return null;
 				}
         		else
         		{
-        			input.insertItem(0, sourceStack, false);
-        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+        			player.inventory.setInventorySlotContents(sourceSlotIndex, input.insertItem(0, sourceStack, false));
         		}
         	}
         	else return null;
         }
         else if(sourceSlotIndex==INPUT_SLOT_INDEX||sourceSlotIndex==OUTPUT_SLOT_INDEX)
         {
-        	if (player.inventory.addItemStackToInventory(sourceStack)){
-        		player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+        	if (!this.mergeItemStack(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)){
+        		return null;
 			}
-    		else
-    		{
-    			return null;
-    		}
         }else return null;
         return copyOfStack;
 	}	

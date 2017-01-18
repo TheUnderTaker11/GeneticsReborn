@@ -7,7 +7,9 @@ import com.theundertaker11.GeneticsReborn.GeneticsReborn;
 import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.GeneticsReborn.util.PlayerCooldowns;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -31,7 +33,7 @@ public class OnWorldTickEvent {
 			GREventHandler.flightticktimer = 0;
 			for(EntityPlayerMP player: event.world.getMinecraftServer().getPlayerList().getPlayerList())
 			{
-				if(!player.isCreative()&&ModUtils.getIGenes(player)!=null)
+				if(player!=null&&!player.isCreative()&&ModUtils.getIGenes(player)!=null)
 				{
 					IGenes genes = ModUtils.getIGenes(player);
 					String username = player.getName();
@@ -52,16 +54,27 @@ public class OnWorldTickEvent {
 				}
 			}
 		}
-		if(GREventHandler.potionRefreshTimer>30&&event.world.provider.getDimension()==0&&!event.world.isRemote)
+		if(!event.world.isRemote)
 		{
-			GREventHandler.potionRefreshTimer = 0;
-			for (int i = 0; i < event.world.loadedEntityList.size(); ++i)
+			//for (int i = 0; i < event.world.loadedEntityList.size(); ++i)
+			//{
+			for(Entity ent: event.world.loadedEntityList)
 			{
-				if(event.world.loadedEntityList.get(i) instanceof EntityLivingBase)
+				if(ent!=null&&ent instanceof EntityLivingBase)
 				{
-					EntityLivingBase entity = (EntityLivingBase)event.world.loadedEntityList.get(i);
-					if(ModUtils.getIGenes(entity)!=null)
+					EntityLivingBase entity = (EntityLivingBase)ent;
+					boolean allow = true;
+					for(PlayerCooldowns entry: GREventHandler.cooldownList)
 					{
+						if(entry.getName().equals("worldTick")&&entry.getIDString().equals(entity.getUniqueID().toString()))
+						{
+							allow = false;
+							break;
+						}
+					}
+					if(allow&&ModUtils.getIGenes(entity)!=null)
+					{
+						GREventHandler.cooldownList.add(new PlayerCooldowns(entity, "worldTick", 30));
 						IGenes genes = ModUtils.getIGenes(entity);
 						if(GeneticsReborn.enableWaterBreathing&&genes.hasGene(EnumGenes.WATER_BREATHING))
 						{
@@ -70,19 +83,19 @@ public class OnWorldTickEvent {
 						//These below all have to do with potion effects.
 						if(GeneticsReborn.enableNightVision&&entity instanceof EntityPlayer&&genes.hasGene(EnumGenes.NIGHT_VISION))
 						{
-							entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.nightVision), 320, 0, false, false)));
+							entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.nightVision), 328, 0, false, false)));
 						}
 						if(GeneticsReborn.enableJumpBoost&&genes.hasGene(EnumGenes.JUMP_BOOST))
 						{
-							entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.jumpBoost), 50, 1, false, false)));
+							entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.jumpBoost), 90, 1, false, false)));
 						}
 						if(GeneticsReborn.enableSpeed&&genes.hasGene(EnumGenes.SPEED))
 						{
-							entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSpeed), 50, 1, false, false)));
+							entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSpeed), 90, 1, false, false)));
 						}
 						if(GeneticsReborn.enableResistance&&genes.hasGene(EnumGenes.RESISTANCE))
 						{
-							entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.resistance), 50, 1, false, false)));
+							entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.resistance), 90, 1, false, false)));
 						}
 					}
 				}

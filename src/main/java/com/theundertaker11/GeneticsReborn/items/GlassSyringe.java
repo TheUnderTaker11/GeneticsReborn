@@ -86,7 +86,7 @@ public class GlassSyringe extends ItemBase {
 		 		{
 		 			if(gene.equals(EnumGenes.MORE_HEARTS)&&!genes.hasGene(EnumGenes.MORE_HEARTS))
 		 			{
-		 				hearts.addBonusMaxHealth(20);
+		 				hearts.setBonusMaxHealth(20);
 		 			}
 		 			genes.addGene(gene);
 		 		}
