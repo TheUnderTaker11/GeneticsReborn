@@ -3,17 +3,24 @@ package com.theundertaker11.GeneticsReborn.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-
+import net.minecraft.entity.EntityLivingBase;
+/**
+ * This class is used to add cooldowns. It doesn't handle any of it, just works
+ * as an object handled by the EventHandler class.
+ * <p>
+ * Althought it says "Player" it works for any EntityLivingBase. Didn't feel like re-naming it.
+ * @author TheUnderTaker11
+ *
+ */
 public class PlayerCooldowns {
 	
-	private EntityPlayer player;
+	private EntityLivingBase player;
 	private int ticksLeft;
 	private String Name;
 	
-	public PlayerCooldowns(EntityPlayer entityPlayer, String name, int ticks)
+	public PlayerCooldowns(EntityLivingBase entityLiving, String name, int ticks)
 	{
-		this.player=entityPlayer;
+		this.player=entityLiving;
 		this.ticksLeft=ticks;
 		this.Name=name;
 	}
@@ -27,7 +34,10 @@ public class PlayerCooldowns {
 	{
 		return (this.ticksLeft<=0);
 	}
-	
+	public String getIDString()
+	{
+		return this.player.getUniqueID().toString();
+	}
 	public String getPlayerName()
 	{
 		return this.player.getName();
