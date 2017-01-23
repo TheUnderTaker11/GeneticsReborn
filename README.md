@@ -12,7 +12,7 @@ You may use this mod in any pack you like, without restriction, and change whate
 You do not need my permission to use this mod, nor do you need a response from me to use it. All I ask is you let me know.
 
 ## Contributors
-Block texture artist- NanoHeart
+Block texture artist- NanoHeart    
 Some Ideas/Suggestions- mcpecommander
 
 ## Disclaimer:    
