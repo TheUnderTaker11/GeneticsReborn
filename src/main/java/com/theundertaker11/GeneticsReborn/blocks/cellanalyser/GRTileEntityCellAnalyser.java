@@ -58,6 +58,7 @@ public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver im
 		{
 			ItemStack result = new ItemStack(GRItems.Cell);
 			ModUtils.getTagCompound(result).setString("entityName", ModUtils.getTagCompound(stack).getString("entityName"));
+			ModUtils.getTagCompound(result).setString("entityCodeName", ModUtils.getTagCompound(stack).getString("entityCodeName"));
 			return result;
 		}
 		return null;

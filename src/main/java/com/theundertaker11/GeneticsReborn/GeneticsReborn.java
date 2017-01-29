@@ -1,6 +1,7 @@
 package com.theundertaker11.GeneticsReborn;
 
 import com.theundertaker11.GeneticsReborn.api.capability.CapabilityHandler;
+import com.theundertaker11.GeneticsReborn.api.capability.genes.MobToGeneRegistry;
 import com.theundertaker11.GeneticsReborn.blocks.GRBlocks;
 import com.theundertaker11.GeneticsReborn.crafting.CraftingManager;
 import com.theundertaker11.GeneticsReborn.event.GREventHandler;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.NAME)
 
@@ -48,11 +50,15 @@ public class GeneticsReborn {
 	public static boolean enableShootFireballs;
 	public static boolean enableSlimy;
 	public static boolean enableSpeed;
+	public static boolean enableStrength;
 	public static boolean enableTeleporter;
 	public static boolean enableWaterBreathing;
 	public static boolean enableWooly;
 	public static boolean enableWitherHit;
 	public static boolean enableWitherProof;
+	public static boolean enableItemMagnet;
+	public static boolean enableXPMagnet;
+	public static boolean enableExplosiveExit;
 	
 	public static CreativeTabs GRtab = new CreativeTabGR(CreativeTabs.getNextID(), "GRtab");
 	@SidedProxy(clientSide = Reference.CLIENTPROXY, serverSide = Reference.SERVERPROXY)
@@ -61,19 +67,19 @@ public class GeneticsReborn {
 	@Mod.Instance
     public static GeneticsReborn instance;
 	
-	public static boolean debugMode = false;
-	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		loadConfig(config);
 		
+		MobToGeneRegistry.init();
 		GRItems.init();
 		GRBlocks.init();
 		GRTileEntity.regTileEntitys();
 		GeneticsRebornPacketHandler.init();
-		KeybindHandler.init();
+		
+		if(event.getSide()==Side.CLIENT) KeybindHandler.init();
 	}
 
 	@Mod.EventHandler
@@ -101,7 +107,7 @@ public class GeneticsReborn {
 
 		playerGeneSharing = config.getBoolean("Enable Gene Sharing", "General Config", false, "Setting this to true will enable players being able to take the blood of other players and get all the genes from it.");
 		keepGenesOnDeath = config.getBoolean("Keep genes on death", "General Config", true, "Better keep some back up syringes if this is set to false.");
-		allowGivingEntityGenes = config.getBoolean("Allow giving other entities genes", "General Config", true, "If this is enabled players can give animals such as horses genes with the metal syringe");
+		allowGivingEntityGenes = config.getBoolean("Allow giving other entities genes", "General Config", false, "If this is enabled players can give animals such as horses genes with the metal syringe");
 		
 		enableDragonsBreath = config.getBoolean("Dragon's Breath", "Genes", true, "");
 		enableEatGrass = config.getBoolean("Eat Grass", "Genes", true, "");
@@ -121,13 +127,17 @@ public class GeneticsReborn {
 		enableShootFireballs = config.getBoolean("Shoot Fireballs", "Genes", true, "");
 		enableSlimy = config.getBoolean("Slimy", "Genes", true, "");
 		enableSpeed = config.getBoolean("Speed", "Genes", true, "");
+		enableStrength = config.getBoolean("Strength", "Genes", true, "");
 		enableTeleporter = config.getBoolean("Teleporter", "Genes", true, "");
 		enableWaterBreathing = config.getBoolean("Water Breathing", "Genes", true, "");
 		enableWooly = config.getBoolean("Wooly", "Genes", true, "");
 		enableWitherHit = config.getBoolean("Wither Hit", "Genes", true, "");
 		enableWitherProof = config.getBoolean("Wither Proof", "Genes", true, "");
-		
-		
+		enableItemMagnet = config.getBoolean("Item Attraction Field", "Genes", true, "");
+		enableXPMagnet = config.getBoolean("XP Attraction Field", "Genes", true, "");
+		enableExplosiveExit = config.getBoolean("Explosive Exit", "Genes", true, "");
+
+
 		config.save();
 	}
 }

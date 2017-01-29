@@ -17,7 +17,7 @@ public class BlockBase extends Block implements IItemModelProvider{
         setCreativeTab(GeneticsReborn.GRtab);
         setHardness(hardness);
         setResistance(resistance);
-        setHarvestLevel("axe", 0);
+        setHarvestLevel("pickaxe", 0);
         setRegistryName(name);
     }
 

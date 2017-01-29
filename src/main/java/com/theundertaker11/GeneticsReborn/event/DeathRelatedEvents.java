@@ -11,6 +11,7 @@ import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
 import com.theundertaker11.GeneticsReborn.util.PlayerCooldowns;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -20,8 +21,9 @@ import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class PlayerDeathRelatedEvents {
-
+public class DeathRelatedEvents {
+	
+	public static List<String> playersWithGunpowder = new ArrayList<String>();
 	
 	/**
 	 * Checks for save inventory and puts all the drops back in their inventory if they have it.
@@ -30,6 +32,22 @@ public class PlayerDeathRelatedEvents {
 	@SubscribeEvent
 	public void onPlayerDrops(PlayerDropsEvent event)
 	{
+		//Checks if the player has 5 gunpowder.
+		if(GeneticsReborn.enableExplosiveExit&&ModUtils.getIGenes(event.getEntityPlayer())!=null)
+		{
+			IGenes genes = ModUtils.getIGenes(event.getEntityPlayer());
+			if(genes.hasGene(EnumGenes.EXPLOSIVE_EXIT))
+			{
+				for(int i=(event.getDrops().size()-1);i>=0;i--)
+				{
+					if(event.getDrops().get(i).getEntityItem().getItem()==Items.GUNPOWDER&&event.getDrops().get(i).getEntityItem().stackSize>4)
+					{
+						playersWithGunpowder.add(event.getEntityPlayer().getName());
+					}
+				}
+			}
+		}
+		//Puts all items back in the players inventory
 		if(GeneticsReborn.enableSaveInventory&&ModUtils.getIGenes(event.getEntityPlayer())!=null)
 		{
 			IGenes genes = ModUtils.getIGenes(event.getEntityPlayer());
@@ -49,38 +67,43 @@ public class PlayerDeathRelatedEvents {
 	@SubscribeEvent
 	public void onPlayerClone(PlayerEvent.Clone event)
 	{
-		if(ModUtils.getIMaxHealth(event.getEntityPlayer())!=null)
-		{
-			final IMaxHealth oldMaxHealth = ModUtils.getIMaxHealth(event.getOriginal());
-			final IMaxHealth newMaxHealth = ModUtils.getIMaxHealth(event.getEntityPlayer());
-
-			if (newMaxHealth != null && oldMaxHealth != null)
-			{
-				newMaxHealth.setBonusMaxHealth(oldMaxHealth.getBonusMaxHealth());
-			}
-		}
 		if(GeneticsReborn.enableSaveInventory&&event.isWasDeath())
 		{
 			event.getEntityPlayer().inventory.copyInventory(event.getOriginal().inventory);
 		}
-		if(GeneticsReborn.keepGenesOnDeath&&event.isWasDeath())
+		if(GeneticsReborn.keepGenesOnDeath||!event.isWasDeath())
 		{
 			IGenes oldgenes = event.getOriginal().getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
 			IGenes newgenes = event.getEntityPlayer().getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
 			newgenes.setGeneList(oldgenes.getGeneList());
+			if(ModUtils.getIMaxHealth(event.getEntityPlayer())!=null)
+			{
+				final IMaxHealth oldMaxHealth = ModUtils.getIMaxHealth(event.getOriginal());
+				final IMaxHealth newMaxHealth = ModUtils.getIMaxHealth(event.getEntityPlayer());
+
+				if (newMaxHealth != null && oldMaxHealth != null)
+				{
+					newMaxHealth.setBonusMaxHealth(oldMaxHealth.getBonusMaxHealth());
+				}
+			}
 		}
 	}
 	
 	/**
 	 * This makes players drop slimeballs and emeralds on death.
+	 * Also makes all entitylivingbases explode if they have needed gene.
 	 * @param event
 	 */
 	@SubscribeEvent
 	public void onDeath(LivingDeathEvent event)
 	{
-		if(event.getEntityLiving() instanceof EntityPlayer)
+		EntityLivingBase entityliving = event.getEntityLiving();
+		
+		if(!GeneticsReborn.allowGivingEntityGenes&&!(entityliving instanceof EntityPlayer)) return;
+		
+		if(entityliving instanceof EntityPlayer)
 		{
-			EntityPlayer player = (EntityPlayer)event.getEntityLiving();
+			EntityPlayer player = (EntityPlayer)entityliving;
 			if(ModUtils.getIGenes(player)!=null)
 			{
 				IGenes playergenes = ModUtils.getIGenes(player);
@@ -106,6 +129,31 @@ public class PlayerDeathRelatedEvents {
 				{
 					EntityItem entity = new EntityItem(player.getEntityWorld(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), new ItemStack(Items.SLIME_BALL, 3));
 					player.getEntityWorld().spawnEntityInWorld(entity);
+				}
+			}
+		}
+		
+		if(GeneticsReborn.enableExplosiveExit&&entityliving!=null&&ModUtils.getIGenes(entityliving)!=null)
+		{
+			IGenes genes = ModUtils.getIGenes(entityliving);
+			if(genes.hasGene(EnumGenes.EXPLOSIVE_EXIT))
+			{
+				boolean allow = true;
+				if(entityliving instanceof EntityPlayer)
+				{
+					EntityPlayer player = (EntityPlayer)entityliving;
+					if(!playersWithGunpowder.contains(player.getName()))
+					{
+						allow=false;
+					}
+					else{
+						playersWithGunpowder.remove(player.getName());
+					}
+				}
+				if(allow)
+				{
+					entityliving.getEntityWorld().createExplosion(entityliving, entityliving.getPosition().getX(), 
+							entityliving.getPosition().getY(), entityliving.getPosition().getZ(), 2, true);
 				}
 			}
 		}

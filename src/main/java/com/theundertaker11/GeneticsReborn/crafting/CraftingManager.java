@@ -61,6 +61,12 @@ public class CraftingManager {
 				"xzx", 'z', Items.END_CRYSTAL, 'x', "gemDiamond"});
 		GameRegistry.addRecipe(DragonHealthCrystal);
 		
+		IRecipe AntiField = new ShapedOreRecipe(new ItemStack(GRItems.AntiField), new Object[] {
+				"xzx",
+				"zyz",
+				"xzx", 'y', Items.FERMENTED_SPIDER_EYE, 'x', Items.ENDER_PEARL, 'z', "blockGlass"});
+		GameRegistry.addRecipe(AntiField);
+		
 		GameRegistry.addRecipe(new AntiPlasmidCrafting());
 //////////////////////Start blocks//////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -99,5 +105,17 @@ public class CraftingManager {
 				"yxy",
 				"zaz",'x',Items.BUCKET,'z', "ingotIron", 'y', GRItems.GlassSyringe, 'a', Blocks.WOOL});
 		GameRegistry.addRecipe(BloodPurifier);
+		
+		IRecipe CloningMachine = new ShapedOreRecipe(new ItemStack(GRBlocks.CloningMachine), new Object[] {
+				"yyy",
+				"zxz",
+				"yyy",'x',Items.NETHER_STAR,'z', "gemDiamond", 'y', Blocks.GOLD_BLOCK});
+		GameRegistry.addRecipe(CloningMachine);
+		
+		IRecipe AntiFieldBlock = new ShapedOreRecipe(new ItemStack(GRBlocks.AntiFieldBlock), new Object[] {
+				"yyy",
+				"yxy",
+				"yyy",'x',Items.ENDER_PEARL, 'y', "ingotIron"});
+		GameRegistry.addRecipe(AntiFieldBlock);
 	}
 }

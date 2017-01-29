@@ -117,10 +117,11 @@ public class ContainerPlasmidInjector extends Container {
         	{
         		if(sourceStack.getTagCompound()!=null&&sourceStack.getTagCompound().getInteger("num")==sourceStack.getTagCompound().getInteger("numNeeded"))
         		{
-        			if(input.insertItem(0, sourceStack, false)==null)
-            		{
-            			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
-            		}
+        			if(input.insertItem(0, sourceStack, true)==null)
+	        		{
+	        			input.insertItem(0, sourceStack, false);
+	        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+	        		}
             		else if (input.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
     					return null;
     				}
@@ -134,10 +135,11 @@ public class ContainerPlasmidInjector extends Container {
         	{
         		if(sourceStack.getTagCompound().getBoolean("pure"))
         		{
-        			if(output.insertItem(0, sourceStack, false)==null)
-            		{
-            			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
-            		}
+        			if(output.insertItem(0, sourceStack, true)==null)
+	        		{
+	        			output.insertItem(0, sourceStack, false);
+	        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+	        		}
             		else if (output.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
     					return null;
     				}

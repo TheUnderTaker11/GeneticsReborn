@@ -9,6 +9,7 @@ public class GRItems {
 	public static Item Debugger;
 
 	public static Item AdvancedScraper;
+	public static Item AntiField;
 	public static Item AntiPlasmid;
 	public static Item Cell;
 	public static Item DNAHelix;
@@ -34,6 +35,7 @@ public class GRItems {
 		DNAHelix = register(new DNAHelix("DNAHelix"));
 		AntiPlasmid = register(new Plasmid("AntiPlasmid"));
 		Plasmid = register(new Plasmid("Plasmid"));
+		AntiField = register(new AntiField("AntiField"));
 		
 		DragonHealthCrystal = register(new DamageableItemBase("DragonHealthCrystal", 1000, true));
 	}

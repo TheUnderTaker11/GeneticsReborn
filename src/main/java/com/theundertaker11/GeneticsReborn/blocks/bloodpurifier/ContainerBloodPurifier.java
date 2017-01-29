@@ -114,8 +114,9 @@ public class ContainerBloodPurifier extends Container {
         {
         	if((sourceStack.getItem()==GRItems.GlassSyringe||sourceStack.getItem()==GRItems.MetalSyringe)&&sourceStack.getItemDamage()==1)
         	{
-        		if(input.insertItem(0, sourceStack, false)==null)
+        		if(input.insertItem(0, sourceStack, true)==null)
         		{
+        			input.insertItem(0, sourceStack, false);
         			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
         		}
         		else if (input.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){

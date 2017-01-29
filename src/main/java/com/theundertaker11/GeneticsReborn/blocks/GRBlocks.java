@@ -2,6 +2,7 @@ package com.theundertaker11.GeneticsReborn.blocks;
 
 import com.theundertaker11.GeneticsReborn.blocks.bloodpurifier.BloodPurifier;
 import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.CellAnalyser;
+import com.theundertaker11.GeneticsReborn.blocks.cloningmachine.CloningMachine;
 import com.theundertaker11.GeneticsReborn.blocks.dnadecrypter.DNADecrypter;
 import com.theundertaker11.GeneticsReborn.blocks.dnaextractor.DNAExtractor;
 import com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser.PlasmidInfuser;
@@ -19,6 +20,8 @@ public class GRBlocks {
 	public static Block PlasmidInfuser;
 	public static Block BloodPurifier;
 	public static Block PlasmidInjector;
+	public static Block CloningMachine;
+	public static Block AntiFieldBlock;
 	
 	public static void init() 
 	{
@@ -28,6 +31,8 @@ public class GRBlocks {
 		PlasmidInfuser = register(new PlasmidInfuser("PlasmidInfuser"));
 		BloodPurifier = register(new BloodPurifier("BloodPurifier"));
 		PlasmidInjector = register(new PlasmidInjector("PlasmidInjector"));
+		CloningMachine = register(new CloningMachine("CloningMachine"));
+		AntiFieldBlock = register(new BlockBase("AntiFieldBlock"));
 	}
 	private static <T extends Block> T register (T block, ItemBlock itemBlock)
 	{

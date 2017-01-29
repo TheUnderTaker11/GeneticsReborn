@@ -4,10 +4,13 @@ import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -22,7 +25,7 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 	@Override
 	public void update()
 	{
-		int rfpertick = (20+(this.overclockers*85));//TODO change here based on power
+		int rfpertick = (500+(this.overclockers*1300));
 		if (canSmelt()) 
 		{
 			if (this.energy > rfpertick)
@@ -41,12 +44,13 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 		}
 		else ticksCooking = 0;
 	}
-	//TODO change here
+	
 	public static ItemStack getSmeltingResultForItem(ItemStack stack)
 	{
-		if(stack!=null&&stack.getItem()==GRItems.Cell&&stack.getTagCompound()!=null)
+		if(stack!=null&&stack.getItem()==GRItems.OrganicMatter&&stack.getTagCompound()!=null)
 		{
-			ItemStack result = new ItemStack(GRItems.DNAHelix);
+			if(!ModUtils.getTagCompound(stack).hasKey("mobTag")) return null;
+			ItemStack result = new ItemStack(GRItems.OrganicMatter);
 			ModUtils.getTagCompound(result).setString("entityName", ModUtils.getTagCompound(stack).getString("entityName"));
 			return result;
 		}
@@ -86,6 +90,7 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 							if(inventoryoutput.insertItem(0, result, !performSmelt)==null)
 							{
 								inventory.extractItem(0, 1, !performSmelt);
+								if(performSmelt) spawnEntity(ModUtils.getTagCompound(inputSlotStack));
 								markDirty();
 								return true;
 							}
@@ -100,6 +105,7 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 								inventoryoutput.insertItem(0, result, !performSmelt);
 								inventory.extractItem(0, 1, !performSmelt);
 								markDirty();
+								if(performSmelt) spawnEntity(ModUtils.getTagCompound(inputSlotStack));
 								return true;
 							}
 						}
@@ -107,7 +113,33 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 			}
 		return false;
 	}
+	
+	public void spawnEntity(NBTTagCompound tag)
+	{
+		if(this.getWorld().isRemote) return;
+		NBTBase mobCompound = tag.getTag("mobTag");
+        String type = tag.getString("type");
+        EntityLivingBase entityLivingBase = createEntity(this.getWorld(), type);
+        if (entityLivingBase == null) {
+     		//Uh oh
+        }
+        
+        entityLivingBase.readEntityFromNBT((NBTTagCompound) mobCompound);
+        entityLivingBase.setLocationAndAngles(pos.getX()+.5, pos.getY()+2, pos.getZ()+.5, 0, 0);
+        
+        this.getWorld().spawnEntityInWorld(entityLivingBase);
+	}
 
+	public EntityLivingBase createEntity(World world, String type)
+	{
+		EntityLivingBase entityLivingBase;
+        try {
+            entityLivingBase = (EntityLivingBase) Class.forName(type).getConstructor(World.class).newInstance(world);
+        } catch (Exception e) {
+            entityLivingBase = null;
+        }
+        return entityLivingBase;
+	}
 	public double percComplete()
 	{
 		return (double)((double)this.ticksCooking/(double)(TICKS_NEEDED-(this.overclockers*39)));

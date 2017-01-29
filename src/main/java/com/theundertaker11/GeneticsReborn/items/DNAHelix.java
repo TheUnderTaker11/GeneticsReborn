@@ -32,15 +32,4 @@ public class DNAHelix extends ItemBase{
 			else tooltip.add("Gene type: Unknown");
 		}
     }
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean hasEffect(ItemStack stack)
-	{
-		if(stack.getTagCompound()!=null&&stack.getTagCompound().hasKey("gene"))
-		{
-			return true;
-		}
-		return false;
-	}
 }

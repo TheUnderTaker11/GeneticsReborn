@@ -6,6 +6,9 @@ import com.theundertaker11.GeneticsReborn.blocks.bloodpurifier.GuiBloodPurifier;
 import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.ContainerCellAnalyser;
 import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.GRTileEntityCellAnalyser;
 import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.GuiCellAnalyser;
+import com.theundertaker11.GeneticsReborn.blocks.cloningmachine.ContainerCloningMachine;
+import com.theundertaker11.GeneticsReborn.blocks.cloningmachine.GRTileEntityCloningMachine;
+import com.theundertaker11.GeneticsReborn.blocks.cloningmachine.GuiCloningMachine;
 import com.theundertaker11.GeneticsReborn.blocks.dnadecrypter.ContainerDNADecrypter;
 import com.theundertaker11.GeneticsReborn.blocks.dnadecrypter.GRTileEntityDNADecrypter;
 import com.theundertaker11.GeneticsReborn.blocks.dnadecrypter.GuiDNADecrypter;
@@ -56,6 +59,10 @@ public class GuiProxy implements IGuiHandler{
         {
         	return new ContainerPlasmidInjector(player.inventory, (GRTileEntityPlasmidInjector) te);
         }
+        if(te instanceof GRTileEntityCloningMachine)
+        {
+        	return new ContainerCloningMachine(player.inventory, (GRTileEntityCloningMachine) te);
+        }
        //Add new if's for each gui
         return null;
     }
@@ -87,6 +94,10 @@ public class GuiProxy implements IGuiHandler{
         if (te instanceof GRTileEntityPlasmidInjector)
         {
             return new GuiPlasmidInjector(player.inventory, (GRTileEntityPlasmidInjector) te);
+        }
+        if (te instanceof GRTileEntityCloningMachine)
+        {
+            return new GuiCloningMachine(player.inventory, (GRTileEntityCloningMachine) te);
         }
         //Add new if's for each gui
         return null;

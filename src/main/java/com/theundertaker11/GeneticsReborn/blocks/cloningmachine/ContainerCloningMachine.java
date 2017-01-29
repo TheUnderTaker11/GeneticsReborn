@@ -113,10 +113,11 @@ public class ContainerCloningMachine extends Container {
         //If it is player's inventory do these things.
         if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX && sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT)
         {
-        	if(sourceStack.getItem()==GRItems.Cell)//TODO change here
+        	if(sourceStack.getItem()==GRItems.OrganicMatter)
         	{
-        		if(input.insertItem(0, sourceStack, false)==null)
+        		if(input.insertItem(0, sourceStack, true)==null)
         		{
+        			input.insertItem(0, sourceStack, false);
         			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
         		}
         		else if (input.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
@@ -191,7 +192,7 @@ public class ContainerCloningMachine extends Container {
 		// if this function returns false, the player won't be able to insert the given item into this slot
 		@Override
 		public boolean isItemValid(ItemStack stack) {
-			return (stack.getItem()==GRItems.Cell);//TODO change here
+			return (stack.getItem()==GRItems.OrganicMatter);
 		}
 	}
 

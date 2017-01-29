@@ -73,6 +73,7 @@ public class GREventHandler {
 
 	public static int flightticktimer;
 	public static int potionRefreshTimer;
+	public static int worldTickTimer;
 
 	public static List<PlayerCooldowns> cooldownList = new ArrayList<PlayerCooldowns>();
 	
@@ -85,8 +86,9 @@ public class GREventHandler {
 		MinecraftForge.EVENT_BUS.register(new OnWorldTickEvent());
 		MinecraftForge.EVENT_BUS.register(new OnRightClick());
 		MinecraftForge.EVENT_BUS.register(new OnEntityHurt());
-		MinecraftForge.EVENT_BUS.register(new PlayerDeathRelatedEvents());
+		MinecraftForge.EVENT_BUS.register(new DeathRelatedEvents());
 		MinecraftForge.EVENT_BUS.register(new AIChangeEvents());
+		MinecraftForge.EVENT_BUS.register(new PlayerTickEvent());
 	}
 	
 	/**
@@ -102,13 +104,21 @@ public class GREventHandler {
 		{
 			if(flightticktimer<100) ++flightticktimer;
 			if(potionRefreshTimer<600) ++potionRefreshTimer;
-			//Counts down 1 on each cooldown in the list.
-			for(int i=0; i<cooldownList.size();i++)
+			if(GeneticsReborn.allowGivingEntityGenes)worldTickTimer++;
+			if(worldTickTimer>39)
 			{
-				cooldownList.get(i).removeTick();
-				if(cooldownList.get(i).isFinished())
+				worldTickTimer=0;
+			}
+			//Counts down 1 on each cooldown in the list.
+			if(!cooldownList.isEmpty())
+			{
+				for(int i=0; i<cooldownList.size();i++)
 				{
-					cooldownList.remove(i);
+					cooldownList.get(i).removeTick();
+					if(cooldownList.get(i).isFinished())
+					{
+						cooldownList.remove(i);
+					}
 				}
 			}
 		}

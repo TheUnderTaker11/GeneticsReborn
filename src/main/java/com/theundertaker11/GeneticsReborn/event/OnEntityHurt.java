@@ -33,6 +33,8 @@ public class OnEntityHurt {
 		 if(!event.getEntity().getEntityWorld().isRemote)
 		 {
 			 EntityLivingBase entityliving = event.getEntityLiving();
+			 if(!GeneticsReborn.allowGivingEntityGenes&&!(entityliving instanceof EntityPlayer)) return;
+			 
 			 if(ModUtils.getIGenes(entityliving)!=null)
 			 {
 				 IGenes genes = ModUtils.getIGenes(entityliving);
@@ -47,10 +49,9 @@ public class OnEntityHurt {
 				 }
 				 if(GeneticsReborn.enableWitherProof&&genes.hasGene(EnumGenes.WITHER_PROOF))
 				 {
-					 System.out.println("It knows the entity has the gene");
 					 if(event.getSource().equals(DamageSource.wither))
 					 {
-						entityliving.removePotionEffect(Potion.getPotionById(ModUtils.wither));
+	//TODO what the fuck	//if(entityliving.isPotionActive(Potion.getPotionById(ModUtils.wither))) entityliving.removePotionEffect(Potion.getPotionById(ModUtils.wither));
 						event.setCanceled(true);
 					 }
 				 }
@@ -58,7 +59,7 @@ public class OnEntityHurt {
 				 {
 					 if(event.getSource().equals(DamageSource.magic) && entityliving.getActivePotionEffect(Potion.getPotionById(ModUtils.poison))!=null)
 					 {
-						entityliving.removePotionEffect(Potion.getPotionById(ModUtils.poison));
+	//TODO what the fuck	//if(entityliving.isPotionActive(Potion.getPotionById(ModUtils.poison))) entityliving.removePotionEffect(Potion.getPotionById(ModUtils.poison));
 						event.setCanceled(true);
 					 }
 				 }
@@ -121,6 +122,8 @@ public class OnEntityHurt {
 		if(GeneticsReborn.enableNoFallDamage&&event.getSource().equals(DamageSource.fall))
 		{
 			EntityLivingBase entityliving = event.getEntityLiving();
+			if(!GeneticsReborn.allowGivingEntityGenes&&!(entityliving instanceof EntityPlayer)) return;
+			
 			if(ModUtils.getIGenes(entityliving)!=null)
 			{
 				IGenes genes = ModUtils.getIGenes(entityliving);

@@ -143,7 +143,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 	{
 		EnumGenes enumGene = Genes.getGeneFromString(gene);
 		if(enumGene == EnumGenes.DRAGONS_BREATH||enumGene == EnumGenes.FIRE_PROOF||enumGene == EnumGenes.SCARE_CREEPERS||enumGene == EnumGenes.WITHER_HIT
-				||enumGene == EnumGenes.SPEED)
+				||enumGene == EnumGenes.SPEED||enumGene == EnumGenes.EXPLOSIVE_EXIT)
 		{
 			return 20;
 		}
@@ -151,7 +151,8 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 		{
 			return 12;
 		}
-		if(enumGene == EnumGenes.EMERALD_HEART||enumGene == EnumGenes.RESISTANCE)
+		if(enumGene == EnumGenes.EMERALD_HEART||enumGene == EnumGenes.RESISTANCE||enumGene == EnumGenes.XP_MAGNET
+				||enumGene == EnumGenes.ITEM_MAGNET||enumGene == EnumGenes.STRENGTH)
 		{
 			return 30;
 		}

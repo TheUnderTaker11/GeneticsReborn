@@ -117,8 +117,9 @@ public class ContainerPlasmidInfuser extends Container{
         {
         	if(sourceStack.getItem()==GRItems.DNAHelix)
         	{
-        		if(input.insertItem(0, sourceStack, false)==null)
+        		if(input.insertItem(0, sourceStack, true)==null)
         		{
+        			input.insertItem(0, sourceStack, false);
         			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
         		}
         		else if (input.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
@@ -131,8 +132,9 @@ public class ContainerPlasmidInfuser extends Container{
         	}
         	if(sourceStack.getItem()==GRItems.Plasmid)
         	{
-        		if(output.insertItem(0, sourceStack, false)==null)
+        		if(output.insertItem(0, sourceStack, true)==null)
         		{
+        			output.insertItem(0, sourceStack, false);
         			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
         		}
         		else if (output.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){

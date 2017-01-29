@@ -31,10 +31,10 @@ public class StorageBlockBase extends BlockBase{
     {
         return true;
     }
+	//This should  be overridden in every actual block code.
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state)
     {
-		//This should never actually be called since it should be overridden in every actual block code.
 		return null;
     }
 	
@@ -47,7 +47,7 @@ public class StorageBlockBase extends BlockBase{
 	public static EnumFacing getFacingFromEntity(BlockPos clickedBlock, EntityLivingBase entity) {
         return EnumFacing.getFacingFromVector(
              (float) (entity.posX - clickedBlock.getX()),
-             (float) (entity.posY - clickedBlock.getY()),
+             0,//(float) (entity.posY - clickedBlock.getY()),
              (float) (entity.posZ - clickedBlock.getZ()));
     }
 

@@ -13,6 +13,7 @@ item.DragonHealthCrystal.name=Dragon Health Crystal
 item.DNAHelix.name=DNA Helix
 item.AntiPlasmid.name=Anti Plasmid
 item.MetalSyringe.name=Metal Syringe
+item.AntiField.name=Anti Field Orb
 
 tile.CellAnalyser.name=Cell Analyser
 tile.DNAExtractor.name=DNA Extractor
@@ -20,3 +21,4 @@ tile.DNADecrypter.name=DNA Decrypter
 tile.PlasmidInfuser.name=Plasmid Infuser
 tile.BloodPurifier.name=Blood Purifier
 tile.PlasmidInjector.name=Plasmid Injector
+tile.CloningMachine.name=Cloning Machine

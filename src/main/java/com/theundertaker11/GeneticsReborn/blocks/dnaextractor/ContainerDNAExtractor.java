@@ -119,8 +119,9 @@ public class ContainerDNAExtractor extends Container {
         {
         	if(sourceStack.getItem()==GRItems.Cell)//TODO change here
         	{
-        		if(input.insertItem(0, sourceStack, false)==null)
+        		if(input.insertItem(0, sourceStack, true)==null)
         		{
+        			input.insertItem(0, sourceStack, false);
         			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
         		}
         		else if (input.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){

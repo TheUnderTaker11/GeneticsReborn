@@ -41,7 +41,6 @@ public class Debugger extends ItemBase{
 		IMaxHealth maxhealth = ModUtils.getIMaxHealth(playerIn);
 		if(!playerIn.isSneaking())
 		{
-
 			genes.addAllGenes();
 			maxhealth.setBonusMaxHealth(20);
 			playerIn.addChatMessage(new TextComponentString("Added genes"));
@@ -67,8 +66,7 @@ public class Debugger extends ItemBase{
 				
 				if(!player.isSneaking())
 				{
-					genes.addGene(EnumGenes.MILKY);
-					genes.addGene(EnumGenes.WOOLY);
+					genes.addGene(EnumGenes.EXPLOSIVE_EXIT);
 					player.addChatMessage(new TextComponentString("Added genes"));
 				}
 				else

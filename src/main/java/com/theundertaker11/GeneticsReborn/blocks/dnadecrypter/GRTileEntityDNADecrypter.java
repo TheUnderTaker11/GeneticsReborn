@@ -2,6 +2,7 @@ package com.theundertaker11.GeneticsReborn.blocks.dnadecrypter;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.theundertaker11.GeneticsReborn.api.capability.genes.MobToGeneRegistry;
 import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
@@ -54,9 +55,12 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 			{
 				ItemStack result = new ItemStack(GRItems.DNAHelix);
 				String entityName = ModUtils.getTagCompound(stack).getString("entityName");
+				String entityCodeName = ModUtils.getTagCompound(stack).getString("entityCodeName");
 				
 				ModUtils.getTagCompound(result).setString("entityName", entityName);
-				ModUtils.getTagCompound(result).setString("gene", ModUtils.nameToGeneLogic(entityName));
+				ModUtils.getTagCompound(result).setString("entityCodeName", entityCodeName);
+				ModUtils.getTagCompound(result).setString("gene", MobToGeneRegistry.getGene(entityCodeName));
+						//ModUtils.nameToGeneLogic(entityName));
 				return result;
 			}
 		}

@@ -40,9 +40,9 @@ public class CloningMachine extends StorageBlockBase{
 			if(playerIn.getHeldItem(EnumHand.MAIN_HAND)!=null&&playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem()==GRItems.Overclocker)
 			{
 				GRTileEntityCloningMachine tile = (GRTileEntityCloningMachine)tEntity;
-				tile.addOverclocker(playerIn, 5);//TODO maybe change the 5 based on power
+				tile.addOverclocker(playerIn, 3);
 			}
-			else playerIn.openGui(GeneticsReborn.instance, GuiHandler.CloningMachineGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ()); //TODO change here
+			else playerIn.openGui(GeneticsReborn.instance, GuiHandler.CloningMachineGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return true;
 	}

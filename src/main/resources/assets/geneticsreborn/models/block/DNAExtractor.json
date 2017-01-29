@@ -2,8 +2,8 @@
   "parent": "block/cube",
   "textures": {
     "particle": "geneticsreborn:blocks/DNAExtractor_Front",
-    "down": "geneticsreborn:blocks/Machine_Side",
-    "up": "geneticsreborn:blocks/Machine_Side",
+    "down": "geneticsreborn:blocks/Machine_Bottom",
+    "up": "geneticsreborn:blocks/Machine_Top",
     "east": "geneticsreborn:blocks/Machine_Side",
     "west": "geneticsreborn:blocks/Machine_Side",
     "north": "geneticsreborn:blocks/DNAExtractor_Front",

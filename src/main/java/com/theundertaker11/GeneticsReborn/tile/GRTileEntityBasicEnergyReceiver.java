@@ -2,6 +2,8 @@ package com.theundertaker11.GeneticsReborn.tile;
 
 import javax.annotation.Nullable;
 
+import com.theundertaker11.GeneticsReborn.blocks.StorageBlockBase;
+
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
 import net.minecraft.block.state.IBlockState;
@@ -11,6 +13,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -154,8 +157,9 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if(facing==EnumFacing.DOWN) return (T)itemStackHandlerOutput;
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY&&this.getWorld().getBlockState(this.pos).getBlock() instanceof StorageBlockBase) {
+        	EnumFacing rightSide = this.getWorld().getBlockState(this.pos).getValue(StorageBlockBase.FACING).rotateAround(Axis.Y).getOpposite();
+            if(facing==EnumFacing.DOWN||facing==rightSide) return (T)itemStackHandlerOutput;
             else return (T) itemStackHandler;
         }
         return super.getCapability(capability, facing);

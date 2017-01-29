@@ -115,8 +115,9 @@ public class ContainerDNADecrypter extends Container {
         {
         	if(sourceStack.getItem()==GRItems.DNAHelix&&sourceStack.getTagCompound()!=null&&!ModUtils.getTagCompound(sourceStack).hasKey("gene"))
         	{
-        		if(input.insertItem(0, sourceStack, false)==null)
+        		if(input.insertItem(0, sourceStack, true)==null)
         		{
+        			input.insertItem(0, sourceStack, false);
         			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
         		}
         		else if (input.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){

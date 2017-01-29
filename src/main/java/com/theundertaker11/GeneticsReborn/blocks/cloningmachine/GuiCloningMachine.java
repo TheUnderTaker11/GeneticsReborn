@@ -19,7 +19,7 @@ import com.theundertaker11.GeneticsReborn.Reference;
 public class GuiCloningMachine extends GuiContainer {
 
 	// This is the resource location for the background image
-	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/GuiDNAExtractor.png");
+	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/GuiBasicMachine_bg.png");
 
 	private GRTileEntityCloningMachine tileEntity;
 
