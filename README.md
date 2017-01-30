@@ -13,8 +13,8 @@ You do not need my permission to use this mod, nor do you need a response from m
 
 ## Contributors
 Block texture artist- NanoHeart    
-Some Ideas/Suggestions- mcpecommander
-German Translation- ACGaming
+Some Ideas/Suggestions- mcpecommander    
+German Translation- ACGaming    
 
 ## Disclaimer:    
 I did not use any textures, code, or other material from the Advanced Genetics mod. I haven't ever looked into its source code or API and never plan to. All of this mod was made using the ideas from the orginal 1.7.10 mod, but almost all the code and textures were made by me, excluding the few things gotten from tutorials and/or other open source mods.
