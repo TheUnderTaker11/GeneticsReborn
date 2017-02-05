@@ -62,6 +62,7 @@ public class MetalSyringe extends ItemBase {
 					stack.setItemDamage(1);
 					entityLiving.attackEntityFrom(DamageSource.generic, 2);
 					tag.setString("entname", entityLiving.getName());
+					tag.setString("entCodeName", entityLiving.getClass().getSimpleName());
 					tag.setBoolean("pure", false);
 					Genes.setNBTStringsFromGenes(stack, entityLiving);
 					return true;
@@ -70,7 +71,7 @@ public class MetalSyringe extends ItemBase {
 				{
 					if(entityLiving instanceof EntityWither||
 							entityLiving instanceof EntityCreeper||
-							!stack.getTagCompound().getString("entname").equals(entityLiving.getName())) return false;
+							!stack.getTagCompound().getString("entCodeName").equals(entityLiving.getClass().getSimpleName())) return false;
 					
 					IMaxHealth hearts = ModUtils.getIMaxHealth(entityLiving);
 					stack.setItemDamage(0);

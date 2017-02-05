@@ -17,6 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -27,38 +28,6 @@ import net.minecraftforge.fml.relauncher.Side;
 @Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.NAME)
 
 public class GeneticsReborn {
-
-	public static boolean playerGeneSharing;
-	public static boolean keepGenesOnDeath;
-	public static boolean allowGivingEntityGenes;
-	
-	public static boolean enableDragonsBreath;
-	public static boolean enableEatGrass;
-	public static boolean enableEmeraldHeart;
-	public static boolean enableEnderDragonHealth;
-	public static boolean enableFireProof;
-	public static boolean enableFlight;
-	public static boolean enableJumpBoost;
-	public static boolean enableMilky;
-	public static boolean enableMoreHearts;
-	public static boolean enableNightVision;
-	public static boolean enableNoFallDamage;
-	public static boolean enablePoisonProof;
-	public static boolean enableResistance;
-	public static boolean enableSaveInventory;
-	public static boolean enableScareCreepers;
-	public static boolean enableShootFireballs;
-	public static boolean enableSlimy;
-	public static boolean enableSpeed;
-	public static boolean enableStrength;
-	public static boolean enableTeleporter;
-	public static boolean enableWaterBreathing;
-	public static boolean enableWooly;
-	public static boolean enableWitherHit;
-	public static boolean enableWitherProof;
-	public static boolean enableItemMagnet;
-	public static boolean enableXPMagnet;
-	public static boolean enableExplosiveExit;
 	
 	public static CreativeTabs GRtab = new CreativeTabGR(CreativeTabs.getNextID(), "GRtab");
 	@SidedProxy(clientSide = Reference.CLIENTPROXY, serverSide = Reference.SERVERPROXY)
@@ -99,6 +68,39 @@ public class GeneticsReborn {
 		
 	}
 	
+	public static boolean playerGeneSharing;
+	public static boolean keepGenesOnDeath;
+	public static boolean allowGivingEntityGenes;
+	
+	public static boolean enableDragonsBreath;
+	public static boolean enableEatGrass;
+	public static boolean enableEmeraldHeart;
+	public static boolean enableEnderDragonHealth;
+	public static boolean enableFireProof;
+	public static boolean enableFlight;
+	public static boolean enableJumpBoost;
+	public static boolean enableMilky;
+	public static boolean enableMoreHearts;
+	public static boolean enableNightVision;
+	public static boolean enableNoFallDamage;
+	public static boolean enablePoisonProof;
+	public static boolean enableResistance;
+	public static boolean enableSaveInventory;
+	public static boolean enableScareCreepers;
+	public static boolean enableShootFireballs;
+	public static boolean enableSlimy;
+	public static boolean enableSpeed;
+	public static boolean enableStrength;
+	public static boolean enableTeleporter;
+	public static boolean enableWaterBreathing;
+	public static boolean enableWooly;
+	public static boolean enableWitherHit;
+	public static boolean enableWitherProof;
+	public static boolean enableItemMagnet;
+	public static boolean enableXPMagnet;
+	public static boolean enableExplosiveExit;
+	public static String[] CloningBlacklist;
+	
 	public void loadConfig(Configuration config)
 	{
 		config.load();
@@ -136,6 +138,7 @@ public class GeneticsReborn {
 		enableItemMagnet = config.getBoolean("Item Attraction Field", "Genes", true, "");
 		enableXPMagnet = config.getBoolean("XP Attraction Field", "Genes", true, "");
 		enableExplosiveExit = config.getBoolean("Explosive Exit", "Genes", true, "");
+		CloningBlacklist = config.getStringList("Cloning Blacklist", "General Config", new String[]{"EntityWither"},"Add the name of the Entity's class you want blacklisted. (The ender dragon will always be hardcode blacklisted.)");
 
 
 		config.save();

@@ -1,5 +1,6 @@
 package com.theundertaker11.GeneticsReborn.blocks.cloningmachine;
 
+import com.theundertaker11.GeneticsReborn.GeneticsReborn;
 import com.theundertaker11.GeneticsReborn.items.GRItems;
 import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
 import com.theundertaker11.GeneticsReborn.util.ModUtils;
@@ -50,6 +51,10 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 		if(stack!=null&&stack.getItem()==GRItems.OrganicMatter&&stack.getTagCompound()!=null)
 		{
 			if(!ModUtils.getTagCompound(stack).hasKey("mobTag")) return null;
+			for(String entityClass : GeneticsReborn.CloningBlacklist)
+			{
+				if(entityClass.equals(ModUtils.getTagCompound(stack).getString("entityCodeName"))) return null;
+			}
 			ItemStack result = new ItemStack(GRItems.OrganicMatter);
 			ModUtils.getTagCompound(result).setString("entityName", ModUtils.getTagCompound(stack).getString("entityName"));
 			return result;
