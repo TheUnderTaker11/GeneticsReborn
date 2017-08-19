@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.gui;
+package com.theundertaker11.geneticsreborn.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

@@ -1,14 +1,14 @@
-package com.theundertaker11.GeneticsReborn.items;
+package com.theundertaker11.geneticsreborn.items;
 
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.Genes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.GeneCapabilityProvider;
+import com.theundertaker11.geneticsreborn.api.capability.genes.Genes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -44,15 +44,16 @@ public class GlassSyringe extends ItemBase {
     }
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
+		ItemStack stack = playerIn.getHeldItemMainhand();
 		//Returns if nothing should happen.
 		if(worldIn.isRemote||ModUtils.getIGenes(playerIn)==null||hand!=EnumHand.MAIN_HAND||ModUtils.getIMaxHealth(playerIn)==null) return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		NBTTagCompound tag = ModUtils.getTagCompound(stack);
 		if(!playerIn.isSneaking()&&stack.getItemDamage()==0)
 		{
 			stack.setItemDamage(1);
-			playerIn.attackEntityFrom(DamageSource.generic, 2);
+			playerIn.attackEntityFrom(DamageSource.GENERIC, 2);
 			tag.setBoolean("pure", false);
 			tag.setString("owner", playerIn.getUUID(playerIn.getGameProfile()).toString());
 			Genes.setNBTStringsFromGenes(stack, playerIn);
@@ -68,7 +69,7 @@ public class GlassSyringe extends ItemBase {
 		 {
 			stack.setItemDamage(0);
 			playerIn.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.blindness), 60, 1)));
-			playerIn.attackEntityFrom(DamageSource.generic, 1);
+			playerIn.attackEntityFrom(DamageSource.GENERIC, 1);
 			IGenes genes = ModUtils.getIGenes(playerIn);
 			IMaxHealth hearts = ModUtils.getIMaxHealth((EntityLivingBase)playerIn);
 			tag.removeTag("pure");
@@ -76,10 +77,10 @@ public class GlassSyringe extends ItemBase {
 			for(int i=0;i<Genes.TotalNumberOfGenes;i++)
 		 	{
 		 		String nbtname = "Null";
-		 		if(tag.hasKey(i+""))
+		 		if(tag.hasKey(Integer.toString(i)))
 		 		{
-		 			nbtname = tag.getString(i+"");
-		 			tag.removeTag(i+"");
+		 			nbtname = tag.getString(Integer.toString(i));
+		 			tag.removeTag(Integer.toString(i));
 		 		}
 		 		EnumGenes gene = Genes.getGeneFromString(nbtname);
 		 		if(gene!=null)	

@@ -1,23 +1,17 @@
-package com.theundertaker11.GeneticsReborn.packets;
+package com.theundertaker11.geneticsreborn.packets;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.event.GREventHandler;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
-import com.theundertaker11.GeneticsReborn.util.PlayerCooldowns;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.event.GREventHandler;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.IThreadListener;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -39,21 +33,22 @@ public class SendTeleportPlayer implements IMessage{
 	    
 	    @Override
 	    public IMessage onMessage(final SendTeleportPlayer message, final MessageContext ctx) {
-	        IThreadListener mainThread = (WorldServer) ctx.getServerHandler().playerEntity.worldObj;
+	        IThreadListener mainThread = (WorldServer) ctx.getServerHandler().playerEntity.getEntityWorld();
 	        mainThread.addScheduledTask(new Runnable() {
 	            @Override
 	            public void run() {
-	            	net.minecraft.entity.player.EntityPlayerMP serverPlayer = ctx.getServerHandler().playerEntity;
+	            	EntityPlayerMP serverPlayer = ctx.getServerHandler().playerEntity;
 	            	boolean allowteleport = true;
 	    			for(int i=0; i<GREventHandler.cooldownList.size();i++)
 	    			{
-	    				if(GREventHandler.cooldownList.get(i).getName().equals("teleport")&&serverPlayer.getName().equals(GREventHandler.cooldownList.get(i).getPlayerName()))
+	    				PlayerCooldowns cooldownEntry = GREventHandler.cooldownList.get(i);
+	    				if("teleport".equals(cooldownEntry.getName())&&serverPlayer.getName().equals(cooldownEntry.getPlayerName()))
 	    				{
 	    					allowteleport = false;
 	    					break;
 	    				}
 	    			}
-	            	if(GeneticsReborn.enableTeleporter&&allowteleport&&serverPlayer.hasCapability(GeneCapabilityProvider.GENES_CAPABILITY, null))
+	            	if(GeneticsReborn.enableTeleporter&&allowteleport&&ModUtils.getIGenes(serverPlayer)!=null)
 	            	{
 	            		IGenes genes = ModUtils.getIGenes(serverPlayer);
 	            		if(genes.hasGene(EnumGenes.TELEPORTER))
@@ -65,7 +60,6 @@ public class SendTeleportPlayer implements IMessage{
 	            				distance /= 2;
 	            			}
 	            			Vec3d end = start.addVector(lookVec.xCoord * distance, lookVec.yCoord * distance, lookVec.zCoord * distance);
-	            			RayTraceResult position = serverPlayer.getEntityWorld().rayTraceBlocks(start, end);
 	                
 	            			serverPlayer.setPositionAndUpdate(end.xCoord, end.yCoord, end.zCoord);
 	            			GREventHandler.cooldownList.add(new PlayerCooldowns(serverPlayer, "teleport", 10));

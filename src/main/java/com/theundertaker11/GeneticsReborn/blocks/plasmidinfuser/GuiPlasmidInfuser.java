@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser;
+package com.theundertaker11.geneticsreborn.blocks.plasmidinfuser;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -12,14 +12,14 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.Reference;
+import com.theundertaker11.geneticsreborn.Reference;
 
 
 @SideOnly(Side.CLIENT)
 public class GuiPlasmidInfuser extends GuiContainer {
 
 	// This is the resource location for the background image
-	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/GuiPlasmidInfuser.png");
+	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/guiplasmidinfuser.png");
 
 	private GRTileEntityPlasmidInfuser tileEntity;
 

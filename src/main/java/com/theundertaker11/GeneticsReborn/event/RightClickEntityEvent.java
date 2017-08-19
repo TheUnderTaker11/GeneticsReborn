@@ -1,19 +1,20 @@
-package com.theundertaker11.GeneticsReborn.event;
+package com.theundertaker11.geneticsreborn.event;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.items.DamageableItemBase;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.items.DamageableItemBase;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
+//TODO add back if ars is updated. import am2.bosses.AM2Boss;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.SkeletonType;
+import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -25,6 +26,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * This class scrapes entities, inserts genes into entities, and handles the wooly/milky gene
@@ -34,24 +36,38 @@ public class RightClickEntityEvent {
 	@SubscribeEvent
 	public void rightClickEntity(EntityInteract event)
 	{
-		if(event.getHand()==EnumHand.MAIN_HAND&&!event.getWorld().isRemote&&event.getEntityPlayer().getHeldItemMainhand()!=null)
+		if(event.getHand()==EnumHand.MAIN_HAND&&!event.getWorld().isRemote)
 		{
 			//Start Scraping entities code
 			EntityPlayer player = event.getEntityPlayer();
 			Entity target = event.getTarget();
-			World world = event.getWorld();
-			//DRAGON IS THE MOST SPECIAL SNOWFLAKE, DOESNT EVEN EXTEND ENTITYLIVINGBASE...
+			
 			if(target instanceof EntityDragonPart&&player.getHeldItemMainhand().getItem() instanceof DamageableItemBase) 
 			{
 				if(player.getHeldItemMainhand().getItem()==GRItems.MetalScraper||player.getHeldItemMainhand().getItem()==GRItems.AdvancedScraper)
 				{
+					boolean isArs = false;
+					try{
+						isArs = isArsBoss(target);
+					}catch(NoSuchMethodError e){}
+					
 					ItemStack organicmatter = new ItemStack(GRItems.OrganicMatter, 1);
 					target.attackEntityFrom(DamageSource.causePlayerDamage(player), 0.5F);
-					ModUtils.getTagCompound(organicmatter).setString("entityName", "Ender Dragon");
-					ModUtils.getTagCompound(organicmatter).setString("entityCodeName", "Ender Dragon");
+					
+					if(!isArs)
+					{
+						ModUtils.getTagCompound(organicmatter).setString("entityName", "Ender Dragon");
+						ModUtils.getTagCompound(organicmatter).setString("entityCodeName", "Ender Dragon");
+					}
+					else
+					{
+						try{
+							setArsMobTag(organicmatter, target);
+						}catch(NoSuchMethodError e){}
+					}
 					player.getHeldItemMainhand().damageItem(1, player);
 					EntityItem entity = new EntityItem(player.getEntityWorld(), target.getPosition().getX(), target.getPosition().getY(), target.getPosition().getZ(), organicmatter);
-					player.getEntityWorld().spawnEntityInWorld(entity);
+					player.getEntityWorld().spawnEntity(entity);
 				}
 			}
 			//Glad thats over.
@@ -65,6 +81,26 @@ public class RightClickEntityEvent {
 			
 			tryWoolyAndMilky(player, target);
 		}
+	}
+	
+	@Optional.Method(modid = "arsmagica2")
+	public static boolean isArsBoss(Entity entity)
+	{
+		EntityDragonPart part = (EntityDragonPart)entity;
+		//TODO add back if ars is updated
+		//if(part.entityDragonObj instanceof AM2Boss)
+		//	return true;
+		return false;
+	}
+	
+	@Optional.Method(modid = "arsmagica2")
+	public static void setArsMobTag(ItemStack stack, Entity entity)
+	{
+		EntityDragonPart part = (EntityDragonPart)entity;
+		String rawname = part.entityDragonObj.toString();
+		String name = rawname.substring(0, rawname.indexOf('['));
+		ModUtils.getTagCompound(stack).setString("entityName", name);
+		ModUtils.getTagCompound(stack).setString("entityCodeName", name);
 	}
 	
 	/**
@@ -81,14 +117,11 @@ public class RightClickEntityEvent {
 		String name = livingtarget.getName();
 		
 		//Start special snowflakes.
-		if(livingtarget instanceof EntitySkeleton)
+		if(livingtarget instanceof EntityWitherSkeleton)
 		{
-			EntitySkeleton skeleton = (EntitySkeleton)livingtarget;
-			if(skeleton.func_189771_df()==SkeletonType.WITHER)
-			{
-				simplename = "Wither Skeleton";
-				name = "Wither Skeleton";
-			}
+			EntityWitherSkeleton skeleton = (EntityWitherSkeleton)livingtarget;
+			simplename = "Wither Skeleton";
+			name = "Wither Skeleton";
 		}
 		if(livingtarget instanceof EntityPigZombie)
 		{
@@ -120,7 +153,7 @@ public class RightClickEntityEvent {
 			player.getHeldItemMainhand().damageItem(1, player);
 		}
 		EntityItem entity = new EntityItem(player.getEntityWorld(), livingtarget.getPosition().getX(), livingtarget.getPosition().getY(), livingtarget.getPosition().getZ(), organicmatter);
-		player.getEntityWorld().spawnEntityInWorld(entity);
+		player.getEntityWorld().spawnEntity(entity);
 	}
 	
 	/**
@@ -146,17 +179,17 @@ public class RightClickEntityEvent {
 					ItemStack wool = new ItemStack(Blocks.WOOL, 1);
 					player.getHeldItemMainhand().damageItem(1, player);
 					EntityItem entitywool = new EntityItem(world, targetentity.getPosition().getX(), targetentity.getPosition().getY(), targetentity.getPosition().getZ(), wool);
-					world.spawnEntityInWorld(entitywool);
+					world.spawnEntity(entitywool);
 				}
 			
 				if(GeneticsReborn.enableMilky&&player.getHeldItemMainhand().getItem()==Items.BUCKET&&targetentitygenes.hasGene(EnumGenes.MILKY))
 				{
 					
-					if((player.getHeldItemMainhand().stackSize-1)<=0) player.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(Items.MILK_BUCKET));
+					if((player.getHeldItemMainhand().getCount()-1)<=0) player.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(Items.MILK_BUCKET));
 					else 
 					{
 						if(!player.inventory.addItemStackToInventory(new ItemStack(Items.MILK_BUCKET))) player.dropItem(Items.MILK_BUCKET, 1);
-						player.getHeldItemMainhand().stackSize=(player.getHeldItemMainhand().stackSize-1);
+						player.getHeldItemMainhand().shrink(1);
 					}
 				}
 			}

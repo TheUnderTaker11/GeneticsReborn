@@ -1,11 +1,12 @@
-package com.theundertaker11.GeneticsReborn.crafting;
+package com.theundertaker11.geneticsreborn.crafting;
 
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 public class AntiPlasmidCrafting implements IRecipe {
@@ -26,7 +27,7 @@ public boolean matches(InventoryCrafting inv, World worldIn)
 		for(int i=0; i < inv.getSizeInventory(); ++i)
 		{
 			ItemStack item = inv.getStackInSlot(i);
-			if(item!=null)
+			if(!item.isEmpty())
 			{
 				if(item.getItem()==GRItems.AntiPlasmid)
 				{
@@ -45,7 +46,7 @@ public boolean matches(InventoryCrafting inv, World worldIn)
 		for(int i=0; i < inv.getSizeInventory(); ++i)
 		{
 			ItemStack item = inv.getStackInSlot(i);
-			if(item!=null)
+			if(!item.isEmpty())
 			{
 				if(item.getItem()==GRItems.AntiPlasmid)
 				{
@@ -77,7 +78,7 @@ public ItemStack getCraftingResult(InventoryCrafting inv)
 	for(int i=0; i < inv.getSizeInventory(); ++i)
 	{
 		ItemStack stack = inv.getStackInSlot(i);
-		if(stack!=null&&stack.getItem()==GRItems.Plasmid&&stack.getTagCompound()!=null)
+		if(stack.getItem()==GRItems.Plasmid&&stack.getTagCompound()!=null)
 		{
 			ModUtils.getTagCompound(result).setString("gene", stack.getTagCompound().getString("gene"));
 			ModUtils.getTagCompound(result).setInteger("num", stack.getTagCompound().getInteger("num"));
@@ -85,7 +86,7 @@ public ItemStack getCraftingResult(InventoryCrafting inv)
 			return result;
 		}
 	}
-	return null;
+	return ItemStack.EMPTY;
 }
 
 @Override
@@ -101,9 +102,10 @@ public ItemStack getRecipeOutput()
 }
 
 @Override
-public ItemStack[] getRemainingItems(InventoryCrafting inv) 
+public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) 
 {
-	return new ItemStack[inv.getSizeInventory()];
+	NonNullList<ItemStack> list = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+	return list;
 }
 
 }

@@ -1,13 +1,15 @@
-package com.theundertaker11.GeneticsReborn.api.capability.genes;
+package com.theundertaker11.geneticsreborn.api.capability.genes;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import net.minecraftforge.fml.common.Optional;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.util.MobToGeneObject;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
-import com.theundertaker11.GeneticsReborn.util.MobToGeneObject;
+import net.minecraftforge.fml.common.Optional;
 /**
  * This is used by the DNA Decrypter to tell if a mob should drop a given gene. 
  * DO NOT TRY TO ADD GENES TO MOBS I'VE ALREADY REGISTERED GENES TO. It is simply not made to handle that.
@@ -18,7 +20,7 @@ import com.theundertaker11.GeneticsReborn.util.MobToGeneObject;
  */
 public class MobToGeneRegistry {
 
-	private static HashSet<MobToGeneObject> list = new HashSet<MobToGeneObject>();
+	private static HashSet<MobToGeneObject> list = new HashSet<>();
 	
 	public static void init()
 	{
@@ -56,41 +58,38 @@ public class MobToGeneRegistry {
 		registerMob(new MobToGeneObject("EntityMagmaCube", EnumGenes.FIRE_PROOF));
 		
 		//Bosses
-		registerMob(new MobToGeneObject("EntityWither", EnumGenes.WITHER_PROOF));
+		registerMob(new MobToGeneObject("EntityWither", EnumGenes.WITHER_PROOF, EnumGenes.FLY));
 		registerMob(new MobToGeneObject("Ender Dragon", EnumGenes.DRAGONS_BREATH, EnumGenes.ENDER_DRAGON_HEALTH));
 		
 		try{
+			registerArsMagica();
+		}catch(NoSuchMethodError e){}
+		
+		try{
+			registerGrimoireOfGaia();
+		}catch(NoSuchMethodError e){}
+		
+		try{
 			registerMoCreatures();
-		}catch(NoSuchMethodError e){
-			
-		}
-		//Unused entities below
-		/*
-		 registerMob(new MobToGeneObject("EntitySkeleton", EnumGenes.None));
-		 registerMob(new MobToGeneObject("EntitySilverfish", EnumGenes.None));
-		 registerMob(new MobToGeneObject("EntityPig", EnumGenes.None));
-		 registerMob(new MobToGeneObject("EntityWitch", EnumGenes.None));
-		 registerMob(new MobToGeneObject("EntityPolarBear", EnumGenes.None));
-		 registerMob(new MobToGeneObject("EntityMooshroom", EnumGenes.None));
-		 registerMob(new MobToGeneObject("EntityWolf", EnumGenes.None));
-		 registerMob(new MobToGeneObject("EntitySnowman", EnumGenes.None));
-		 */
+		}catch(NoSuchMethodError e){}
 	}
 	public static void registerMob(MobToGeneObject obj)
 	{
 		list.add(obj);
 	}
 	/**
-	 * Returns the gene in String form, prefixed with GeneticsReborn
+	 * Returns the gene in String form, prefixed with GeneticsReborn. For use in decrypter. Should only be called serverside.
 	 * 
 	 * @param entityCodeName name gotten from #getClass()#getSimpleName() on an EntityLivingBase
-	 * @return Said above.
+	 * @return Random gene based on mob and registry.
 	 */
 	public static String getGene(String entityCodeName)
 	{
 		String genename = "BasicGene";
+		String g = "GeneticsReborn";
 		int numb = ThreadLocalRandom.current().nextInt(1, 101);
-		if(numb>40) return "GeneticsReborn"+genename;
+		if(numb>40)
+			return g+genename;
 		
 		MobToGeneObject object = null;
 		for(MobToGeneObject obj : list)
@@ -101,13 +100,16 @@ public class MobToGeneRegistry {
 				break;
 			}
 		}
-		if(object==null||object.getValidGenesNum()==0) return "GeneticsReborn"+genename;
+		if(object==null||object.getValidGenesNum()==0)
+			return g+genename;
 		
 		
-		List<EnumGenes> genes = new ArrayList<EnumGenes>();
+		List<EnumGenes> genes = new ArrayList<>();
 		genes.add(object.Gene1);
-		if(object.Gene2!=null) genes.add(object.Gene2);
-		if(object.Gene3!=null) genes.add(object.Gene3);
+		if(object.Gene2!=null)
+			genes.add(object.Gene2);
+		if(object.Gene3!=null)
+			genes.add(object.Gene3);
 		if(genes.size()==1) 
 			genename = genes.get(0).toString();
 		else if(genes.size()==2) 
@@ -115,14 +117,37 @@ public class MobToGeneRegistry {
 		else if(genes.size()==3) 
 			genename = genes.get(ThreadLocalRandom.current().nextInt(3)).toString();
 		
-		return "GeneticsReborn"+genename;
+		String fullname = g+genename;
+		
+		if(!ModUtils.isGeneEnabled(fullname))
+		{
+			fullname = g+"BasicGene";
+		}
+		
+		return fullname;
+	}
+	
+	
+	@Optional.Method(modid = "arsmagica2")
+	public static void registerArsMagica()
+	{
+		registerMob(new MobToGeneObject("EntityDryad", EnumGenes.PHOTOSYNTHESIS));
+		registerMob(new MobToGeneObject("EntityNatureGuardian", EnumGenes.PHOTOSYNTHESIS));
+		registerMob(new MobToGeneObject("EntityWaterGuardian", EnumGenes.WATER_BREATHING));
+		registerMob(new MobToGeneObject("EntityAirGuardian", EnumGenes.NO_FALL_DAMAGE));
+		registerMob(new MobToGeneObject("EntityFireGuardian", EnumGenes.FIRE_PROOF));
+	}
+	
+	@Optional.Method(modid = "grimoireofgaia")
+	public static void registerGrimoireOfGaia()
+	{
+		registerMob(new MobToGeneObject("EntityGaiaDryad", EnumGenes.PHOTOSYNTHESIS));
 	}
 	
 	@Optional.Method(modid = "mocreatures")
 	public static void registerMoCreatures()
 	{
 		//Mo'Creatures mod mobs
-		System.out.println("Registering Mo'Creatures' mob genes");
 		registerMob(new MobToGeneObject("MoCEntityFly", EnumGenes.FLY));
 		registerMob(new MobToGeneObject("MoCEntityAnchovy", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("MoCEntityAngelFish", EnumGenes.WATER_BREATHING));

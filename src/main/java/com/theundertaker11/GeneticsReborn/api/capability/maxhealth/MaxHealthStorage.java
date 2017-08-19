@@ -1,6 +1,4 @@
-package com.theundertaker11.GeneticsReborn.api.capability.maxhealth;
-
-import java.util.List;
+package com.theundertaker11.geneticsreborn.api.capability.maxhealth;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;

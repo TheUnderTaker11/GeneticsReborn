@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.blocks.bloodpurifier;
+package com.theundertaker11.geneticsreborn.blocks.bloodpurifier;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -12,14 +12,14 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.Reference;
+import com.theundertaker11.geneticsreborn.Reference;
 
 
 @SideOnly(Side.CLIENT)
 public class GuiBloodPurifier extends GuiContainer {
 
 	// This is the resource location for the background image
-	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/GuiBasicMachine_bg.png");
+	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/guibasicmachine_bg.png");
 
 	private GRTileEntityBloodPurifier tileEntity;
 

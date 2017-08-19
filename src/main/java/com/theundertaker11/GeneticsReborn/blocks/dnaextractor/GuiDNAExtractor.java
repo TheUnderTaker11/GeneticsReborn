@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.blocks.dnaextractor;
+package com.theundertaker11.geneticsreborn.blocks.dnaextractor;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.Reference;
+import com.theundertaker11.geneticsreborn.Reference;
 
 /**
  * I copy any of my other machines from this class, the todo's are just a reminder to myself
@@ -24,7 +24,7 @@ import com.theundertaker11.GeneticsReborn.Reference;
 public class GuiDNAExtractor extends GuiContainer {
 
 	// This is the resource location for the background image
-	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/GuiDNAExtractor.png");
+	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/guidnaextractor.png");
 	//TODO Change this and the constructor below.
 	private GRTileEntityDNAExtractor tileEntity;
 

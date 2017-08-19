@@ -1,15 +1,15 @@
-package com.theundertaker11.GeneticsReborn.event;
+package com.theundertaker11.geneticsreborn.event;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
-import com.theundertaker11.GeneticsReborn.util.PlayerCooldowns;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.GeneCapabilityProvider;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -40,7 +40,7 @@ public class DeathRelatedEvents {
 			{
 				for(int i=(event.getDrops().size()-1);i>=0;i--)
 				{
-					if(event.getDrops().get(i).getEntityItem().getItem()==Items.GUNPOWDER&&event.getDrops().get(i).getEntityItem().stackSize>4)
+					if(event.getDrops().get(i).getEntityItem().getItem()==Items.GUNPOWDER&&event.getDrops().get(i).getEntityItem().getCount()>4)
 					{
 						playersWithGunpowder.add(event.getEntityPlayer().getName());
 					}
@@ -73,8 +73,8 @@ public class DeathRelatedEvents {
 		}
 		if(GeneticsReborn.keepGenesOnDeath||!event.isWasDeath())
 		{
-			IGenes oldgenes = event.getOriginal().getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
-			IGenes newgenes = event.getEntityPlayer().getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
+			IGenes oldgenes = ModUtils.getIGenes(event.getOriginal());
+			IGenes newgenes = ModUtils.getIGenes(event.getEntityPlayer());
 			newgenes.setGeneList(oldgenes.getGeneList());
 			if(ModUtils.getIMaxHealth(event.getEntityPlayer())!=null)
 			{
@@ -112,7 +112,7 @@ public class DeathRelatedEvents {
 					boolean allow = true;
 	    			for(int i=0; i<GREventHandler.cooldownList.size();i++)
 	    			{
-	    				if(GREventHandler.cooldownList.get(i).getName().equals("emerald")&&player.getName().equals(GREventHandler.cooldownList.get(i).getPlayerName()))
+	    				if("emerald".equals(GREventHandler.cooldownList.get(i).getName())&&player.getName().equals(GREventHandler.cooldownList.get(i).getPlayerName()))
 	    				{
 	    					allow = false;
 	    					break;
@@ -122,13 +122,13 @@ public class DeathRelatedEvents {
 	    			{
 	    				GREventHandler.cooldownList.add(new PlayerCooldowns(player, "emerald", 6000));
 						EntityItem entity = new EntityItem(player.getEntityWorld(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), new ItemStack(Items.EMERALD));
-						player.getEntityWorld().spawnEntityInWorld(entity);
+						player.getEntityWorld().spawnEntity(entity);
 					}
 				}
 				if(GeneticsReborn.enableSlimy&&playergenes.hasGene(EnumGenes.SLIMY))
 				{
 					EntityItem entity = new EntityItem(player.getEntityWorld(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), new ItemStack(Items.SLIME_BALL, 3));
-					player.getEntityWorld().spawnEntityInWorld(entity);
+					player.getEntityWorld().spawnEntity(entity);
 				}
 			}
 		}

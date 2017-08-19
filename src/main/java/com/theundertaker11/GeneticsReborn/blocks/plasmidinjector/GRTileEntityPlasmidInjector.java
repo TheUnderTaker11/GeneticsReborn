@@ -1,9 +1,10 @@
-package com.theundertaker11.GeneticsReborn.blocks.plasmidinjector;
+package com.theundertaker11.geneticsreborn.blocks.plasmidinjector;
 
-import com.theundertaker11.GeneticsReborn.api.capability.genes.Genes;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.Genes;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,8 +16,8 @@ import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver implements ITickable{
 	
-	public static final short TICKS_NEEDED = 400;
-	
+	public static int TICKS_NEEDED = GeneticsReborn.baseTickPlasmidInjector;
+	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickPlasmidInjector;
 	public GRTileEntityPlasmidInjector(){
 		super();
 	}
@@ -24,13 +25,15 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 	@Override
 	public void update()
 	{
-		int rfpertick = (20+(this.overclockers*85));
+		int rfpertick = (baseRfPerTick+(this.overclockers*85));
 		if (canSmelt()) 
 		{
-			if (this.energy > rfpertick)
+			if (this.getEnergyStored(null) > rfpertick)
 			{
 				this.energy -= rfpertick;
 				ticksCooking++;
+				if(this.energy<0)
+					this.energy = 0;
 				markDirty();
 			}
 			// Just in case
@@ -59,12 +62,12 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 	 */
 	private boolean smeltItem(boolean performSmelt)
 	{
-		ItemStack result = null;
+		ItemStack result;
 		IItemHandler inventory = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler inventoryoutput = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
 		
 		
-			if (inventory != null&&inventory.getStackInSlot(0)!=null&&inventoryoutput!=null&&inventoryoutput.getStackInSlot(0)!=null) 
+			if (inventory != null&&!inventory.getStackInSlot(0).isEmpty()&&inventoryoutput!=null)
 			{
 				ItemStack item = inventory.getStackInSlot(0);
 				result = inventoryoutput.getStackInSlot(0);
@@ -86,7 +89,6 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 							{
 								for(int i=0;i<Genes.TotalNumberOfGenes;i++)
 								 {
-								 	String nbtname = "Null";
 								 	if(resulttag.hasKey(i+"anti"))
 								 	{
 								 		if(resulttag.getString(i+"anti").equals(itemtag.getString("gene")))
@@ -100,7 +102,7 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 										{
 								 			resulttag.setString(i+"anti", itemtag.getString("gene"));
 								 			resulttag.setBoolean("pure", false);
-								 			inventory.extractItem(0, item.stackSize, false);
+								 			inventory.extractItem(0, item.getCount(), false);
 								 			this.markDirty();
 										}
 								 		return true;
@@ -111,10 +113,9 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 							{
 								for(int i=0;i<Genes.TotalNumberOfGenes;i++)
 								 {
-								 	String nbtname = "Null";
-								 	if(resulttag.hasKey(i+""))
+								 	if(resulttag.hasKey(Integer.toString(i)))
 								 	{
-								 		if(resulttag.getString(i+"").equals(itemtag.getString("gene")))
+								 		if(resulttag.getString(Integer.toString(i)).equals(itemtag.getString("gene")))
 								 		{
 								 			return false;
 								 		}
@@ -123,9 +124,9 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 								 	{
 								 		if(performSmelt)
 										{
-								 			resulttag.setString(i+"", itemtag.getString("gene"));
+								 			resulttag.setString(Integer.toString(i), itemtag.getString("gene"));
 								 			resulttag.setBoolean("pure", false);
-								 			inventory.extractItem(0, item.stackSize, false);
+								 			inventory.extractItem(0, item.getCount(), false);
 								 			this.markDirty();
 										}
 								 		return true;

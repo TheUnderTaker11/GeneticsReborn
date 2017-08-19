@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.api.capability.genes;
+package com.theundertaker11.geneticsreborn.api.capability.genes;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;

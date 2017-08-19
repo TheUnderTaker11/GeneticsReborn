@@ -1,10 +1,10 @@
-package com.theundertaker11.GeneticsReborn.blocks.dnaextractor;
+package com.theundertaker11.geneticsreborn.blocks.dnaextractor;
 
-import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.GRTileEntityCellAnalyser;
-import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.ContainerCellAnalyser.SlotOutput;
-import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.ContainerCellAnalyser.SlotSmeltableInput;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
+import com.theundertaker11.geneticsreborn.blocks.cellanalyser.GRTileEntityCellAnalyser;
+import com.theundertaker11.geneticsreborn.blocks.cellanalyser.ContainerCellAnalyser.SlotOutput;
+import com.theundertaker11.geneticsreborn.blocks.cellanalyser.ContainerCellAnalyser.SlotSmeltableInput;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -105,10 +105,9 @@ public class ContainerDNAExtractor extends Container {
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int sourceSlotIndex)
 	{
-		ItemStack itemstack = null;
         Slot slot = (Slot)this.inventorySlots.get(sourceSlotIndex);
-        if(slot == null || !slot.getHasStack()) return null;
-        if(tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)==null) return null;
+        if(slot == null || !slot.getHasStack()) return ItemStack.EMPTY;
+        if(tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)==null) return ItemStack.EMPTY;
         IItemHandler input = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
         
         ItemStack sourceStack = slot.getStack();
@@ -119,27 +118,27 @@ public class ContainerDNAExtractor extends Container {
         {
         	if(sourceStack.getItem()==GRItems.Cell)//TODO change here
         	{
-        		if(input.insertItem(0, sourceStack, true)==null)
+        		if(input.insertItem(0, sourceStack, true).isEmpty())
         		{
         			input.insertItem(0, sourceStack, false);
-        			player.inventory.setInventorySlotContents(sourceSlotIndex, null);
+        			player.inventory.setInventorySlotContents(sourceSlotIndex, ItemStack.EMPTY);
         		}
-        		else if (input.insertItem(0, sourceStack, true).stackSize==sourceStack.stackSize){
-					return null;
+        		else if (input.insertItem(0, sourceStack, true).getCount()==sourceStack.getCount()){
+					return ItemStack.EMPTY;
 				}
         		else
         		{
         			player.inventory.setInventorySlotContents(sourceSlotIndex, input.insertItem(0, sourceStack, false));
         		}
         	}
-        	else return null;
+        	else return ItemStack.EMPTY;
         }
         else if(sourceSlotIndex==INPUT_SLOT_INDEX||sourceSlotIndex==OUTPUT_SLOT_INDEX)
         {
         	if (!this.mergeItemStack(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)){
-        		return null;
+        		return ItemStack.EMPTY;
 			}
-        }else return null;
+        }else return ItemStack.EMPTY;
         return copyOfStack;
 	}	
 	

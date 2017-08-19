@@ -1,9 +1,9 @@
-package com.theundertaker11.GeneticsReborn.blocks.cloningmachine;
+package com.theundertaker11.geneticsreborn.blocks.cloningmachine;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -17,8 +17,8 @@ import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver implements ITickable{
 	
-	public static final short TICKS_NEEDED = 200;
-	
+	public static int TICKS_NEEDED = GeneticsReborn.baseTickCloningMachine;
+	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickCloningMachine;
 	public GRTileEntityCloningMachine(){
 		super();
 	}
@@ -26,13 +26,15 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 	@Override
 	public void update()
 	{
-		int rfpertick = (500+(this.overclockers*1300));
+		int rfpertick = (baseRfPerTick+(this.overclockers*1300));
 		if (canSmelt()) 
 		{
-			if (this.energy > rfpertick)
+			if (this.getEnergyStored(null) > rfpertick)
 			{
 				this.energy -= rfpertick;
 				ticksCooking++;
+				if(this.energy<0)
+					this.energy = 0;
 				markDirty();
 			}
 			// Just in case
@@ -48,18 +50,19 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 	
 	public static ItemStack getSmeltingResultForItem(ItemStack stack)
 	{
-		if(stack!=null&&stack.getItem()==GRItems.OrganicMatter&&stack.getTagCompound()!=null)
+		if(stack.getItem()==GRItems.OrganicMatter&&stack.getTagCompound()!=null)
 		{
-			if(!ModUtils.getTagCompound(stack).hasKey("mobTag")) return null;
+			if(!ModUtils.getTagCompound(stack).hasKey("mobTag")) return ItemStack.EMPTY;
 			for(String entityClass : GeneticsReborn.CloningBlacklist)
 			{
-				if(entityClass.equals(ModUtils.getTagCompound(stack).getString("entityCodeName"))) return null;
+				if(entityClass.equals(ModUtils.getTagCompound(stack).getString("entityCodeName"))) return ItemStack.EMPTY;
 			}
 			ItemStack result = new ItemStack(GRItems.OrganicMatter);
 			ModUtils.getTagCompound(result).setString("entityName", ModUtils.getTagCompound(stack).getString("entityName"));
+			ModUtils.getTagCompound(result).setString("entityCodeName", ModUtils.getTagCompound(stack).getString("entityCodeName"));
 			return result;
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	/**
@@ -77,22 +80,22 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 	 */
 	private boolean smeltItem(boolean performSmelt)
 	{
-		ItemStack result = null;
+		ItemStack result;
 		IItemHandler inventory = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler inventoryoutput = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
 		
 		// Sees if the input slot is smeltable and if result fits into an output slot (stacking if possible)
-			if (inventory != null&&inventory.getStackInSlot(0)!=null) 
+			if (inventory != null&&!inventory.getStackInSlot(0).isEmpty()) 
 			{
 				result = getSmeltingResultForItem(inventory.getStackInSlot(0));
-				if (result != null)
+				if (!result.isEmpty())
 				{
 						//Trys to insert into output slot
 						ItemStack inputSlotStack = inventory.getStackInSlot(0);
 						ItemStack outputSlotStack = inventoryoutput.getStackInSlot(0);
-						if (outputSlotStack == null)
+						if (outputSlotStack.isEmpty())
 						{
-							if(inventoryoutput.insertItem(0, result, !performSmelt)==null)
+							if(inventoryoutput.insertItem(0, result, !performSmelt).isEmpty())
 							{
 								inventory.extractItem(0, 1, !performSmelt);
 								if(performSmelt) spawnEntity(ModUtils.getTagCompound(inputSlotStack));
@@ -101,7 +104,7 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 							}
 						}else
 						{
-							if(inventoryoutput.insertItem(0, result, true)!=null)
+							if(!inventoryoutput.insertItem(0, result, true).isEmpty())
 							{
 								return false;
 							}
@@ -125,14 +128,12 @@ public class GRTileEntityCloningMachine extends GRTileEntityBasicEnergyReceiver 
 		NBTBase mobCompound = tag.getTag("mobTag");
         String type = tag.getString("type");
         EntityLivingBase entityLivingBase = createEntity(this.getWorld(), type);
-        if (entityLivingBase == null) {
-     		//Uh oh
+        if (entityLivingBase != null) {
+        	entityLivingBase.readEntityFromNBT((NBTTagCompound) mobCompound);
+            entityLivingBase.setLocationAndAngles(pos.getX()+.5, pos.getY()+2.0, pos.getZ()+.5, 0, 0);
+            
+            this.getWorld().spawnEntity(entityLivingBase);
         }
-        
-        entityLivingBase.readEntityFromNBT((NBTTagCompound) mobCompound);
-        entityLivingBase.setLocationAndAngles(pos.getX()+.5, pos.getY()+2, pos.getZ()+.5, 0, 0);
-        
-        this.getWorld().spawnEntityInWorld(entityLivingBase);
 	}
 
 	public EntityLivingBase createEntity(World world, String type)

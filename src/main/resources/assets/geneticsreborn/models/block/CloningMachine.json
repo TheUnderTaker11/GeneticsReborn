@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "geneticsreborn:blocks/CloningMachine_Front",
-    "down": "geneticsreborn:blocks/Machine_Bottom",
-    "up": "geneticsreborn:blocks/Machine_Top",
-    "east": "geneticsreborn:blocks/CloningMachine_Side",
-    "west": "geneticsreborn:blocks/CloningMachine_Side",
-    "north": "geneticsreborn:blocks/CloningMachine_Front",
-    "south": "geneticsreborn:blocks/CloningMachine_Side"
+    "particle": "geneticsreborn:blocks/cloningmachine_front",
+    "down": "geneticsreborn:blocks/machine_bottom",
+    "up": "geneticsreborn:blocks/machine_top",
+    "east": "geneticsreborn:blocks/cloningmachine_side",
+    "west": "geneticsreborn:blocks/cloningmachine_side",
+    "north": "geneticsreborn:blocks/cloningmachine_front",
+    "south": "geneticsreborn:blocks/cloningmachine_side"
   }
 }

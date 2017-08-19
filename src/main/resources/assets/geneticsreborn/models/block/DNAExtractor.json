@@ -1,12 +1,12 @@
 {
   "parent": "block/cube",
   "textures": {
-    "particle": "geneticsreborn:blocks/DNAExtractor_Front",
-    "down": "geneticsreborn:blocks/Machine_Bottom",
-    "up": "geneticsreborn:blocks/Machine_Top",
-    "east": "geneticsreborn:blocks/Machine_Side",
-    "west": "geneticsreborn:blocks/Machine_Side",
-    "north": "geneticsreborn:blocks/DNAExtractor_Front",
-    "south": "geneticsreborn:blocks/Machine_Side"
+    "particle": "geneticsreborn:blocks/dnaextractor_front",
+    "down": "geneticsreborn:blocks/machine_bottom",
+    "up": "geneticsreborn:blocks/machine_top",
+    "east": "geneticsreborn:blocks/machine_side",
+    "west": "geneticsreborn:blocks/machine_side",
+    "north": "geneticsreborn:blocks/dnaextractor_front",
+    "south": "geneticsreborn:blocks/machine_side"
   }
 }

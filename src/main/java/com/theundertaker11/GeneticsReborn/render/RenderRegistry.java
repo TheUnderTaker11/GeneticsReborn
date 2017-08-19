@@ -1,7 +1,7 @@
-package com.theundertaker11.GeneticsReborn.render;
+package com.theundertaker11.geneticsreborn.render;
 
-import com.theundertaker11.GeneticsReborn.Reference;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.Reference;
+import com.theundertaker11.geneticsreborn.items.GRItems;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
