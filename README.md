@@ -1,4 +1,4 @@
-# GeneticsReborn 1.10.2
+# GeneticsReborn 1.11.2
 A remake of the loved Advanced Genetics mod from 1.7.10
 
 For how to get started check out the wiki page! This mod does not add any power gen as of writing this, so you will need to have another mod that generates RF power such as Extra Utilities, Ender IO, Extreme Reactors, etc. etc.
