@@ -58,7 +58,6 @@ public class GeneticsReborn {
 	public void init(FMLInitializationEvent event)
 	{
 		CraftingManager.RegisterRecipes();
-		proxy.registerRenders();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
 		CapabilityHandler.init();
 		GREventHandler.init();
