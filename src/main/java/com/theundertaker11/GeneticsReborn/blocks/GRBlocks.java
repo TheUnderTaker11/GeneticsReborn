@@ -1,16 +1,17 @@
-package com.theundertaker11.GeneticsReborn.blocks;
+package com.theundertaker11.geneticsreborn.blocks;
 
-import com.theundertaker11.GeneticsReborn.blocks.bloodpurifier.BloodPurifier;
-import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.CellAnalyser;
-import com.theundertaker11.GeneticsReborn.blocks.cloningmachine.CloningMachine;
-import com.theundertaker11.GeneticsReborn.blocks.dnadecrypter.DNADecrypter;
-import com.theundertaker11.GeneticsReborn.blocks.dnaextractor.DNAExtractor;
-import com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser.PlasmidInfuser;
-import com.theundertaker11.GeneticsReborn.blocks.plasmidinjector.PlasmidInjector;
-import com.theundertaker11.GeneticsReborn.render.IItemModelProvider;
+import com.theundertaker11.geneticsreborn.blocks.bloodpurifier.BloodPurifier;
+import com.theundertaker11.geneticsreborn.blocks.cellanalyser.CellAnalyser;
+import com.theundertaker11.geneticsreborn.blocks.cloningmachine.CloningMachine;
+import com.theundertaker11.geneticsreborn.blocks.dnadecrypter.DNADecrypter;
+import com.theundertaker11.geneticsreborn.blocks.dnaextractor.DNAExtractor;
+import com.theundertaker11.geneticsreborn.blocks.plasmidinfuser.PlasmidInfuser;
+import com.theundertaker11.geneticsreborn.blocks.plasmidinjector.PlasmidInjector;
+import com.theundertaker11.geneticsreborn.render.IItemModelProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class GRBlocks {
@@ -22,32 +23,32 @@ public class GRBlocks {
 	public static Block PlasmidInjector;
 	public static Block CloningMachine;
 	public static Block AntiFieldBlock;
-	
+	//public static Block CoalGenerator;
 	public static void init() 
 	{
-		CellAnalyser = register(new CellAnalyser("CellAnalyser"));
-		DNAExtractor = register(new DNAExtractor("DNAExtractor"));
-		DNADecrypter = register(new DNADecrypter("DNADecrypter"));
-		PlasmidInfuser = register(new PlasmidInfuser("PlasmidInfuser"));
-		BloodPurifier = register(new BloodPurifier("BloodPurifier"));
-		PlasmidInjector = register(new PlasmidInjector("PlasmidInjector"));
-		CloningMachine = register(new CloningMachine("CloningMachine"));
-		AntiFieldBlock = register(new BlockBase("AntiFieldBlock"));
+		CellAnalyser = register(new CellAnalyser("cellanalyser"));
+		DNAExtractor = register(new DNAExtractor("dnaextractor"));
+		DNADecrypter = register(new DNADecrypter("dnadecrypter"));
+		PlasmidInfuser = register(new PlasmidInfuser("plasmidinfuser"));
+		BloodPurifier = register(new BloodPurifier("bloodpurifier"));
+		PlasmidInjector = register(new PlasmidInjector("plasmidinjector"));
+		CloningMachine = register(new CloningMachine("cloningmachine"));
+		AntiFieldBlock = register(new BlockBase("antifieldblock"));
+		//CoalGenerator = register(new CoalGenerator("coalgenerator"));
 	}
-	private static <T extends Block> T register (T block, ItemBlock itemBlock)
-	{
-		 GameRegistry.register(block);
-		 if(itemBlock != null)
-		 {
-		 GameRegistry.register(itemBlock);
-		 }
-		 
-		 if(block instanceof IItemModelProvider)
-		 {
-		 ((IItemModelProvider)block).registerItemModel(itemBlock);
-		 }
-		 
-		 return block;
+	private static <T extends Block> T register (T block, ItemBlock itemBlock) {
+		//GameRegistry.register(block);
+		ForgeRegistries.BLOCKS.register(block);
+		if (itemBlock != null) {
+			//GameRegistry.register(itemBlock);
+			ForgeRegistries.ITEMS.register(itemBlock);
+		}
+
+		if (block instanceof IItemModelProvider) {
+			((IItemModelProvider) block).registerItemModel(itemBlock);
+		}
+
+		return block;
 	}
 		 
 	private static <T extends Block> T register(T block)

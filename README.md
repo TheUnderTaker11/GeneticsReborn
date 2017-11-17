@@ -1,7 +1,7 @@
-# GeneticsReborn 1.10.2
+# GeneticsReborn 1.12-1.12.2
 A remake of the loved Advanced Genetics mod from 1.7.10
 
-For how to get started check out the wiki page! This mod does not add any power gen as of writing this, so you will need to have another mod that generates RF power such as Extra Utilities, Ender IO, Extreme Reactors, etc. etc.
+For how to get started check out the wiki page! This mod does not add any power gen as of writing this, so you will need to have another mod that generates FE(Forge Energy) power such as Extra Utilities, Ender IO, Extreme Reactors, etc. etc.
 Also check out the main thread here-http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/2782810-genetics-reborn-the-unofficial-remake-of-advanced
 
 To get the API, just use the API folder here- https://github.com/TheUnderTaker11/GeneticsReborn/tree/master/src/main/java/com/theundertaker11/GeneticsReborn

@@ -1,14 +1,14 @@
-package com.theundertaker11.GeneticsReborn.event;
+package com.theundertaker11.geneticsreborn.event;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
-import com.theundertaker11.GeneticsReborn.util.PlayerCooldowns;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,21 +33,21 @@ public class OnWorldTickEvent {
 		if((GeneticsReborn.enableFlight||!GeneticsReborn.allowGivingEntityGenes)&&GREventHandler.flightticktimer>30&&event.world.provider.getDimension()==0&&!event.world.isRemote)	
 		{
 			GREventHandler.flightticktimer = 0;
-			for(EntityPlayerMP player: event.world.getMinecraftServer().getPlayerList().getPlayerList())
+			for(EntityPlayerMP player: event.world.getMinecraftServer().getPlayerList().getPlayers())
 			{
-				if(player!=null&&!player.isCreative()&&ModUtils.getIGenes(player)!=null)
+				IGenes genes = ModUtils.getIGenes(player);
+				if(player!=null&&genes!=null)
 				{
-					IGenes genes = ModUtils.getIGenes(player);
-					String username = player.getName();
-					//This if/else enables/disables flight
-					if(genes.hasGene(EnumGenes.FLY))
+					if(!player.isCreative())
 					{
-						boolean shouldFly = true;
-						for(int i=0;i<player.inventory.getSizeInventory();i++)
+						String username = player.getName();
+						//This if/else enables/disables flight
+						if(genes.hasGene(EnumGenes.FLY))
 						{
-							ItemStack stack = player.inventory.getStackInSlot(i);
-							if(stack!=null)
+							boolean shouldFly = true;
+							for(int i=0;i<player.inventory.getSizeInventory();i++)
 							{
+								ItemStack stack = player.inventory.getStackInSlot(i);
 								if(stack.getItem()==GRItems.AntiField&&stack.getItemDamage()==1)
 								{
 									shouldFly = false;
@@ -55,17 +55,17 @@ public class OnWorldTickEvent {
 									break;
 								}
 							}
+							player.capabilities.allowFlying = shouldFly;
+							player.sendPlayerAbilities();
+							if(!PlayersWithFlight.contains(username)) PlayersWithFlight.add(username);
 						}
-						player.capabilities.allowFlying = shouldFly;
-						player.sendPlayerAbilities();
-						if(!PlayersWithFlight.contains(username)) PlayersWithFlight.add(username);
-					}
-					else if(PlayersWithFlight.contains(username))
-					{
-						PlayersWithFlight.remove(username);
-						player.capabilities.allowFlying = false;
-						player.capabilities.isFlying = false;
-						player.sendPlayerAbilities();
+						else if(PlayersWithFlight.contains(username))
+						{
+							PlayersWithFlight.remove(username);
+							player.capabilities.allowFlying = false;
+							player.capabilities.isFlying = false;
+							player.sendPlayerAbilities();
+						}
 					}
 					//This below is only called if giving genes is false, since the section below doesn't run
 					if(!GeneticsReborn.allowGivingEntityGenes)

@@ -1,12 +1,12 @@
-package com.theundertaker11.GeneticsReborn.packets;
+package com.theundertaker11.geneticsreborn.packets;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.event.GREventHandler;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
-import com.theundertaker11.GeneticsReborn.util.PlayerCooldowns;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.GeneCapabilityProvider;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.event.GREventHandler;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -39,21 +39,22 @@ public class SendTeleportPlayer implements IMessage{
 	    
 	    @Override
 	    public IMessage onMessage(final SendTeleportPlayer message, final MessageContext ctx) {
-	        IThreadListener mainThread = (WorldServer) ctx.getServerHandler().playerEntity.worldObj;
+	        IThreadListener mainThread = (WorldServer) ctx.getServerHandler().player.getEntityWorld();
 	        mainThread.addScheduledTask(new Runnable() {
 	            @Override
 	            public void run() {
-	            	net.minecraft.entity.player.EntityPlayerMP serverPlayer = ctx.getServerHandler().playerEntity;
+	            	net.minecraft.entity.player.EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
 	            	boolean allowteleport = true;
 	    			for(int i=0; i<GREventHandler.cooldownList.size();i++)
 	    			{
-	    				if(GREventHandler.cooldownList.get(i).getName().equals("teleport")&&serverPlayer.getName().equals(GREventHandler.cooldownList.get(i).getPlayerName()))
+	    				PlayerCooldowns cooldownEntry = GREventHandler.cooldownList.get(i);
+	    				if("teleport".equals(cooldownEntry.getName())&&serverPlayer.getName().equals(cooldownEntry.getPlayerName()))
 	    				{
 	    					allowteleport = false;
 	    					break;
 	    				}
 	    			}
-	            	if(GeneticsReborn.enableTeleporter&&allowteleport&&serverPlayer.hasCapability(GeneCapabilityProvider.GENES_CAPABILITY, null))
+	            	if(GeneticsReborn.enableTeleporter&&allowteleport&&ModUtils.getIGenes(serverPlayer)!=null)
 	            	{
 	            		IGenes genes = ModUtils.getIGenes(serverPlayer);
 	            		if(genes.hasGene(EnumGenes.TELEPORTER))
@@ -64,10 +65,9 @@ public class SendTeleportPlayer implements IMessage{
 	            			if (serverPlayer.isSneaking()) {
 	            				distance /= 2;
 	            			}
-	            			Vec3d end = start.addVector(lookVec.xCoord * distance, lookVec.yCoord * distance, lookVec.zCoord * distance);
-	            			RayTraceResult position = serverPlayer.getEntityWorld().rayTraceBlocks(start, end);
+	            			Vec3d end = start.addVector(lookVec.x * distance, lookVec.y * distance, lookVec.z * distance);
 	                
-	            			serverPlayer.setPositionAndUpdate(end.xCoord, end.yCoord, end.zCoord);
+	            			serverPlayer.setPositionAndUpdate(end.x, end.y, end.z);
 	            			GREventHandler.cooldownList.add(new PlayerCooldowns(serverPlayer, "teleport", 10));
 	            		}
 	            	}

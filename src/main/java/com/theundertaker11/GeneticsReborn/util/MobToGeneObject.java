@@ -1,6 +1,6 @@
-package com.theundertaker11.GeneticsReborn.util;
+package com.theundertaker11.geneticsreborn.util;
 
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 
 public class MobToGeneObject {
 	
@@ -12,11 +12,9 @@ public class MobToGeneObject {
 	
 	/**
 	 * This is just an object I use to store a few things for registering mobs
-	 * @param mobName
 	 * @param gene1
 	 * @param gene2
 	 * @param gene3
-	 * @param percChance
 	 */
 	public MobToGeneObject(String mobCodeName, EnumGenes gene1, EnumGenes gene2, EnumGenes gene3)
 	{

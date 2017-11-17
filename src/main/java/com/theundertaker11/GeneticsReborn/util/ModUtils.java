@@ -1,15 +1,16 @@
-package com.theundertaker11.GeneticsReborn.util;
+package com.theundertaker11.geneticsreborn.util;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.annotation.Nullable;
 
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealthCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.GeneCapabilityProvider;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.MaxHealthCapabilityProvider;
+import com.theundertaker11.geneticsreborn.items.GRItems;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -19,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
@@ -61,6 +63,16 @@ public class ModUtils{
         }
         return tag;
     }
+	
+	/**
+	 * Checks if the stack is a vanilla fuel
+	 */
+	public static boolean isValidFuel(ItemStack stack)
+	{
+		if(TileEntityFurnace.getItemBurnTime(stack)>0)
+			return true;
+		else return false;
+	}
 	
 	/**
 	 * Teleports a player, given the x, y, z, and dimension ID.
@@ -220,7 +232,138 @@ public class ModUtils{
 		{
 			genename="Strength";
 		}
+		if(rawname.equals("GeneticsRebornPHOTOSYNTHESIS"))
+		{
+			genename="Photosynthesis";
+		}
 		return genename;
+	}
+	
+	/**
+	 * I hate myself for this. I set it up so that it is super hard to check if each is enabled or not.
+	 * <p> This will return if the gene is enabled in config or not.
+	 * @param rawname EnumGene.toString() prefixed with GeneticsReborn
+	 * @return
+	 */
+	public static boolean isGeneEnabled(String rawname)
+	{
+		if(rawname.equals("GeneticsRebornBasicGene"))
+		{
+			return true;
+		}
+		if(rawname.equals("GeneticsRebornDRAGONS_BREATH"))
+		{
+			return GeneticsReborn.enableDragonsBreath;
+		}
+		if(rawname.equals("GeneticsRebornEAT_GRASS"))
+		{
+			return GeneticsReborn.enableEatGrass;
+		}
+		if(rawname.equals("GeneticsRebornEMERALD_HEART"))
+		{
+			return GeneticsReborn.enableEmeraldHeart;
+		}
+		if(rawname.equals("GeneticsRebornENDER_DRAGON_HEALTH"))
+		{
+			return GeneticsReborn.enableEnderDragonHealth;
+		}
+		if(rawname.equals("GeneticsRebornFIRE_PROOF"))
+		{
+			return GeneticsReborn.enableFireProof;
+		}
+		if(rawname.equals("GeneticsRebornFLY"))
+		{
+			return GeneticsReborn.enableFlight;
+		}
+		if(rawname.equals("GeneticsRebornJUMP_BOOST"))
+		{
+			return GeneticsReborn.enableJumpBoost;
+		}
+		if(rawname.equals("GeneticsRebornMILKY"))
+		{
+			return GeneticsReborn.enableMilky;
+		}
+		if(rawname.equals("GeneticsRebornMORE_HEARTS"))
+		{
+			return GeneticsReborn.enableMoreHearts;
+		}
+		if(rawname.equals("GeneticsRebornNIGHT_VISION"))
+		{
+			return GeneticsReborn.enableNightVision;
+		}
+		if(rawname.equals("GeneticsRebornNO_FALL_DAMAGE"))
+		{
+			return GeneticsReborn.enableNoFallDamage;
+		}
+		if(rawname.equals("GeneticsRebornPOISON_PROOF"))
+		{
+			return GeneticsReborn.enablePoisonProof;
+		}
+		if(rawname.equals("GeneticsRebornRESISTANCE"))
+		{
+			return GeneticsReborn.enableResistance;
+		}
+		if(rawname.equals("GeneticsRebornSAVE_INVENTORY"))
+		{
+			return GeneticsReborn.enableSaveInventory;
+		}
+		if(rawname.equals("GeneticsRebornSCARE_CREEPERS"))
+		{
+			return GeneticsReborn.enableScareCreepers;
+		}
+		if(rawname.equals("GeneticsRebornSHOOT_FIREBALLS"))
+		{
+			return GeneticsReborn.enableShootFireballs;
+		}
+		if(rawname.equals("GeneticsRebornSLIMY"))
+		{
+			return GeneticsReborn.enableSlimy;
+		}
+		if(rawname.equals("GeneticsRebornSPEED"))
+		{
+			return GeneticsReborn.enableSpeed;
+		}
+		if(rawname.equals("GeneticsRebornTELEPORTER"))
+		{
+			return GeneticsReborn.enableTeleporter;
+		}
+		if(rawname.equals("GeneticsRebornWATER_BREATHING"))
+		{
+			return GeneticsReborn.enableTeleporter;
+		}
+		if(rawname.equals("GeneticsRebornWOOLY"))
+		{
+			return GeneticsReborn.enableWooly;
+		}
+		if(rawname.equals("GeneticsRebornWITHER_HIT"))
+		{
+			return GeneticsReborn.enableWitherHit;
+		}
+		if(rawname.equals("GeneticsRebornWITHER_PROOF"))
+		{
+			return GeneticsReborn.enableWitherProof;
+		}
+		if(rawname.equals("GeneticsRebornXP_MAGNET"))
+		{
+			return GeneticsReborn.enableXPMagnet;
+		}
+		if(rawname.equals("GeneticsRebornITEM_MAGNET"))
+		{
+			return GeneticsReborn.enableItemMagnet;
+		}
+		if(rawname.equals("GeneticsRebornEXPLOSIVE_EXIT"))
+		{
+			return GeneticsReborn.enableExplosiveExit;
+		}
+		if(rawname.equals("GeneticsRebornSTRENGTH"))
+		{
+			return GeneticsReborn.enableStrength;
+		}
+		if(rawname.equals("GeneticsRebornPHOTOSYNTHESIS"))
+		{
+			return GeneticsReborn.enablePhotosynthesis;
+		}
+		return false;
 	}
 	
 	//Next two are from Joetato and for the magnet code.

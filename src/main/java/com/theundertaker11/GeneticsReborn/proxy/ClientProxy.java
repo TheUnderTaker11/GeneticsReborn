@@ -1,8 +1,8 @@
-package com.theundertaker11.GeneticsReborn.proxy;
+package com.theundertaker11.geneticsreborn.proxy;
 
-import com.theundertaker11.GeneticsReborn.Reference;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.render.RenderRegistry;
+import com.theundertaker11.geneticsreborn.Reference;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.render.RenderRegistry;
 
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

@@ -1,7 +1,7 @@
-package com.theundertaker11.GeneticsReborn.blocks;
+package com.theundertaker11.geneticsreborn.blocks;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.render.IItemModelProvider;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.render.IItemModelProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -12,13 +12,13 @@ public class BlockBase extends Block implements IItemModelProvider{
 	
 	public BlockBase(String name, Material material, float hardness, float resistance) {
         super(material);
+        setRegistryName(name);
         this.Name=name;
         setUnlocalizedName(name);
         setCreativeTab(GeneticsReborn.GRtab);
         setHardness(hardness);
         setResistance(resistance);
         setHarvestLevel("pickaxe", 0);
-        setRegistryName(name);
     }
 
     public BlockBase(String name) {

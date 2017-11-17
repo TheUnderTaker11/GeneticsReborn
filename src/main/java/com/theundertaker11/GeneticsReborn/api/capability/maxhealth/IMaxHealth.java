@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.api.capability.maxhealth;
+package com.theundertaker11.geneticsreborn.api.capability.maxhealth;
 
 /**
  * A capability to provide a max health bonus to an entity.

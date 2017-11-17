@@ -1,9 +1,9 @@
-package com.theundertaker11.GeneticsReborn.event;
+package com.theundertaker11.geneticsreborn.event;
 
 import javax.annotation.Nullable;
 
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;

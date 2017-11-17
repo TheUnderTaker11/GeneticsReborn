@@ -1,13 +1,14 @@
-package com.theundertaker11.GeneticsReborn.items;
+package com.theundertaker11.geneticsreborn.items;
 
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.GeneCapabilityProvider;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,40 +21,42 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class Debugger extends ItemBase{
 	public Debugger(String name) {
 		super(name);
 	}
-	
+
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
-    {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("Right click to add all genes, shift right click to remove all genes.");
-    }
-	
+	}
+
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
+		ItemStack stack = playerIn.getHeldItemMainhand();
 		//Returns if nothing should happen.
 		if(worldIn.isRemote||ModUtils.getIGenes(playerIn)==null||hand!=EnumHand.MAIN_HAND||ModUtils.getIMaxHealth(playerIn)==null) return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
-		NBTTagCompound tag = ModUtils.getTagCompound(stack);
+		//NBTTagCompound tag = ModUtils.getTagCompound(stack);
 		IGenes genes = ModUtils.getIGenes(playerIn);
 		IMaxHealth maxhealth = ModUtils.getIMaxHealth(playerIn);
 		if(!playerIn.isSneaking())
 		{
 			genes.addAllGenes();
 			maxhealth.setBonusMaxHealth(20);
-			playerIn.addChatMessage(new TextComponentString("Added genes"));
+			playerIn.sendMessage(new TextComponentString("Added genes"));
 		}
 		else
 		{
 			genes.removeAllGenes();
 			maxhealth.setBonusMaxHealth(0);
-			playerIn.addChatMessage(new TextComponentString("Removed genes"));
+			playerIn.sendMessage(new TextComponentString("Removed genes"));
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
     }
-	
+	/*
 	@Override
 	public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
     {
@@ -77,5 +80,5 @@ public class Debugger extends ItemBase{
 			}
 		}
 		return true;
-    }
+    }*/
 }

@@ -1,9 +1,9 @@
-package com.theundertaker11.GeneticsReborn.event;
+package com.theundertaker11.geneticsreborn.event;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntitySmallFireball;
@@ -26,7 +26,7 @@ public class OnRightClick{
 	public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event)
 	{
 		EntityPlayer player = event.getEntityPlayer();
-		if(player.getFoodStats().needFood()==true&&event.getEntityPlayer().getHeldItemMainhand()==null&&ModUtils.getIGenes(player)!=null&&event.getWorld().getBlockState(event.getPos()).getBlock()==Blocks.GRASS)
+		if(player.getFoodStats().needFood()==true&&event.getEntityPlayer().getHeldItemMainhand().isEmpty()&&ModUtils.getIGenes(player)!=null&&event.getWorld().getBlockState(event.getPos()).getBlock()==Blocks.GRASS)
 		{
 			IGenes playergenes = ModUtils.getIGenes(player);
 			if(GeneticsReborn.enableEatGrass&&playergenes.hasGene(EnumGenes.EAT_GRASS))
@@ -46,7 +46,7 @@ public class OnRightClick{
 	{
 		if(GeneticsReborn.enableShootFireballs)
 		{
-			if(event.getItemStack()!=null&&event.getItemStack().getItem()==Items.BLAZE_ROD)
+			if(event.getItemStack().getItem()==Items.BLAZE_ROD)
 			{
 				EntityPlayer player = event.getEntityPlayer();
 				if(ModUtils.getIGenes(player)!=null)
@@ -55,9 +55,9 @@ public class OnRightClick{
 					if(genes.hasGene(EnumGenes.SHOOT_FIREBALLS))
 					{
 						Vec3d v3 = player.getLook(1);
-        	            EntitySmallFireball fireball = new EntitySmallFireball(player.getEntityWorld(), player.posX, player.posY + player.eyeHeight, player.posZ, v3.xCoord, v3.yCoord, v3.zCoord);
+        	            EntitySmallFireball fireball = new EntitySmallFireball(player.getEntityWorld(), player.posX, player.posY + player.eyeHeight, player.posZ, v3.x, v3.y, v3.z);
         	            fireball.shootingEntity = player;
-        	            player.getEntityWorld().spawnEntityInWorld(fireball);
+        	            player.getEntityWorld().spawnEntity(fireball);
 					}
 				}
 			}

@@ -1,7 +1,7 @@
 {
     "parent": "item/handheld",
     "textures": {
-        "layer0": "GeneticsReborn:items/MetalScraper"
+        "layer0": "geneticsreborn:items/metalscraper"
     }
 }
 

@@ -1,11 +1,12 @@
-package com.theundertaker11.GeneticsReborn.blocks.dnadecrypter;
+package com.theundertaker11.geneticsreborn.blocks.dnadecrypter;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.theundertaker11.GeneticsReborn.api.capability.genes.MobToGeneRegistry;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.MobToGeneRegistry;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,8 +18,8 @@ import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver implements ITickable{
 	
-	public static final short TICKS_NEEDED = 200;
-	
+	public static int TICKS_NEEDED = GeneticsReborn.baseTickDNADecrypter;
+	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickDNADecrypter;
 	public GRTileEntityDNADecrypter(){
 		super();
 	}
@@ -26,12 +27,12 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 	@Override
 	public void update()
 	{
-		int rfpertick = (20+(this.overclockers*85));
+		int rfpertick = (baseRfPerTick+(this.overclockers*85));
 		if (canSmelt()) 
 		{
-			if (this.energy > rfpertick)
+			if (this.storage.getEnergyStored() > rfpertick)
 			{
-				this.energy -= rfpertick;
+				this.storage.extractEnergy(rfpertick, false);
 				ticksCooking++;
 				markDirty();
 			}
@@ -49,7 +50,7 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 
 	public static ItemStack getSmeltingResultForItem(ItemStack stack)
 	{
-		if(stack!=null&&stack.getItem()==GRItems.DNAHelix&&stack.getTagCompound()!=null)
+		if(stack.getItem()==GRItems.DNAHelix&&stack.getTagCompound()!=null)
 		{
 			if(!ModUtils.getTagCompound(stack).hasKey("gene"))
 			{
@@ -64,7 +65,7 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 				return result;
 			}
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	/**
@@ -82,22 +83,21 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 	 */
 	private boolean smeltItem(boolean performSmelt)
 	{
-		ItemStack result = null;
+		ItemStack result;
 		IItemHandler inventory = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler inventoryoutput = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
 		
 		// Sees if the input slot is smeltable and if result fits into an output slot (stacking if possible)
-			if (inventory != null&&inventory.getStackInSlot(0)!=null) 
+			if (inventory != null&&!inventory.getStackInSlot(0).isEmpty()) 
 			{
 				result = getSmeltingResultForItem(inventory.getStackInSlot(0));
-				if (result != null)
+				if (!result.isEmpty())
 				{
 						//Trys to insert into output slot
-						ItemStack inputSlotStack = inventory.getStackInSlot(0);
 						ItemStack outputSlotStack = inventoryoutput.getStackInSlot(0);
-						if (outputSlotStack == null)
+						if (outputSlotStack.isEmpty())
 						{
-							if(inventoryoutput.insertItem(0, result, !performSmelt)==null)
+							if(inventoryoutput.insertItem(0, result, !performSmelt).isEmpty())
 							{
 								inventory.extractItem(0, 1, !performSmelt);
 								markDirty();
@@ -105,7 +105,7 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 							}
 						}else
 						{
-							if(inventoryoutput.insertItem(0, result, true)!=null)
+							if(!inventoryoutput.insertItem(0, result, true).isEmpty())
 							{
 								return false;
 							}
@@ -148,7 +148,7 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 
 	public int getField(int id) {
 		if (id == TICKS_COOKING_FIELD_ID) return ticksCooking;
-		if (id == ENERGY_STORED_FIELD_ID) return this.getEnergyStored(null);
+		if (id == ENERGY_STORED_FIELD_ID) return this.storage.getEnergyStored();
 		if(id==OVERCLOCKERS_FIELD_ID) return this.overclockers;
 		System.err.println("Invalid field ID in GRTileEntity.getField:" + id);
 		return 0;
@@ -159,7 +159,7 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 		if (id == TICKS_COOKING_FIELD_ID) {
 			ticksCooking = (short)value;
 		} else if (id == ENERGY_STORED_FIELD_ID){
-			this.energy = (short)value;
+			this.storage.setEnergyStored((short)value);
 		}else if(id==OVERCLOCKERS_FIELD_ID){
 			this.overclockers = (short)value;
 		}else {

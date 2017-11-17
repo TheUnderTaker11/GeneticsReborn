@@ -1,11 +1,9 @@
-package com.theundertaker11.GeneticsReborn.api.capability.genes;
+package com.theundertaker11.geneticsreborn.api.capability.genes;
 
 import java.util.List;
 
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
@@ -13,8 +11,7 @@ import net.minecraftforge.common.capabilities.Capability.IStorage;
 /**
  * This class is responsible for saving and reading data from or to server
  */
-public class GenesStorage implements IStorage<IGenes>
-{
+public class GenesStorage implements IStorage<IGenes> {
 	
 	@Override
  	public NBTBase writeNBT(Capability<IGenes> capability, IGenes instance, EnumFacing side)
@@ -24,7 +21,7 @@ public class GenesStorage implements IStorage<IGenes>
 		for(int i=0;i<instance.getGeneNumber();i++)
 		{
 			String genename = genelist.get(i).toString();
-			tag.setString(i+"", "GeneticsReborn"+genename);
+			tag.setString(Integer.toString(i), "GeneticsReborn"+genename);
 		}
 		return tag;
  	}
@@ -38,9 +35,9 @@ public class GenesStorage implements IStorage<IGenes>
  		for(int i=0;i<Genes.TotalNumberOfGenes;i++)
  		{
  			String nbtname = "Null";
- 			if(tag.hasKey(i+""))
+ 			if(tag.hasKey(Integer.toString(i)))
  			{
- 				nbtname = tag.getString(i+"");
+ 				nbtname = tag.getString(Integer.toString(i));
  			}
  			if(Genes.getGeneFromString(nbtname)!=null)	
  			{

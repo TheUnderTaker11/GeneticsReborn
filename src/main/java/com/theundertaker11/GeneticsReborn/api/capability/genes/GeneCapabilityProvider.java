@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.api.capability.genes;
+package com.theundertaker11.geneticsreborn.api.capability.genes;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
@@ -6,8 +6,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
-public class GeneCapabilityProvider implements ICapabilitySerializable<NBTBase>
-{
+public class GeneCapabilityProvider implements ICapabilitySerializable<NBTBase> {
 	@CapabilityInject(IGenes.class)
 	public static final Capability<IGenes> GENES_CAPABILITY = null;
 

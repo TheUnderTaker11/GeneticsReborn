@@ -1,23 +1,23 @@
-package com.theundertaker11.GeneticsReborn;
+package com.theundertaker11.geneticsreborn;
 
-import com.theundertaker11.GeneticsReborn.api.capability.CapabilityHandler;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.MobToGeneRegistry;
-import com.theundertaker11.GeneticsReborn.blocks.GRBlocks;
-import com.theundertaker11.GeneticsReborn.crafting.CraftingManager;
-import com.theundertaker11.GeneticsReborn.event.GREventHandler;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.keybinds.KeybindHandler;
-import com.theundertaker11.GeneticsReborn.packets.GeneticsRebornPacketHandler;
-import com.theundertaker11.GeneticsReborn.proxy.CommonProxy;
-import com.theundertaker11.GeneticsReborn.proxy.GuiProxy;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntity;
+import org.apache.logging.log4j.Logger;
+
+import com.theundertaker11.geneticsreborn.api.capability.CapabilityHandler;
+import com.theundertaker11.geneticsreborn.api.capability.genes.MobToGeneRegistry;
+import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
+import com.theundertaker11.geneticsreborn.crafting.CraftingManager;
+import com.theundertaker11.geneticsreborn.event.GREventHandler;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.keybinds.KeybindHandler;
+import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
+import com.theundertaker11.geneticsreborn.proxy.CommonProxy;
+import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntity;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -25,16 +25,18 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.NAME)
+@Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.NAME, acceptedMinecraftVersions = Reference.ACCEPTED_MINECRAFT)
 
 public class GeneticsReborn {
 	
-	public static CreativeTabs GRtab = new CreativeTabGR(CreativeTabs.getNextID(), "GRtab");
+	public static final CreativeTabs GRtab = new CreativeTabGR(CreativeTabs.getNextID(), "GRtab");
 	@SidedProxy(clientSide = Reference.CLIENTPROXY, serverSide = Reference.SERVERPROXY)
 	public static CommonProxy proxy;
 	
 	@Mod.Instance
     public static GeneticsReborn instance;
+	
+	public static final Logger log = FMLLog.getLogger();
 	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -48,7 +50,8 @@ public class GeneticsReborn {
 		GRTileEntity.regTileEntitys();
 		GeneticsRebornPacketHandler.init();
 		
-		if(event.getSide()==Side.CLIENT) KeybindHandler.init();
+		if(event.getSide()==Side.CLIENT) 
+			KeybindHandler.init();
 	}
 
 	@Mod.EventHandler
@@ -65,7 +68,7 @@ public class GeneticsReborn {
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-		
+		//Placeholder
 	}
 	
 	public static boolean playerGeneSharing;
@@ -99,48 +102,118 @@ public class GeneticsReborn {
 	public static boolean enableItemMagnet;
 	public static boolean enableXPMagnet;
 	public static boolean enableExplosiveExit;
+	public static boolean enablePhotosynthesis;
 	public static String[] CloningBlacklist;
 	
-	public void loadConfig(Configuration config)
+	public static int maxEnergyStored;
+	
+	public static int baseRfPerTickBloodPurifier;
+	public static int baseRfPerTickCellAnalyser;
+	public static int baseRfPerTickCloningMachine;
+	public static int baseRfPerTickDNADecrypter;
+	public static int baseRfPerTickDNAExtractor;
+	public static int baseRfPerTickPlasmidInfuser;
+	public static int baseRfPerTickPlasmidInjector;
+	
+	public static int baseTickBloodPurifier;
+	public static int baseTickCellAnalyser;
+	public static int baseTickCloningMachine;
+	public static int baseTickDNADecrypter;
+	public static int baseTickDNAExtractor;
+	public static int baseTickPlasmidInfuser;
+	public static int baseTickPlasmidInjector;
+	
+	public static int ocBloodPurifier;
+	public static int ocCellAnalyser;
+	public static int ocCloningMachine;
+	public static int ocDNADecrypter;
+	public static int ocDNAExtractor;
+	public static int ocPlasmidInfuser;
+	public static int ocPlasmidInjector;
+	public static int ocCoalGenerator;
+	
+	public static int CoalGeneratorMaxExtract;
+	public static int CoalGeneratorBaseRF;
+	public static float BaseFuelMult;
+	public static void loadConfig(Configuration config)
 	{
 		config.load();
-		config.addCustomCategoryComment("General Config", "");
-		config.addCustomCategoryComment("Genes", "Set any values to false to disable that gene.");
-
-		playerGeneSharing = config.getBoolean("Enable Gene Sharing", "General Config", false, "Setting this to true will enable players being able to take the blood of other players and get all the genes from it.");
-		keepGenesOnDeath = config.getBoolean("Keep genes on death", "General Config", true, "Better keep some back up syringes if this is set to false.");
-		allowGivingEntityGenes = config.getBoolean("Allow giving other entities genes", "General Config", false, "If this is enabled players can give animals such as horses genes with the metal syringe");
+		final String general = "General Config";
+		final String genes = "Genes";
+		final String baseticks = "baseticks";
+		final String baserf = "baserfpertick";
+		final String oclockers = "Change max amount of Overclockers for each machine";
 		
-		enableDragonsBreath = config.getBoolean("Dragon's Breath", "Genes", true, "");
-		enableEatGrass = config.getBoolean("Eat Grass", "Genes", true, "");
-		enableEmeraldHeart = config.getBoolean("Emerald Heart", "Genes", true, "");
-		enableEnderDragonHealth = config.getBoolean("Ender Dragon Health", "Genes", true, "");
-		enableFireProof = config.getBoolean("Fire-Proof", "Genes", true, "");
-		enableFlight = config.getBoolean("Flight", "Genes", true, "");
-		enableJumpBoost = config.getBoolean("Jump Boost", "Genes", true, "");
-		enableMilky = config.getBoolean("Milky", "Genes", true, "");
-		enableMoreHearts = config.getBoolean("More Hearts", "Genes", true, "");
-		enableNightVision = config.getBoolean("Night Vision", "Genes", true, "");
-		enableNoFallDamage = config.getBoolean("No Fall Damage", "Genes", true, "");
-		enablePoisonProof = config.getBoolean("Poison Proof", "Genes", true, "");
-		enableResistance = config.getBoolean("Resistance", "Genes", true, "");
-		enableSaveInventory = config.getBoolean("Keep Inventory", "Genes", true, "");
-		enableScareCreepers = config.getBoolean("Scare Creepers", "Genes", true, "");
-		enableShootFireballs = config.getBoolean("Shoot Fireballs", "Genes", true, "");
-		enableSlimy = config.getBoolean("Slimy", "Genes", true, "");
-		enableSpeed = config.getBoolean("Speed", "Genes", true, "");
-		enableStrength = config.getBoolean("Strength", "Genes", true, "");
-		enableTeleporter = config.getBoolean("Teleporter", "Genes", true, "");
-		enableWaterBreathing = config.getBoolean("Water Breathing", "Genes", true, "");
-		enableWooly = config.getBoolean("Wooly", "Genes", true, "");
-		enableWitherHit = config.getBoolean("Wither Hit", "Genes", true, "");
-		enableWitherProof = config.getBoolean("Wither Proof", "Genes", true, "");
-		enableItemMagnet = config.getBoolean("Item Attraction Field", "Genes", true, "");
-		enableXPMagnet = config.getBoolean("XP Attraction Field", "Genes", true, "");
-		enableExplosiveExit = config.getBoolean("Explosive Exit", "Genes", true, "");
-		CloningBlacklist = config.getStringList("Cloning Blacklist", "General Config", new String[]{"EntityWither"},"Add the name of the Entity's class you want blacklisted. (The ender dragon will always be hardcode blacklisted.)");
+		config.addCustomCategoryComment(general, "");
+		config.addCustomCategoryComment(genes, "Set any values to false to disable that gene.");
+		config.addCustomCategoryComment(oclockers, "Changes max overclockers for each machine");
+		config.addCustomCategoryComment(baseticks, "Changes base ticks needed for each machine, max overclockers will always make the machine take 1-2 ticks. Reducing/Increasing this also increases total rf used by the machine.");
+		config.addCustomCategoryComment(baserf, "Base rf/t use of each machine.");
+		
+		playerGeneSharing = config.getBoolean("Enable Gene Sharing", general, false, "Setting this to true will enable players being able to take the blood of other players and get all the genes from it.");
+		keepGenesOnDeath = config.getBoolean("Keep genes on death", general, true, "Better keep some back up syringes if this is set to false.");
+		allowGivingEntityGenes = config.getBoolean("Allow giving other entities genes", general, false, "If this is enabled players can give animals such as horses genes with the metal syringe");
+		
+		enableDragonsBreath = config.getBoolean("Dragon's Breath", genes, true, "");
+		enableEatGrass = config.getBoolean("Eat Grass", genes, true, "");
+		enableEmeraldHeart = config.getBoolean("Emerald Heart", genes, true, "");
+		enableEnderDragonHealth = config.getBoolean("Ender Dragon Health", genes, true, "");
+		enableFireProof = config.getBoolean("Fire-Proof", genes, true, "");
+		enableFlight = config.getBoolean("Flight", genes, true, "");
+		enableJumpBoost = config.getBoolean("Jump Boost", genes, true, "");
+		enableMilky = config.getBoolean("Milky", genes, true, "");
+		enableMoreHearts = config.getBoolean("More Hearts", genes, true, "");
+		enableNightVision = config.getBoolean("Night Vision", genes, true, "");
+		enableNoFallDamage = config.getBoolean("No Fall Damage", genes, true, "");
+		enablePoisonProof = config.getBoolean("Poison Proof", genes, true, "");
+		enableResistance = config.getBoolean("Resistance", genes, true, "");
+		enableSaveInventory = config.getBoolean("Keep Inventory", genes, true, "");
+		enableScareCreepers = config.getBoolean("Scare Creepers", genes, true, "");
+		enableShootFireballs = config.getBoolean("Shoot Fireballs", genes, true, "");
+		enableSlimy = config.getBoolean("Slimy", genes, true, "");
+		enableSpeed = config.getBoolean("Speed", genes, true, "");
+		enableStrength = config.getBoolean("Strength", genes, true, "");
+		enableTeleporter = config.getBoolean("Teleporter", genes, true, "");
+		enableWaterBreathing = config.getBoolean("Water Breathing", genes, true, "");
+		enableWooly = config.getBoolean("Wooly", genes, true, "");
+		enableWitherHit = config.getBoolean("Wither Hit", genes, true, "");
+		enableWitherProof = config.getBoolean("Wither Proof", genes, true, "");
+		enableItemMagnet = config.getBoolean("Item Attraction Field", genes, true, "");
+		enableXPMagnet = config.getBoolean("XP Attraction Field", genes, true, "");
+		enableExplosiveExit = config.getBoolean("Explosive Exit", genes, true, "");
+		enablePhotosynthesis = config.getBoolean("Photosynthesis", genes, true, "");
+		CloningBlacklist = config.getStringList("Cloning Blacklist", general, new String[]{"EntityWither"},"Add the name of the Entity's class you want blacklisted. (The ender dragon will always be hardcode blacklisted.)");
 
-
+		maxEnergyStored = config.getInt("Max", general, 20000, 10000, 1000000000, "Changes max RF stored by all machines");
+		
+		baseTickBloodPurifier = config.getInt("Blood Purifier", baseticks, 200, 2, 5000, "");
+		baseTickCellAnalyser = config.getInt("Cell Analyser", baseticks, 400, 2, 5000, "");
+		baseTickCloningMachine = config.getInt("Cloning Machine", baseticks, 200, 2, 5000, "");
+		baseTickDNADecrypter = config.getInt("DNA Decrypter", baseticks, 200, 2, 5000, "");
+		baseTickDNAExtractor = config.getInt("DNA Extractor", baseticks, 200, 2, 5000, "");
+		baseTickPlasmidInfuser = config.getInt("Plasmid Infuser", baseticks, 400, 2, 5000, "");
+		baseTickPlasmidInjector = config.getInt("Plasmid Injector", baseticks, 400, 2, 5000, "");
+		
+		baseRfPerTickBloodPurifier = config.getInt("Blood Purifier", baserf, 20, 1, 100000, "");
+		baseRfPerTickCellAnalyser = config.getInt("Cell Analyser", baserf, 20, 1, 100000, "");
+		baseRfPerTickCloningMachine = config.getInt("Cloning Machine", baserf, 500, 1, 100000, "");
+		baseRfPerTickDNADecrypter = config.getInt("DNA Decrypter", baserf, 20, 1, 100000, "");
+		baseRfPerTickDNAExtractor = config.getInt("DNA Extractor", baserf, 20, 1, 100000, "");
+		baseRfPerTickPlasmidInfuser = config.getInt("Plasmid Infuser", baserf, 20, 1, 100000, "");
+		baseRfPerTickPlasmidInjector = config.getInt("Plasmid Injector", baserf, 20, 1, 100000, "");
+		
+		ocBloodPurifier = config.getInt("Blood Purifier", oclockers, 5, 0, 5, "");
+		ocCellAnalyser = config.getInt("Cell Analyser", oclockers, 10, 0, 10, "");
+		ocCloningMachine = config.getInt("Cloning Machine", oclockers, 3, 0, 3, "");
+		ocDNADecrypter = config.getInt("DNA Decrypter", oclockers, 5, 0, 5, "");
+		ocDNAExtractor = config.getInt("DNA Extractor", oclockers, 5, 0, 5, "");
+		ocPlasmidInfuser = config.getInt("Plasmid Infuser", oclockers, 10, 0, 10, "");
+		ocPlasmidInjector = config.getInt("Plasmid Injector", oclockers, 10, 0, 10, "");
+		ocCoalGenerator = config.getInt("Coal Generator", oclockers, 10, 0, 10, "");
+		
+		CoalGeneratorMaxExtract = config.getInt("Max Extraction Rate per tick", "Power Gen", 1000, 10, 10000, "");
+		CoalGeneratorBaseRF = config.getInt("Base rf/t production", "Power Gen", 10, 5, 200, "");
+		BaseFuelMult = config.getFloat("Muliplier to base fuel time, 1=normal burn time.", "Power Gen", 1F, 0.01F, 10F, "");
 		config.save();
 	}
 }

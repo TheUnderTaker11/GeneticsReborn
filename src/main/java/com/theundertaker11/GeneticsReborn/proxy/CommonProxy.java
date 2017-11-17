@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.proxy;
+package com.theundertaker11.geneticsreborn.proxy;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
