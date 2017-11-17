@@ -1,6 +1,4 @@
-package com.theundertaker11.GeneticsReborn.api.capability.maxhealth;
-
-import java.util.List;
+package com.theundertaker11.geneticsreborn.api.capability.maxhealth;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,7 +6,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
-public class MaxHealthStorage implements IStorage<IMaxHealth>{
+public class MaxHealthStorage implements IStorage<IMaxHealth> {
 	
 	@Override
  	public NBTBase writeNBT(Capability<IMaxHealth> capability, IMaxHealth instance, EnumFacing side)

@@ -1,10 +1,10 @@
-package com.theundertaker11.GeneticsReborn.event;
+package com.theundertaker11.geneticsreborn.event;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -32,6 +32,20 @@ public class OnEntityHurt {
 	{
 		 if(!event.getEntity().getEntityWorld().isRemote)
 		 {
+			 if(GeneticsReborn.enableWitherHit && event.getEntity() instanceof EntityLivingBase)
+			 {
+				EntityLivingBase entityattacker = (EntityLivingBase)event.getEntity();
+				if(ModUtils.getIGenes(entityattacker)!=null)
+				{
+					IGenes genes = ModUtils.getIGenes(entityattacker);
+					EntityLivingBase entitytarget = event.getEntityLiving();
+					if(genes.hasGene(EnumGenes.WITHER_HIT))
+					{
+						entitytarget.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.wither), 100, 1)));
+					}
+				}
+			 }
+			 
 			 EntityLivingBase entityliving = event.getEntityLiving();
 			 if(!GeneticsReborn.allowGivingEntityGenes&&!(entityliving instanceof EntityPlayer)) return;
 			 
@@ -41,7 +55,8 @@ public class OnEntityHurt {
 				 
 				 if(GeneticsReborn.enableFireProof&&genes.hasGene(EnumGenes.FIRE_PROOF))
 				 {
-					 if(event.getSource().equals(DamageSource.lava) || event.getSource().equals(DamageSource.inFire) || event.getSource().equals(DamageSource.onFire))
+					 if(event.getSource().equals(DamageSource.LAVA) || event.getSource().equals(DamageSource.IN_FIRE) 
+							 || event.getSource().equals(DamageSource.ON_FIRE))
 					 {
 						entityliving.extinguish();
 						event.setCanceled(true);
@@ -49,36 +64,23 @@ public class OnEntityHurt {
 				 }
 				 if(GeneticsReborn.enableWitherProof&&genes.hasGene(EnumGenes.WITHER_PROOF))
 				 {
-					 if(event.getSource().equals(DamageSource.wither))
+					 if(event.getSource().equals(DamageSource.WITHER))
 					 {
-	//TODO what the fuck	//if(entityliving.isPotionActive(Potion.getPotionById(ModUtils.wither))) entityliving.removePotionEffect(Potion.getPotionById(ModUtils.wither));
+	//TODO what	//if(entityliving.isPotionActive(Potion.getPotionById(ModUtils.wither))) entityliving.removePotionEffect(Potion.getPotionById(ModUtils.wither));
 						event.setCanceled(true);
 					 }
 				 }
 				 if(GeneticsReborn.enablePoisonProof&&genes.hasGene(EnumGenes.POISON_PROOF))
 				 {
-					 if(event.getSource().equals(DamageSource.magic) && entityliving.getActivePotionEffect(Potion.getPotionById(ModUtils.poison))!=null)
+					 if(event.getSource().equals(DamageSource.MAGIC) && entityliving.getActivePotionEffect(Potion.getPotionById(ModUtils.poison))!=null)
 					 {
-	//TODO what the fuck	//if(entityliving.isPotionActive(Potion.getPotionById(ModUtils.poison))) entityliving.removePotionEffect(Potion.getPotionById(ModUtils.poison));
+	//TODO what	//if(entityliving.isPotionActive(Potion.getPotionById(ModUtils.poison))) entityliving.removePotionEffect(Potion.getPotionById(ModUtils.poison));
 						event.setCanceled(true);
 					 }
 				 }
 				 
 				 
 			 }
-		 }
-		 if(GeneticsReborn.enableWitherHit&&event.getSource().getEntity() instanceof EntityLivingBase)
-		 {
-			EntityLivingBase entityattacker = (EntityLivingBase)event.getSource().getEntity();
-			if(ModUtils.getIGenes(entityattacker)!=null)
-			{
-				IGenes genes = ModUtils.getIGenes(entityattacker);
-				EntityLivingBase entitytarget = event.getEntityLiving();
-				if(genes.hasGene(EnumGenes.WITHER_HIT))
-				{
-					entitytarget.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.wither), 100, 1)));
-				}
-			}
 		 }
 	}
 	
@@ -97,14 +99,14 @@ public class OnEntityHurt {
 			{
 				for(int i=0;i<player.inventory.getSizeInventory();i++)
 				{
-					if(player.inventory.getStackInSlot(i)!=null&&player.inventory.getStackInSlot(i).getItem()==GRItems.DragonHealthCrystal)
+					if(player.inventory.getStackInSlot(i).getItem()==GRItems.DragonHealthCrystal)
 					{
 						ItemStack stack = player.inventory.getStackInSlot(i);
 						stack.damageItem((int)event.getAmount(), player);
 						player.playSound(SoundEvents.BLOCK_ANVIL_LAND, 1.0F, 0.4F);
 						//For some reason unless I manually remove it the game will crash or glitch when the dur gets to 0.
 						//So this below checks for that and makes sure to remove it.
-						if(stack.stackSize<1) player.inventory.setInventorySlotContents(i, null);
+						if(stack.getCount()<1) player.inventory.setInventorySlotContents(i, ItemStack.EMPTY);
 						event.setCanceled(true);
 						break;
 					}
@@ -119,7 +121,7 @@ public class OnEntityHurt {
 	@SubscribeEvent
 	public void onFall(LivingAttackEvent event)
 	{
-		if(GeneticsReborn.enableNoFallDamage&&event.getSource().equals(DamageSource.fall))
+		if(GeneticsReborn.enableNoFallDamage&&event.getSource().equals(DamageSource.FALL))
 		{
 			EntityLivingBase entityliving = event.getEntityLiving();
 			if(!GeneticsReborn.allowGivingEntityGenes&&!(entityliving instanceof EntityPlayer)) return;

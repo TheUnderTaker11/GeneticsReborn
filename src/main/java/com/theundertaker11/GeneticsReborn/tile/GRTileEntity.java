@@ -1,12 +1,13 @@
-package com.theundertaker11.GeneticsReborn.tile;
+package com.theundertaker11.geneticsreborn.tile;
 
-import com.theundertaker11.GeneticsReborn.blocks.bloodpurifier.GRTileEntityBloodPurifier;
-import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.GRTileEntityCellAnalyser;
-import com.theundertaker11.GeneticsReborn.blocks.cloningmachine.GRTileEntityCloningMachine;
-import com.theundertaker11.GeneticsReborn.blocks.dnadecrypter.GRTileEntityDNADecrypter;
-import com.theundertaker11.GeneticsReborn.blocks.dnaextractor.GRTileEntityDNAExtractor;
-import com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser.GRTileEntityPlasmidInfuser;
-import com.theundertaker11.GeneticsReborn.blocks.plasmidinjector.GRTileEntityPlasmidInjector;
+import com.theundertaker11.geneticsreborn.blocks.bloodpurifier.GRTileEntityBloodPurifier;
+import com.theundertaker11.geneticsreborn.blocks.cellanalyser.GRTileEntityCellAnalyser;
+import com.theundertaker11.geneticsreborn.blocks.cloningmachine.GRTileEntityCloningMachine;
+//import com.theundertaker11.geneticsreborn.blocks.coalgenerator.GRTileEntityCoalGenerator;
+import com.theundertaker11.geneticsreborn.blocks.dnadecrypter.GRTileEntityDNADecrypter;
+import com.theundertaker11.geneticsreborn.blocks.dnaextractor.GRTileEntityDNAExtractor;
+import com.theundertaker11.geneticsreborn.blocks.plasmidinfuser.GRTileEntityPlasmidInfuser;
+import com.theundertaker11.geneticsreborn.blocks.plasmidinjector.GRTileEntityPlasmidInjector;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -21,5 +22,6 @@ public class GRTileEntity {
 		GameRegistry.registerTileEntity(GRTileEntityBloodPurifier.class, "GRTileEntityBloodPurifier");
 		GameRegistry.registerTileEntity(GRTileEntityPlasmidInjector.class, "GRTileEntityPlasmidInjector");
 		GameRegistry.registerTileEntity(GRTileEntityCloningMachine.class, "GRTileEntityCloningMachine");
+		//GameRegistry.registerTileEntity(GRTileEntityCoalGenerator.class, "GRTileEntityCoalGenerator");
 	}
 }

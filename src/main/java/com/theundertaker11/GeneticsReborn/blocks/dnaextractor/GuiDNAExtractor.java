@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.blocks.dnaextractor;
+package com.theundertaker11.geneticsreborn.blocks.dnaextractor;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.Reference;
+import com.theundertaker11.geneticsreborn.Reference;
 
 /**
  * I copy any of my other machines from this class, the todo's are just a reminder to myself
@@ -24,7 +24,7 @@ import com.theundertaker11.GeneticsReborn.Reference;
 public class GuiDNAExtractor extends GuiContainer {
 
 	// This is the resource location for the background image
-	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/GuiDNAExtractor.png");
+	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/guidnaextractor.png");
 	//TODO Change this and the constructor below.
 	private GRTileEntityDNAExtractor tileEntity;
 
@@ -68,15 +68,15 @@ public class GuiDNAExtractor extends GuiContainer {
 
 		final int LABEL_XPOS = 5;
 		final int LABEL_YPOS = 5;
-		fontRendererObj.drawString("DNA Extractor", LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());//TODO change this
+		fontRenderer.drawString("DNA Extractor", LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());//TODO change this
 		
 		final int POWER_XPOS = 35;
 		final int POWER_YPOS = 40;
-		fontRendererObj.drawString(("Power: "+tileEntity.getEnergyStored(null)+"/"+tileEntity.capacity+" RF"), POWER_XPOS, POWER_YPOS, Color.darkGray.getRGB());
+		fontRenderer.drawString(("Power: "+tileEntity.storage.getEnergyStored()+"/"+tileEntity.storage.getMaxEnergyStored()+" RF"), POWER_XPOS, POWER_YPOS, Color.darkGray.getRGB());
 		
 		final int OVERCLOCKERCOUNT_XPOS = 36;
 		final int OVERCLOCKERCOUNT_YPOS = 87;
-		fontRendererObj.drawString(("Overclockers: "+tileEntity.getOverclockerCount()), OVERCLOCKERCOUNT_XPOS, OVERCLOCKERCOUNT_YPOS, Color.darkGray.getRGB());
+		fontRenderer.drawString(("Overclockers: "+tileEntity.getOverclockerCount()), OVERCLOCKERCOUNT_XPOS, OVERCLOCKERCOUNT_YPOS, Color.darkGray.getRGB());
 		
 		List<String> hoveringText = new ArrayList<String>();
 
@@ -90,7 +90,7 @@ public class GuiDNAExtractor extends GuiContainer {
 
 		// If hoveringText is not empty draw the hovering text
 		if (!hoveringText.isEmpty()){
-			drawHoveringText(hoveringText, mouseX - guiLeft, mouseY - guiTop, fontRendererObj);
+			drawHoveringText(hoveringText, mouseX - guiLeft, mouseY - guiTop, fontRenderer);
 		}
 
 	}

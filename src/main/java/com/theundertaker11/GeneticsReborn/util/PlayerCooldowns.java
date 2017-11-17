@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.util;
+package com.theundertaker11.geneticsreborn.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,12 @@ public class PlayerCooldowns {
 		this.ticksLeft--;
 	}
 	
+	public void removeTick(int amount)
+	{
+		this.ticksLeft-=amount;
+		if(ticksLeft<0)
+			ticksLeft=0;
+	}
 	public boolean isFinished()
 	{
 		return (this.ticksLeft<=0);

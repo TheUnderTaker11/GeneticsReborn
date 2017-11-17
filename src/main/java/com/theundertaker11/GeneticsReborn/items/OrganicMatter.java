@@ -1,12 +1,16 @@
-package com.theundertaker11.GeneticsReborn.items;
+package com.theundertaker11.geneticsreborn.items;
 
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class OrganicMatter extends ItemBase {
 
@@ -15,8 +19,7 @@ public class OrganicMatter extends ItemBase {
 	}
 	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
-    {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if(stack.getTagCompound()!=null)
 		{
 			tooltip.add("Cell type: "+ModUtils.getTagCompound(stack).getString("entityName"));

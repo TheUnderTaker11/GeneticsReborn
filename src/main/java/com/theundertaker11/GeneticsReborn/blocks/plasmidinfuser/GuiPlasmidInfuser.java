@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser;
+package com.theundertaker11.geneticsreborn.blocks.plasmidinfuser;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -12,14 +12,14 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.Reference;
+import com.theundertaker11.geneticsreborn.Reference;
 
 
 @SideOnly(Side.CLIENT)
 public class GuiPlasmidInfuser extends GuiContainer {
 
 	// This is the resource location for the background image
-	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/GuiPlasmidInfuser.png");
+	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/guiplasmidinfuser.png");
 
 	private GRTileEntityPlasmidInfuser tileEntity;
 
@@ -63,19 +63,19 @@ public class GuiPlasmidInfuser extends GuiContainer {
 
 		final int LABEL_XPOS = 5;
 		final int LABEL_YPOS = 5;
-		fontRendererObj.drawString("Plasmid Infuser", LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());
+		fontRenderer.drawString("Plasmid Infuser", LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());
 		
 		final int POWER_XPOS = 35;
 		final int POWER_YPOS = 40;
-		fontRendererObj.drawString(("Power: "+tileEntity.getEnergyStored(null)+"/"+tileEntity.capacity+" RF"), POWER_XPOS, POWER_YPOS, Color.darkGray.getRGB());
+		fontRenderer.drawString(("Power: "+tileEntity.storage.getEnergyStored()+"/"+tileEntity.storage.getMaxEnergyStored()+" RF"), POWER_XPOS, POWER_YPOS, Color.darkGray.getRGB());
 		
 		final int OVERCLOCKERCOUNT_XPOS = 16;
 		final int OVERCLOCKERCOUNT_YPOS = 87;
-		fontRendererObj.drawString(("Overclockers: "+tileEntity.getOverclockerCount()), OVERCLOCKERCOUNT_XPOS, OVERCLOCKERCOUNT_YPOS, Color.darkGray.getRGB());
+		fontRenderer.drawString(("Overclockers: "+tileEntity.getOverclockerCount()), OVERCLOCKERCOUNT_XPOS, OVERCLOCKERCOUNT_YPOS, Color.darkGray.getRGB());
 		
 		final int NUMCOUNT_XPOS = 124;
 		final int NUMCOUNT_YPOS = 87;
-		fontRendererObj.drawString(tileEntity.num+"/"+tileEntity.numNeeded, NUMCOUNT_XPOS, NUMCOUNT_YPOS, Color.darkGray.getRGB());
+		fontRenderer.drawString(tileEntity.num+"/"+tileEntity.numNeeded, NUMCOUNT_XPOS, NUMCOUNT_YPOS, Color.darkGray.getRGB());
 		
 		List<String> hoveringText = new ArrayList<String>();
 
@@ -89,7 +89,7 @@ public class GuiPlasmidInfuser extends GuiContainer {
 
 		// If hoveringText is not empty draw the hovering text
 		if (!hoveringText.isEmpty()){
-			drawHoveringText(hoveringText, mouseX - guiLeft, mouseY - guiTop, fontRendererObj);
+			drawHoveringText(hoveringText, mouseX - guiLeft, mouseY - guiTop, fontRenderer);
 		}
 
 	}

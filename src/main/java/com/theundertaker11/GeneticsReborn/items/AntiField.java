@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.items;
+package com.theundertaker11.geneticsreborn.items;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -19,8 +19,9 @@ public class AntiField extends ItemBase{
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand hand)
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
+		ItemStack stack = playerIn.getHeldItemMainhand();
 		if(stack.getItemDamage()==0) stack.setItemDamage(1);
 		else stack.setItemDamage(0);
 		return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);

@@ -1,10 +1,11 @@
-package com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser;
+package com.theundertaker11.geneticsreborn.blocks.plasmidinfuser;
 
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.Genes;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.Genes;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +17,8 @@ import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver implements ITickable{
 	
-	public static final short TICKS_NEEDED = 400;
+	public static int TICKS_NEEDED = GeneticsReborn.baseTickPlasmidInfuser;
+	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickPlasmidInfuser;
 	public int num;
 	public int numNeeded;
 	private int timer;
@@ -33,7 +35,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 		{
 			this.timer=0;
 			IItemHandler output = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-			if(output.getStackInSlot(0)!=null&&output.getStackInSlot(0).getItem()==GRItems.Plasmid)
+			if(output.getStackInSlot(0).getItem()==GRItems.Plasmid)
 			{
 				ItemStack stack = output.getStackInSlot(0);
 				if(stack.getTagCompound()!=null)
@@ -47,12 +49,12 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 				this.numNeeded = 0;
 			}
 		}
-		int rfpertick = (20+(this.overclockers*85));
+		int rfpertick = (baseRfPerTick+(this.overclockers*85));
 		if (canSmelt()) 
 		{
-			if (this.energy > rfpertick)
+			if (this.storage.getEnergyStored() > rfpertick)
 			{
-				this.energy -= rfpertick;
+				this.storage.extractEnergy(rfpertick, false);
 				ticksCooking++;
 				markDirty();
 			}
@@ -82,12 +84,12 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 	 */
 	private boolean smeltItem(boolean performSmelt)
 	{
-		ItemStack result = null;
+		ItemStack result;
 		IItemHandler inventory = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler inventoryoutput = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
 		
 		// Sees if the input slot is smeltable and if result fits into an output slot (stacking if possible)
-			if (inventory != null&&inventory.getStackInSlot(0)!=null&&inventoryoutput.getStackInSlot(0)!=null) 
+			if (inventory != null&&!inventory.getStackInSlot(0).isEmpty()&&!inventoryoutput.getStackInSlot(0).isEmpty()) 
 			{
 				ItemStack item = inventory.getStackInSlot(0);
 				result = inventoryoutput.getStackInSlot(0);
@@ -96,7 +98,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 					NBTTagCompound itemtag = ModUtils.getTagCompound(item);
 					if(result.getTagCompound()==null)
 					{
-						if(item.getTagCompound().getString("gene").equals("GeneticsRebornBasicGene")) return false;
+						if("GeneticsRebornBasicGene".equals(item.getTagCompound().getString("gene"))) return false;
 						
 						NBTTagCompound resulttag = ModUtils.getTagCompound(result);
 						String gene = ModUtils.getTagCompound(item).getString("gene");
@@ -108,12 +110,12 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 					{
 						NBTTagCompound resulttag = ModUtils.getTagCompound(result);
 						if(resulttag.getInteger("num")==resulttag.getInteger("numNeeded")) return false;
-						if(itemtag.getString("gene").equals("GeneticsRebornBasicGene"))
+						if("GeneticsRebornBasicGene".equals(itemtag.getString("gene")))
 						{
 							if(performSmelt)
 							{
 								resulttag.setInteger("num", resulttag.getInteger("num")+1);
-								inventory.extractItem(0, item.stackSize, false);
+								inventory.extractItem(0, item.getCount(), false);
 								this.markDirty();
 							}
 							return true;
@@ -127,7 +129,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 								{
 									resulttag.setInteger("num", resulttag.getInteger("numNeeded"));
 								}
-								inventory.extractItem(0, item.stackSize, false);
+								inventory.extractItem(0, item.getCount(), false);
 								this.markDirty();
 							}
 							return true;
@@ -160,7 +162,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 		{
 			return 60;
 		}
-		if(enumGene == EnumGenes.FLY||enumGene == EnumGenes.WITHER_PROOF||enumGene == EnumGenes.MORE_HEARTS||enumGene == EnumGenes.SAVE_INVENTORY)
+		if(enumGene == EnumGenes.FLY||enumGene == EnumGenes.WITHER_PROOF||enumGene == EnumGenes.MORE_HEARTS||enumGene == EnumGenes.SAVE_INVENTORY||enumGene == EnumGenes.PHOTOSYNTHESIS)
 		{
 			return 40;
 		}
@@ -208,7 +210,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 
 	public int getField(int id) {
 		if (id == TICKS_COOKING_FIELD_ID) return ticksCooking;
-		if (id == ENERGY_STORED_FIELD_ID) return this.getEnergyStored(null);
+		if (id == ENERGY_STORED_FIELD_ID) return this.storage.getEnergyStored();
 		if(id==OVERCLOCKERS_FIELD_ID) return this.overclockers;
 		if(id==NUM_FIELD_ID) return this.num;
 		if(id==NUMNEEDED_FIELD_ID) return this.numNeeded;
@@ -221,7 +223,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 		if (id == TICKS_COOKING_FIELD_ID) {
 			ticksCooking = (short)value;
 		} else if (id == ENERGY_STORED_FIELD_ID){
-			this.energy = (short)value;
+			this.storage.setEnergyStored((short)value);
 		}else if(id==OVERCLOCKERS_FIELD_ID){
 			this.overclockers = (short)value;
 		}else if(id==NUM_FIELD_ID){

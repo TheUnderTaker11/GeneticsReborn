@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "GeneticsReborn:items/DNAHelix"
+        "layer0": "geneticsreborn:items/dnahelix"
     }
 }
 

@@ -1,8 +1,9 @@
-package com.theundertaker11.GeneticsReborn.items;
+package com.theundertaker11.geneticsreborn.items;
 
-import com.theundertaker11.GeneticsReborn.render.IItemModelProvider;
+import com.theundertaker11.geneticsreborn.render.IItemModelProvider;
 
 import net.minecraft.item.Item;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class GRItems {
@@ -24,25 +25,26 @@ public class GRItems {
 	
 	public static void init()
 	{
-		Debugger = register(new Debugger("Debugger"));
-		GlassSyringe = register(new GlassSyringe("GlassSyringe"));
-		MetalSyringe = register(new MetalSyringe("MetalSyringe"));
-		MetalScraper = register(new DamageableItemBase("MetalScraper", 200, true));
-		AdvancedScraper = register(new DamageableItemBase("AdvancedScraper", 50, true));
-		Overclocker = register(new ItemBase("Overclocker"));
-		OrganicMatter = register(new OrganicMatter("OrganicMatter"));
-		Cell = register(new OrganicMatter("Cell"));
-		DNAHelix = register(new DNAHelix("DNAHelix"));
-		AntiPlasmid = register(new Plasmid("AntiPlasmid"));
-		Plasmid = register(new Plasmid("Plasmid"));
-		AntiField = register(new AntiField("AntiField"));
+		Debugger = register(new Debugger("debugger"));
+		GlassSyringe = register(new GlassSyringe("glasssyringe"));
+		MetalSyringe = register(new MetalSyringe("metalsyringe"));
+		MetalScraper = register(new DamageableItemBase("metalscraper", 200, true));
+		AdvancedScraper = register(new DamageableItemBase("advancedscraper", 50, true));
+		Overclocker = register(new ItemBase("overclocker"));
+		OrganicMatter = register(new OrganicMatter("organicmatter"));
+		Cell = register(new OrganicMatter("cell"));
+		DNAHelix = register(new DNAHelix("dnahelix"));
+		AntiPlasmid = register(new Plasmid("antiplasmid"));
+		Plasmid = register(new Plasmid("plasmid"));
+		AntiField = register(new AntiField("antifield"));
 		
-		DragonHealthCrystal = register(new DamageableItemBase("DragonHealthCrystal", 1000, true));
+		DragonHealthCrystal = register(new DamageableItemBase("dragonhealthcrystal", 1000, true));
 	}
 	
 	private static <T extends Item> T register(T item) 
 	{
-		GameRegistry.register(item);
+		//GameRegistry.register(item);
+		ForgeRegistries.ITEMS.register(item);
 		
 		if(item instanceof IItemModelProvider){
 			((IItemModelProvider)item).registerItemModel(item);

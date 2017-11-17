@@ -1,14 +1,18 @@
-package com.theundertaker11.GeneticsReborn.items;
+package com.theundertaker11.geneticsreborn.items;
 
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class DNAHelix extends ItemBase{
 
@@ -16,10 +20,9 @@ public class DNAHelix extends ItemBase{
 		super(name);
 		this.maxStackSize=1;
 	}
-	
+
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
-    {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if(stack.getTagCompound()!=null&&stack.getTagCompound().hasKey("entityName"))
 		{
 			tooltip.add("Gene of a "+ModUtils.getTagCompound(stack).getString("entityName"));
@@ -31,5 +34,5 @@ public class DNAHelix extends ItemBase{
 			}
 			else tooltip.add("Gene type: Unknown");
 		}
-    }
+	}
 }

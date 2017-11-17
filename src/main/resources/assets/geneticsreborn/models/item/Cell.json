@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "GeneticsReborn:items/Cell"
+        "layer0": "geneticsreborn:items/cell"
     }
 }
 

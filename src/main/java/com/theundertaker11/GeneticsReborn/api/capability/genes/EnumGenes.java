@@ -1,6 +1,6 @@
-package com.theundertaker11.GeneticsReborn.api.capability.genes;
+package com.theundertaker11.geneticsreborn.api.capability.genes;
 
-public enum EnumGenes{
+public enum EnumGenes {
 	DRAGONS_BREATH,
 	EAT_GRASS,
 	EMERALD_HEART,
@@ -14,6 +14,7 @@ public enum EnumGenes{
 	MORE_HEARTS,
 	NIGHT_VISION,
 	NO_FALL_DAMAGE,
+	PHOTOSYNTHESIS,
 	POISON_PROOF,
 	RESISTANCE,
 	SAVE_INVENTORY,
