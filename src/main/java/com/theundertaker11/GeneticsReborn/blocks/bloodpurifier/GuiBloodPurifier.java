@@ -41,6 +41,13 @@ public class GuiBloodPurifier extends GuiContainer {
 	final int COOK_BAR_WIDTH = 80;
 	final int COOK_BAR_HEIGHT = 17;
 
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks)
+	{
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
+	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int x, int y) {
