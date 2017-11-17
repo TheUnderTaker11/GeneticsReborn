@@ -32,54 +32,54 @@ public class OnEntityHurt {
 	{
 		 if(!event.getEntity().getEntityWorld().isRemote)
 		 {
-			 if(GeneticsReborn.enableWitherHit && event.getEntity() instanceof EntityLivingBase)
+			 if(GeneticsReborn.enableWitherHit&&event.getSource().getTrueSource() instanceof EntityLivingBase)
 			 {
-				EntityLivingBase entityattacker = (EntityLivingBase)event.getEntity();
-				if(ModUtils.getIGenes(entityattacker)!=null)
-				{
-					IGenes genes = ModUtils.getIGenes(entityattacker);
-					EntityLivingBase entitytarget = event.getEntityLiving();
-					if(genes.hasGene(EnumGenes.WITHER_HIT))
-					{
-						entitytarget.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.wither), 100, 1)));
-					}
-				}
+				 EntityLivingBase entityattacker = (EntityLivingBase)event.getSource().getTrueSource();
+				 if(ModUtils.getIGenes(entityattacker)!=null)
+				 {
+					 IGenes genes = ModUtils.getIGenes(entityattacker);
+					 EntityLivingBase entitytarget = event.getEntityLiving();
+					 if(genes.hasGene(EnumGenes.WITHER_HIT))
+					 {
+						 entitytarget.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.wither), 100, 1)));
+					 }
+				 }
 			 }
-			 
+
 			 EntityLivingBase entityliving = event.getEntityLiving();
 			 if(!GeneticsReborn.allowGivingEntityGenes&&!(entityliving instanceof EntityPlayer)) return;
-			 
+
 			 if(ModUtils.getIGenes(entityliving)!=null)
 			 {
 				 IGenes genes = ModUtils.getIGenes(entityliving);
-				 
+
 				 if(GeneticsReborn.enableFireProof&&genes.hasGene(EnumGenes.FIRE_PROOF))
 				 {
-					 if(event.getSource().equals(DamageSource.LAVA) || event.getSource().equals(DamageSource.IN_FIRE) 
+					 if(event.getSource().equals(DamageSource.LAVA) || event.getSource().equals(DamageSource.IN_FIRE)
 							 || event.getSource().equals(DamageSource.ON_FIRE))
 					 {
-						entityliving.extinguish();
-						event.setCanceled(true);
+						 entityliving.extinguish();
+						 event.setCanceled(true);
 					 }
 				 }
 				 if(GeneticsReborn.enableWitherProof&&genes.hasGene(EnumGenes.WITHER_PROOF))
 				 {
 					 if(event.getSource().equals(DamageSource.WITHER))
 					 {
-	//TODO what	//if(entityliving.isPotionActive(Potion.getPotionById(ModUtils.wither))) entityliving.removePotionEffect(Potion.getPotionById(ModUtils.wither));
-						event.setCanceled(true);
+						 //TODO what	//if(entityliving.isPotionActive(Potion.getPotionById(ModUtils.wither))) entityliving.removePotionEffect(Potion.getPotionById(ModUtils.wither));
+						 event.setCanceled(true);
 					 }
 				 }
 				 if(GeneticsReborn.enablePoisonProof&&genes.hasGene(EnumGenes.POISON_PROOF))
 				 {
 					 if(event.getSource().equals(DamageSource.MAGIC) && entityliving.getActivePotionEffect(Potion.getPotionById(ModUtils.poison))!=null)
 					 {
-	//TODO what	//if(entityliving.isPotionActive(Potion.getPotionById(ModUtils.poison))) entityliving.removePotionEffect(Potion.getPotionById(ModUtils.poison));
-						event.setCanceled(true);
+						 //TODO what	//if(entityliving.isPotionActive(Potion.getPotionById(ModUtils.poison))) entityliving.removePotionEffect(Potion.getPotionById(ModUtils.poison));
+						 event.setCanceled(true);
 					 }
 				 }
-				 
-				 
+
+
 			 }
 		 }
 	}
