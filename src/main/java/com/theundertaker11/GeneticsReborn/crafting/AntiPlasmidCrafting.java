@@ -106,7 +106,7 @@ public class AntiPlasmidCrafting implements IRecipe {
 	@Nullable
 	@Override
 	public ResourceLocation getRegistryName() {
-		return null;
+		return GRItems.AntiPlasmid.getRegistryName();
 	}
 
 	@Override

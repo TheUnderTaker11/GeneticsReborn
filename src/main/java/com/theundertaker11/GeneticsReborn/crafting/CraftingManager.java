@@ -1,113 +1,102 @@
 package com.theundertaker11.geneticsreborn.crafting;
 
+import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ForgeRegistry;
+
 public class CraftingManager {
 	public static void RegisterRecipes() {
-		/**
-		 //Items
-		 IRecipe MetalScraper = new ShapedOreRecipe(new ItemStack(GRItems.MetalScraper), new Object[]{
-		 " yx",
-		 " xy",
-		 "x  ", 'x', "stickWood", 'y', "ingotIron"});
-		 GameRegistry.addRecipe(MetalScraper);
+		GameRegistry.addShapedRecipe(GRItems.MetalScraper.getRegistryName(), null, new ItemStack(GRItems.MetalScraper), new Object[]{
+				" yx",
+				" xy",
+				"x  ", 'x', "stickWood", 'y', "ingotIron"});
 
-		 IRecipe AdvScraper = new ShapedOreRecipe(new ItemStack(GRItems.AdvancedScraper), new Object[]{
-		 "  y",
-		 " x ",
-		 "x  ", 'x', GRItems.MetalScraper, 'y', "gemDiamond"});
-		 GameRegistry.addRecipe(AdvScraper);
+		GameRegistry.addShapedRecipe(GRItems.AdvancedScraper.getRegistryName(), null, new ItemStack(GRItems.AdvancedScraper), new Object[]{
+				"  y",
+				" x ",
+				"x  ", 'x', GRItems.MetalScraper, 'y', "gemDiamond"});
 
-		 IRecipe GlassSyringe = new ShapedOreRecipe(new ItemStack(GRItems.GlassSyringe), new Object[]{
-		 " z ",
-		 "xax",
-		 "xyx", 'x', "blockGlass", 'a', Items.GLASS_BOTTLE, 'y', Items.ARROW, 'z', Blocks.PISTON});
-		 GameRegistry.addRecipe(GlassSyringe);
+		GameRegistry.addShapedRecipe(GRItems.GlassSyringe.getRegistryName(), null, new ItemStack(GRItems.GlassSyringe), new Object[]{
+				" z ",
+				"xax",
+				"xyx", 'x', "blockGlass", 'a', Items.GLASS_BOTTLE, 'y', Items.ARROW, 'z', Blocks.PISTON});
 
-		 IRecipe MetalSyringe = new ShapedOreRecipe(new ItemStack(GRItems.MetalSyringe), new Object[]{
-		 "xzx",
-		 "xax",
-		 "xyx", 'x', "ingotIron", 'a', GRItems.GlassSyringe, 'y', Blocks.OBSIDIAN, 'z', "gemDiamond"});
-		 GameRegistry.addRecipe(MetalSyringe);
+		GameRegistry.addShapedRecipe(GRItems.MetalSyringe.getRegistryName(), null, new ItemStack(GRItems.MetalSyringe), new Object[]{
+				"xzx",
+				"xax",
+				"xyx", 'x', "ingotIron", 'a', GRItems.GlassSyringe, 'y', Blocks.OBSIDIAN, 'z', "gemDiamond"});
 
-		 IRecipe Overclocker = new ShapedOreRecipe(new ItemStack(GRItems.Overclocker), new Object[] {
-		 "zyz",
-		 "yxy",
-		 "zyz", 'x', Items.CLOCK, 'y', "gemLapis", 'z', GRItems.Cell});
-		 GameRegistry.addRecipe(Overclocker);
+		GameRegistry.addShapedRecipe(GRItems.Overclocker.getRegistryName(), null, new ItemStack(GRItems.Overclocker), new Object[]{
+				"zyz",
+				"yxy",
+				"zyz", 'x', Items.CLOCK, 'y', "gemLapis", 'z', GRItems.Cell});
 
-		 IRecipe Plasmid = new ShapedOreRecipe(new ItemStack(GRItems.Plasmid), new Object[] {
-		 "zzz",
-		 "z z",
-		 "zzz", 'z', GRItems.DNAHelix});
-		 GameRegistry.addRecipe(Plasmid);
+		GameRegistry.addShapedRecipe(GRItems.Plasmid.getRegistryName(), null, new ItemStack(GRItems.Plasmid), new Object[]{
+				"zzz",
+				"z z",
+				"zzz", 'z', GRItems.DNAHelix});
 
-		 IRecipe AntiPlasmid = new ShapedOreRecipe(new ItemStack(GRItems.AntiPlasmid), new Object[] {
-		 "zzz",
-		 "zxz",
-		 "zzz", 'z', GRItems.DNAHelix, 'x', Items.FERMENTED_SPIDER_EYE});
-		 GameRegistry.addRecipe(AntiPlasmid);
+		GameRegistry.addShapedRecipe(GRItems.AntiPlasmid.getRegistryName(), null, new ItemStack(GRItems.AntiPlasmid), new Object[]{
+				"zzz",
+				"zxz",
+				"zzz", 'z', GRItems.DNAHelix, 'x', Items.FERMENTED_SPIDER_EYE});
 
-		 IRecipe DragonHealthCrystal = new ShapedOreRecipe(new ItemStack(GRItems.DragonHealthCrystal), new Object[] {
-		 "xzx",
-		 "zxz",
-		 "xzx", 'z', Items.END_CRYSTAL, 'x', "gemDiamond"});
-		 GameRegistry.addRecipe(DragonHealthCrystal);
+		GameRegistry.addShapedRecipe(GRItems.DragonHealthCrystal.getRegistryName(), null, new ItemStack(GRItems.DragonHealthCrystal), new Object[]{
+				"xzx",
+				"zxz",
+				"xzx", 'z', Items.END_CRYSTAL, 'x', "gemDiamond"});
 
-		 IRecipe AntiField = new ShapedOreRecipe(new ItemStack(GRItems.AntiField), new Object[] {
-		 "xzx",
-		 "zyz",
-		 "xzx", 'y', Items.FERMENTED_SPIDER_EYE, 'x', Items.ENDER_PEARL, 'z', "blockGlass"});
-		 GameRegistry.addRecipe(AntiField);
+		GameRegistry.addShapedRecipe(GRItems.AntiField.getRegistryName(), null, new ItemStack(GRItems.AntiField), new Object[]{
+				"xzx",
+				"zyz",
+				"xzx", 'y', Items.FERMENTED_SPIDER_EYE, 'x', Items.ENDER_PEARL, 'z', "blockGlass"});
 
-		 GameRegistry.addRecipe(new AntiPlasmidCrafting());
-		 //////////////////////Start blocks//////////////////////////////////////////////////////////////////////////////////////////
+		ForgeRegistries.RECIPES.register(new AntiPlasmidCrafting());
+		//////////////////////Start blocks//////////////////////////////////////////////////////////////////////////////////////////
 
-		 IRecipe CellAnalyser = new ShapedOreRecipe(new ItemStack(GRBlocks.CellAnalyser), new Object[] {
-		 "zzz",
-		 "zxz",
-		 "zyz",'x',"paneGlass",'z', "ingotIron", 'y', "dustRedstone"});
-		 GameRegistry.addRecipe(CellAnalyser);
+		GameRegistry.addShapedRecipe(GRBlocks.CellAnalyser.getRegistryName(), null, new ItemStack(GRBlocks.CellAnalyser), new Object[]{
+				"zzz",
+				"zxz",
+				"zyz", 'x', "paneGlass", 'z', "ingotIron", 'y', "dustRedstone"});
 
-		 IRecipe DNAExtractor = new ShapedOreRecipe(new ItemStack(GRBlocks.DNAExtractor), new Object[] {
-		 "zzz",
-		 "yxy",
-		 "zzz",'x',GRItems.Cell,'z', "ingotIron", 'y', Blocks.STICKY_PISTON});
-		 GameRegistry.addRecipe(DNAExtractor);
+		GameRegistry.addShapedRecipe(GRBlocks.DNAExtractor.getRegistryName(), null, new ItemStack(GRBlocks.DNAExtractor), new Object[]{
+				"zzz",
+				"yxy",
+				"zzz", 'x', GRItems.Cell, 'z', "ingotIron", 'y', Blocks.STICKY_PISTON});
 
-		 IRecipe DNADecrypter = new ShapedOreRecipe(new ItemStack(GRBlocks.DNADecrypter), new Object[] {
-		 "zaz",
-		 "yxy",
-		 "zaz",'x',"ingotGold",'z', "ingotIron", 'y', GRItems.DNAHelix, 'a', "blockGlass"});
-		 GameRegistry.addRecipe(DNADecrypter);
+		GameRegistry.addShapedRecipe(GRBlocks.DNADecrypter.getRegistryName(), null, new ItemStack(GRBlocks.DNADecrypter), new Object[]{
+				"zaz",
+				"yxy",
+				"zaz", 'x', "ingotGold", 'z', "ingotIron", 'y', GRItems.DNAHelix, 'a', "blockGlass"});
 
-		 IRecipe PlasmidInfuser = new ShapedOreRecipe(new ItemStack(GRBlocks.PlasmidInfuser), new Object[] {
-		 "zzz",
-		 "yxy",
-		 "zaz",'x',Blocks.PISTON,'z', "ingotIron", 'y', GRItems.Plasmid, 'a', "gemDiamond"});
-		 GameRegistry.addRecipe(PlasmidInfuser);
+		GameRegistry.addShapedRecipe(GRBlocks.PlasmidInfuser.getRegistryName(), null, new ItemStack(GRBlocks.PlasmidInfuser), new Object[]{
+				"zzz",
+				"yxy",
+				"zaz", 'x', Blocks.PISTON, 'z', "ingotIron", 'y', GRItems.Plasmid, 'a', "gemDiamond"});
 
-		 IRecipe PlasmidInjector = new ShapedOreRecipe(new ItemStack(GRBlocks.PlasmidInjector), new Object[] {
-		 "zyz",
-		 "yxy",
-		 "zyz",'x',Items.BUCKET,'z', "ingotIron", 'y', GRItems.GlassSyringe});
-		 GameRegistry.addRecipe(PlasmidInjector);
+		GameRegistry.addShapedRecipe(GRBlocks.PlasmidInjector.getRegistryName(), null, new ItemStack(GRBlocks.PlasmidInjector), new Object[]{
+				"zyz",
+				"yxy",
+				"zyz", 'x', Items.BUCKET, 'z', "ingotIron", 'y', GRItems.GlassSyringe});
 
-		 IRecipe BloodPurifier = new ShapedOreRecipe(new ItemStack(GRBlocks.BloodPurifier), new Object[] {
-		 "zaz",
-		 "yxy",
-		 "zaz",'x',Items.BUCKET,'z', "ingotIron", 'y', GRItems.GlassSyringe, 'a', Blocks.WOOL});
-		 GameRegistry.addRecipe(BloodPurifier);
+		GameRegistry.addShapedRecipe(GRBlocks.BloodPurifier.getRegistryName(), null, new ItemStack(GRBlocks.BloodPurifier), new Object[]{
+				"zaz",
+				"yxy",
+				"zaz", 'x', Items.BUCKET, 'z', "ingotIron", 'y', GRItems.GlassSyringe, 'a', Blocks.WOOL});
 
-		 IRecipe CloningMachine = new ShapedOreRecipe(new ItemStack(GRBlocks.CloningMachine), new Object[] {
-		 "yyy",
-		 "zxz",
-		 "yyy",'x',Items.NETHER_STAR,'z', "gemDiamond", 'y', Blocks.GOLD_BLOCK});
-		 GameRegistry.addRecipe(CloningMachine);
+		GameRegistry.addShapedRecipe(GRBlocks.CloningMachine.getRegistryName(), null, new ItemStack(GRBlocks.CloningMachine), new Object[]{
+				"yyy",
+				"zxz",
+				"yyy", 'x', Items.NETHER_STAR, 'z', "gemDiamond", 'y', Blocks.GOLD_BLOCK});
 
-		 IRecipe AntiFieldBlock = new ShapedOreRecipe(new ItemStack(GRBlocks.AntiFieldBlock), new Object[] {
-		 "yyy",
-		 "yxy",
-		 "yyy",'x',Items.ENDER_PEARL, 'y', "ingotIron"});
-		 GameRegistry.addRecipe(AntiFieldBlock);
-		 */
+		GameRegistry.addShapedRecipe(GRBlocks.AntiFieldBlock.getRegistryName(), null, new ItemStack(GRBlocks.AntiFieldBlock), new Object[]{
+				"yyy",
+				"yxy",
+				"yyy", 'x', Items.ENDER_PEARL, 'y', "ingotIron"});
 	}
 }
