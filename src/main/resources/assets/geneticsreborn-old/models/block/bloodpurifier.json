@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "geneticsreborn:blocks/bloodpurifier_front",
+    "down": "geneticsreborn:blocks/machine_bottom",
+    "up": "geneticsreborn:blocks/machine_top",
+    "east": "geneticsreborn:blocks/machine_side",
+    "west": "geneticsreborn:blocks/machine_side",
+    "north": "geneticsreborn:blocks/bloodpurifier_front",
+    "south": "geneticsreborn:blocks/machine_side"
+  }
+}
