@@ -9,7 +9,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.12-1.07"
+version = "1.12-1.08"
 group = "com.theundertaker11.geneticsreborn"
 archivesBaseName = "geneticsreborn"
 
