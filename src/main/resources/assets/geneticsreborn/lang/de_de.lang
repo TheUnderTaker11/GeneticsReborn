@@ -1,0 +1,25 @@
+itemGroup.GRtab=Genetics Reborn
+
+item.debugger.name=Cheat-Werkzeug
+item.glasssyringe.name=Glasspritze
+item.glasssyringeFull.name=Glasspritze (Voll)
+item.plasmid.name=DNA-Plasmid
+item.metalscraper.name=Metallschaber
+item.advancedscraper.name=Fortgeschrittener Metallschaber
+item.organicmatter.name=Organisches Material
+item.cell.name=Zelle
+item.overclocker.name=Übertakter
+item.dragonhealthcrystal.name=Drachen-Gesundheitskristall
+item.dnahelix.name=DNA-Helix
+item.antiplasmid.name=Anti-Plasmid
+item.metalsyringe.name=Metallspritze
+item.antifield.name=Antifeld-Orb
+
+tile.cellanalyser.name=Zellanalysator
+tile.dnaextractor.name=DNA-Extrahierer
+tile.dnadecrypter.name=DNA-Encodierer
+tile.plasmidinfuser.name=Plasmid-Infundierer
+tile.bloodpurifier.name=Blutreiniger
+tile.plasmidinjector.name=Plasmid-Injektor
+tile.cloningmachine.name=Klonmaschine
+tile.antifieldblock.name=Antifeld-Block

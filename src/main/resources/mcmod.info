@@ -1,0 +1,16 @@
+[
+{
+  "modid": "geneticsreborn",
+  "name": "Genetics Reborn",
+  "description": "A genetics mod based on the 1.7.10 Advanced Genetics.",
+  "version": "1.08",
+  "mcversion": "1.12",
+  "url": "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/2782810-genetics-reborn-the-unofficial-remake-of-advanced",
+  "updateUrl": "",
+  "authorList": ["TheUnderTaker11, abused_master"],
+  "credits": "TeamDNA for the original advanced genetics mod",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
