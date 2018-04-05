@@ -24,28 +24,28 @@ public class CustomEnergyStorage extends EnergyStorage {
     public void setEnergyStored(int amount) {
         this.energy = amount;
 
-        if(this.energy > capacity) {
+        if (this.energy > capacity) {
             this.energy = capacity;
-        }else if(energy < 0) {
+        } else if (energy < 0) {
             energy = 0;
         }
     }
 
     public CustomEnergyStorage readFromNBT(NBTTagCompound nbt) {
-
         this.energy = nbt.getInteger("Energy");
 
         if (energy > capacity) {
             energy = capacity;
         }
+
         return this;
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-
         if (energy < 0) {
             energy = 0;
         }
+
         nbt.setInteger("Energy", energy);
         return nbt;
     }

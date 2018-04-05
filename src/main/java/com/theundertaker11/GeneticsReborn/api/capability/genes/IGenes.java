@@ -1,15 +1,7 @@
 package com.theundertaker11.geneticsreborn.api.capability.genes;
 
 import java.util.List;
-/**
- * This interface is not made to add your own genes.
- * I could change the whole system to be able to add genes, but I don't see a point.
- * That being said, unless it's requested by a lot of people, I won't do it.
- * I figured using an Enum would be the simplest way to implement a genes system, but it makes it difficult for others to add genes.
- * You get all the genes through the EnumGenes class.
- * @author TheUnderTaker11
- *
- */
+
 public interface IGenes {
 	
 	public void addGene(EnumGenes gene);

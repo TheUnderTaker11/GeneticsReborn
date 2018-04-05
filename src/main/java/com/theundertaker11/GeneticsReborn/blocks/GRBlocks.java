@@ -3,6 +3,7 @@ package com.theundertaker11.geneticsreborn.blocks;
 import com.theundertaker11.geneticsreborn.blocks.bloodpurifier.BloodPurifier;
 import com.theundertaker11.geneticsreborn.blocks.cellanalyser.CellAnalyser;
 import com.theundertaker11.geneticsreborn.blocks.cloningmachine.CloningMachine;
+import com.theundertaker11.geneticsreborn.blocks.coalgenerator.CoalGenerator;
 import com.theundertaker11.geneticsreborn.blocks.dnadecrypter.DNADecrypter;
 import com.theundertaker11.geneticsreborn.blocks.dnaextractor.DNAExtractor;
 import com.theundertaker11.geneticsreborn.blocks.plasmidinfuser.PlasmidInfuser;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class GRBlocks {
+
 	public static Block CellAnalyser;
 	public static Block DNAExtractor;
 	public static Block DNADecrypter;
@@ -23,9 +25,9 @@ public class GRBlocks {
 	public static Block PlasmidInjector;
 	public static Block CloningMachine;
 	public static Block AntiFieldBlock;
-	//public static Block CoalGenerator;
-	public static void init() 
-	{
+	public static Block CoalGen;
+
+	public static void init() {
 		CellAnalyser = register(new CellAnalyser("cellanalyser"));
 		DNAExtractor = register(new DNAExtractor("dnaextractor"));
 		DNADecrypter = register(new DNADecrypter("dnadecrypter"));
@@ -34,10 +36,10 @@ public class GRBlocks {
 		PlasmidInjector = register(new PlasmidInjector("plasmidinjector"));
 		CloningMachine = register(new CloningMachine("cloningmachine"));
 		AntiFieldBlock = register(new BlockBase("antifieldblock"));
-		//CoalGenerator = register(new CoalGenerator("coalgenerator"));
+		CoalGen = register(new CoalGenerator("coalgenerator"));
 	}
-	private static <T extends Block> T register (T block, ItemBlock itemBlock) {
-		//GameRegistry.register(block);
+
+	private static <T extends Block> T register(T block, ItemBlock itemBlock) {
 		ForgeRegistries.BLOCKS.register(block);
 		if (itemBlock != null) {
 			//GameRegistry.register(itemBlock);
@@ -50,11 +52,10 @@ public class GRBlocks {
 
 		return block;
 	}
-		 
-	private static <T extends Block> T register(T block)
-	{
-		 ItemBlock itemBlock = new ItemBlock(block);
-		 itemBlock.setRegistryName(block.getRegistryName());
-		 return register(block, itemBlock);
+
+	private static <T extends Block> T register(T block) {
+		ItemBlock itemBlock = new ItemBlock(block);
+		itemBlock.setRegistryName(block.getRegistryName());
+		return register(block, itemBlock);
 	}
 }

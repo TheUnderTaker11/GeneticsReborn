@@ -13,26 +13,22 @@ public class GeneCapabilityProvider implements ICapabilitySerializable<NBTBase> 
 	private IGenes instance = GENES_CAPABILITY.getDefaultInstance();
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-	{
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 		return capability == GENES_CAPABILITY;
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-	{
-		return capability == GENES_CAPABILITY ? GENES_CAPABILITY.<T> cast(this.instance) : null;
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		return capability == GENES_CAPABILITY ? GENES_CAPABILITY.<T>cast(this.instance) : null;
 	}
 
 	@Override
-	public NBTBase serializeNBT()
-	{
+	public NBTBase serializeNBT() {
 		return GENES_CAPABILITY.getStorage().writeNBT(GENES_CAPABILITY, this.instance, null);
 	}
 
 	@Override
-	public void deserializeNBT(NBTBase nbt)
-	{
+	public void deserializeNBT(NBTBase nbt) {
 		GENES_CAPABILITY.getStorage().readNBT(GENES_CAPABILITY, this.instance, null, nbt);
 	}
 }

@@ -3,8 +3,6 @@ package com.theundertaker11.geneticsreborn.proxy;
 import com.theundertaker11.geneticsreborn.Reference;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.render.RenderRegistry;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -19,9 +17,8 @@ import net.minecraftforge.fml.relauncher.Side;
 public class ClientProxy extends CommonProxy {
 
 	@Override
-	public void registerItemRenderer(Item item, int meta, String id) 
-	{
-		 ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(Reference.MODID + ":" + id, "inventory"));
+	public void registerItemRenderer(Item item, int meta, String id) {
+		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(Reference.MODID + ":" + id, "inventory"));
 	}
 
 	@SubscribeEvent
