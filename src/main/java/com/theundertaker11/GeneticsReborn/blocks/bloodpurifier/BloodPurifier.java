@@ -14,27 +14,28 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class BloodPurifier extends StorageBlockBase {
-
+	
 	public BloodPurifier(String name) {
 		super(name);
 	}
-
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
+	public TileEntity createTileEntity(World world, IBlockState state)
+    {
 		return new GRTileEntityBloodPurifier();
-	}
-
+    }
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-		if (worldIn.isRemote) return true;
+		if(worldIn.isRemote) return true;
 		TileEntity tEntity = worldIn.getTileEntity(pos);
-
-		if (tEntity != null && tEntity instanceof GRTileEntityBloodPurifier && hand == EnumHand.MAIN_HAND) {
-			if (playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem() == GRItems.Overclocker) {
-				GRTileEntityBloodPurifier tile = (GRTileEntityBloodPurifier) tEntity;
+		
+		if(tEntity!=null&&tEntity instanceof GRTileEntityBloodPurifier&&hand==EnumHand.MAIN_HAND)
+		{
+			if(playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem()==GRItems.Overclocker)
+			{
+				GRTileEntityBloodPurifier tile = (GRTileEntityBloodPurifier)tEntity;
 				tile.addOverclocker(playerIn, GeneticsReborn.ocBloodPurifier);
-			} else
-				playerIn.openGui(GeneticsReborn.instance, GuiHandler.BloodPurifierGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+			}
+			else playerIn.openGui(GeneticsReborn.instance, GuiHandler.BloodPurifierGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return true;
 	}

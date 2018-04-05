@@ -13,27 +13,32 @@ public class MaxHealthCapabilityProvider implements ICapabilitySerializable<NBTB
 
 	private IMaxHealth instance;
 
-	public MaxHealthCapabilityProvider(IMaxHealth Instance) {
+	public MaxHealthCapabilityProvider(IMaxHealth Instance)
+	{
 		this.instance = Instance;
 	}
-
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
 		return capability == MAX_HEALTH_CAPABILITY;
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		return capability == MAX_HEALTH_CAPABILITY ? MAX_HEALTH_CAPABILITY.<T>cast(this.instance) : null;
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	{
+		return capability == MAX_HEALTH_CAPABILITY ? MAX_HEALTH_CAPABILITY.<T> cast(this.instance) : null;
 	}
 
 	@Override
-	public NBTBase serializeNBT() {
+	public NBTBase serializeNBT()
+	{
 		return MAX_HEALTH_CAPABILITY.getStorage().writeNBT(MAX_HEALTH_CAPABILITY, this.instance, null);
 	}
 
 	@Override
-	public void deserializeNBT(NBTBase nbt) {
+	public void deserializeNBT(NBTBase nbt)
+	{
 		MAX_HEALTH_CAPABILITY.getStorage().readNBT(MAX_HEALTH_CAPABILITY, this.instance, null, nbt);
 	}
+
 }

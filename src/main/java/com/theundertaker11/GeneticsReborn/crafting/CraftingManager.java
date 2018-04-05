@@ -7,9 +7,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.ForgeRegistry;
 
 public class CraftingManager {
-
 	public static void RegisterRecipes() {
 		GameRegistry.addShapedRecipe(GRItems.MetalScraper.getRegistryName(), null, new ItemStack(GRItems.MetalScraper), new Object[]{
 				" yx",
@@ -57,6 +57,7 @@ public class CraftingManager {
 				"xzx", 'y', Items.FERMENTED_SPIDER_EYE, 'x', Items.ENDER_PEARL, 'z', "blockGlass"});
 
 		ForgeRegistries.RECIPES.register(new AntiPlasmidCrafting());
+		//////////////////////Start blocks//////////////////////////////////////////////////////////////////////////////////////////
 
 		GameRegistry.addShapedRecipe(GRBlocks.CellAnalyser.getRegistryName(), null, new ItemStack(GRBlocks.CellAnalyser), new Object[]{
 				"zzz",

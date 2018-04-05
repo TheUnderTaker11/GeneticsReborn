@@ -26,17 +26,17 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class GRTileEntityBasicEnergyReceiver extends TileEntity {
-    private final static int SIZE = 1;
-    public CustomEnergyStorage storage = new CustomEnergyStorage(GeneticsReborn.maxEnergyStored, 20000, 0);
-    protected int overclockers;
-    protected int ticksCooking;
+	private final static int SIZE = 1;
+	public CustomEnergyStorage storage = new CustomEnergyStorage(GeneticsReborn.maxEnergyStored, 20000, 0);
+	protected int overclockers;
+	protected int ticksCooking;
 
-    public GRTileEntityBasicEnergyReceiver() {
-        super();
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public GRTileEntityBasicEnergyReceiver(){super();}
+	
+	//If you overwrite this make sure to call the super
+	@Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+	{
         super.writeToNBT(compound);
         compound.setTag("inputitem", itemStackHandler.serializeNBT());
         compound.setTag("outputitem", itemStackHandlerOutput.serializeNBT());
@@ -45,120 +45,142 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity {
         compound.setInteger("overclockers", this.overclockers);
         return compound;
     }
-
-    /**
-     * @return Inventory size as set in the class
-     */
-    public static int getSIZE() {
-        return SIZE;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        if (compound.hasKey("inputitem")) {
+	/**
+	 * 
+	 * @return Inventory size as set in the class
+	 */
+	public static int getSIZE()
+	{
+		return SIZE;
+	}
+	//If you overwrite this make sure to call the super
+	@Override
+	public void readFromNBT(NBTTagCompound compound)
+	{
+		super.readFromNBT(compound);
+		if (compound.hasKey("inputitem")){
             itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("inputitem"));
         }
-        if (compound.hasKey("outputitem")) {
+		if (compound.hasKey("outputitem")){
             itemStackHandlerOutput.deserializeNBT((NBTTagCompound) compound.getTag("outputitem"));
         }
-        this.overclockers = compound.getInteger("overclockers");
+		this.overclockers = compound.getInteger("overclockers");
 
-        this.storage.readFromNBT(compound);
-    }
-
-    public double fractionOfEnergyRemaining() {
-        return (this.storage.getEnergyStored() / this.storage.getEnergyStored());
-    }
-
-    /**
-     * Adds an overclocker and removes 1 from the players inventory
-     *
-     * @param player
-     */
-    public void addOverclocker(EntityPlayer player, int maxOverclockers) {
-        if (this.overclockers < maxOverclockers) {
-            this.overclockers++;
-            player.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
-        } else player.sendMessage(new TextComponentString("Max Overclockers is " + maxOverclockers));
-    }
-
-    public int getOverclockerCount() {
-        return this.overclockers;
-    }
-
-    public boolean isUseableByPlayer(EntityPlayer playerIn) {
+		this.storage.readFromNBT(compound);
+	}
+	
+	public double fractionOfEnergyRemaining()
+	{
+		return (this.storage.getEnergyStored()/this.storage.getEnergyStored());
+	}
+	
+	/**
+	 * Adds an overclocker and removes 1 from the players inventory
+	 * @param player
+	 */
+	public void addOverclocker(EntityPlayer player, int maxOverclockers)
+	{
+		if(this.overclockers<maxOverclockers)
+		{
+			this.overclockers++;
+			player.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+		}
+		else player.sendMessage(new TextComponentString("Max Overclockers is "+maxOverclockers));
+	}
+	
+	public int getOverclockerCount()
+	{
+		return this.overclockers;
+	}
+	
+	public boolean isUseableByPlayer(EntityPlayer playerIn) {
+        // If we are too far away from this tile entity you cannot use it
         return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
-
-    private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
+	
+	//private EnergyStorage energyCapability = new EnergyStorage(this.capacity, this.maxReceive, 0){};
+	
+	private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE){
         @Override
-        protected void onContentsChanged(int slot) {
+        protected void onContentsChanged(int slot){
             markDirty();
         }
     };
-    private ItemStackHandler itemStackHandlerOutput =
-            new ItemStackHandler(SIZE) {
-                @Override
-                protected void onContentsChanged(int slot) {
-                    markDirty();
-                }
-            };
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {//||capability==CapabilityEnergy.ENERGY) {
-            return true;
-        } else if (capability == CapabilityEnergy.ENERGY) {
-            return true;
+    private ItemStackHandler itemStackHandlerOutput = 
+    		new ItemStackHandler(SIZE){
+        @Override
+        protected void onContentsChanged(int slot){
+            markDirty();
         }
+    };
+    
+	@Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){//||capability==CapabilityEnergy.ENERGY) {
+            return true;
+        }else if(capability == CapabilityEnergy.ENERGY) {
+        	return true;
+		}
         return super.hasCapability(capability, facing);
     }
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.getWorld().getBlockState(this.pos).getBlock() instanceof StorageBlockBase) {
-            EnumFacing rightSide = this.getWorld().getBlockState(this.pos).getValue(StorageBlockBase.FACING).rotateAround(Axis.Y).getOpposite();
-            if (facing == EnumFacing.DOWN || facing == rightSide) return (T) itemStackHandlerOutput;
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY&&this.getWorld().getBlockState(this.pos).getBlock() instanceof StorageBlockBase) {
+        	EnumFacing rightSide = this.getWorld().getBlockState(this.pos).getValue(StorageBlockBase.FACING).rotateAround(Axis.Y).getOpposite();
+            if(facing==EnumFacing.DOWN||facing==rightSide) return (T)itemStackHandlerOutput;
             else return (T) itemStackHandler;
-        } else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (facing == EnumFacing.DOWN) return (T) itemStackHandlerOutput;
-            else return (T) itemStackHandler;
-        } else if (capability == CapabilityEnergy.ENERGY) {
-            return (T) storage;
         }
-
+        else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+        	if(facing==EnumFacing.DOWN) return (T)itemStackHandlerOutput;
+        	else return (T) itemStackHandler;
+        }else if(capability == CapabilityEnergy.ENERGY) {
+        	return (T) storage;
+		}
+       /* if(capability == CapabilityEnergy.ENERGY&&this.getWorld().getBlockState(this.pos).getBlock() instanceof StorageBlockBase)
+        {
+        	return (T)energyCapability;
+        }*/
         return super.getCapability(capability, facing);
     }
-
+    
     @Override
     @Nullable
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound updateTagDescribingTileEntityState = getUpdateTag();
-        final int METADATA = 0;
-        return new SPacketUpdateTileEntity(this.pos, METADATA, updateTagDescribingTileEntityState);
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+      NBTTagCompound updateTagDescribingTileEntityState = getUpdateTag();
+      final int METADATA = 0;
+      return new SPacketUpdateTileEntity(this.pos, METADATA, updateTagDescribingTileEntityState);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound updateTagDescribingTileEntityState = pkt.getNbtCompound();
-        handleUpdateTag(updateTagDescribingTileEntityState);
+      NBTTagCompound updateTagDescribingTileEntityState = pkt.getNbtCompound();
+      handleUpdateTag(updateTagDescribingTileEntityState);
     }
 
+    /* Creates a tag containing the TileEntity information, used by vanilla to transmit from server to client
+     */
     @Override
-    public NBTTagCompound getUpdateTag() {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        writeToNBT(nbtTagCompound);
-        return nbtTagCompound;
+    public NBTTagCompound getUpdateTag()
+    {
+  		NBTTagCompound nbtTagCompound = new NBTTagCompound();
+  		writeToNBT(nbtTagCompound);
+      return nbtTagCompound;
     }
 
+    /* Populates this TileEntity with information from the tag, used by vanilla to transmit from server to client
+    */
     @Override
-    public void handleUpdateTag(NBTTagCompound tag) {
-        this.readFromNBT(tag);
+    public void handleUpdateTag(NBTTagCompound tag)
+    {
+      this.readFromNBT(tag);
     }
-
+    
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
-        return (oldState.getBlock() != newState.getBlock());
-    }
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+	{
+	    return (oldState.getBlock() != newState.getBlock());
+	}
 }

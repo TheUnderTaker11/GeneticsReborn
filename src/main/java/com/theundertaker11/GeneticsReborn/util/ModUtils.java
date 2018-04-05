@@ -1,24 +1,32 @@
 package com.theundertaker11.geneticsreborn.util;
 
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javax.annotation.Nullable;
+
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.GeneCapabilityProvider;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.geneticsreborn.api.capability.maxhealth.MaxHealthCapabilityProvider;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class ModUtils{
-
+	//Potion effect ID's for easy use.
 	public static final int moveSpeed = 1;
 	public static final int moveSlowness = 2;
 	public static final int digSpeed = 3;
@@ -358,6 +366,7 @@ public class ModUtils{
 		return false;
 	}
 	
+	//Next two are from Joetato and for the magnet code.
 	public static List<Entity> getEntitiesInRange(Class<? extends Entity> entityType, World world, double x, double y, double z, double radius) {
 		return getEntitesInTange(entityType, world, x - radius, y - radius, z - radius, x + radius, y + radius,
 				z + radius);

@@ -1,7 +1,9 @@
 package com.theundertaker11.geneticsreborn.util;
 
-import net.minecraft.entity.EntityLivingBase;
+import java.util.ArrayList;
+import java.util.List;
 
+import net.minecraft.entity.EntityLivingBase;
 /**
  * This class is used to add cooldowns. It doesn't handle any of it, just works
  * as an object handled by the EventHandler class.
@@ -11,40 +13,44 @@ import net.minecraft.entity.EntityLivingBase;
  *
  */
 public class PlayerCooldowns {
-
+	
 	private EntityLivingBase player;
 	private int ticksLeft;
 	private String Name;
-
-	public PlayerCooldowns(EntityLivingBase entityLiving, String name, int ticks) {
-		this.player = entityLiving;
-		this.ticksLeft = ticks;
-		this.Name = name;
+	
+	public PlayerCooldowns(EntityLivingBase entityLiving, String name, int ticks)
+	{
+		this.player=entityLiving;
+		this.ticksLeft=ticks;
+		this.Name=name;
 	}
-
-	public void removeTick() {
+	
+	public void removeTick()
+	{
 		this.ticksLeft--;
 	}
-
-	public void removeTick(int amount) {
-		this.ticksLeft -= amount;
-		if (ticksLeft < 0)
-			ticksLeft = 0;
+	
+	public void removeTick(int amount)
+	{
+		this.ticksLeft-=amount;
+		if(ticksLeft<0)
+			ticksLeft=0;
 	}
-
-	public boolean isFinished() {
-		return (this.ticksLeft <= 0);
+	public boolean isFinished()
+	{
+		return (this.ticksLeft<=0);
 	}
-
-	public String getIDString() {
+	public String getIDString()
+	{
 		return this.player.getUniqueID().toString();
 	}
-
-	public String getPlayerName() {
+	public String getPlayerName()
+	{
 		return this.player.getName();
 	}
-
-	public String getName() {
+	
+	public String getName()
+	{
 		return this.Name;
 	}
 }

@@ -26,9 +26,8 @@ public interface IMaxHealth {
 	 * @param healthToAdd The amount of health to add
 	 */
 	void addBonusMaxHealth(float healthToAdd);
-
 	/**
 	 * Synchronise the entity's max health to watching clients.
 	 */
-	void synchronise();
+	 void synchronise();
 }

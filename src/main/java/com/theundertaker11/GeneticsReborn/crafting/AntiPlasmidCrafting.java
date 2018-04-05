@@ -2,6 +2,7 @@ package com.theundertaker11.geneticsreborn.crafting;
 
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -12,7 +13,9 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class AntiPlasmidCrafting implements IRecipe {
-
+	// 012
+	// 345
+	// 678
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
 		int SmallGridEmptySpaces = 0;
@@ -78,6 +81,11 @@ public class AntiPlasmidCrafting implements IRecipe {
 	public boolean canFit(int width, int height) {
 		return false;
 	}
+
+	//@Override
+	//public int getRecipeSize() {
+	//	return 1;
+	//}
 
 	@Override
 	public ItemStack getRecipeOutput() {

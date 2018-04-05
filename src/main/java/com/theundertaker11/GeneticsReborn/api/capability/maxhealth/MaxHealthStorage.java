@@ -7,18 +7,21 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
 public class MaxHealthStorage implements IStorage<IMaxHealth> {
-
+	
 	@Override
-	public NBTBase writeNBT(Capability<IMaxHealth> capability, IMaxHealth instance, EnumFacing side) {
+ 	public NBTBase writeNBT(Capability<IMaxHealth> capability, IMaxHealth instance, EnumFacing side)
+ 	{
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setFloat("BonusHealth", instance.getBonusMaxHealth());
 		return tag;
-	}
-
+ 	}
+	
 	@Override
-	public void readNBT(Capability<IMaxHealth> capability, IMaxHealth instance, EnumFacing side, NBTBase nbt) {
-		if (capability == null) return;
-		NBTTagCompound tag = (NBTTagCompound) nbt;
-		instance.addBonusMaxHealth(tag.getFloat("BonusHealth"));
-	}
+ 	public void readNBT(Capability<IMaxHealth> capability, IMaxHealth instance, EnumFacing side, NBTBase nbt)
+ 	{
+		if(capability==null) return;
+ 		NBTTagCompound tag = (NBTTagCompound)nbt;
+ 		instance.addBonusMaxHealth(tag.getFloat("BonusHealth"));
+ 	}
+
 }
