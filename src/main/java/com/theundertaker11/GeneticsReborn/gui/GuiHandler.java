@@ -1,11 +1,7 @@
 package com.theundertaker11.geneticsreborn.gui;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+public class GuiHandler {
 
-public class GuiHandler{
 	public static final int CellAnalyserGuiID = 1;
 	public static final int DNAExtractorGuiID = 2;
 	public static final int DNADecrypterGuiID = 3;
@@ -13,4 +9,5 @@ public class GuiHandler{
 	public static final int BloodPurifierGuiID = 5;
 	public static final int PlasmidInjectorGuiID = 6;
 	public static final int CloningMachineGuiID = 7;
+	public static final int CoalGeneratorGuiUD = 8;
 }

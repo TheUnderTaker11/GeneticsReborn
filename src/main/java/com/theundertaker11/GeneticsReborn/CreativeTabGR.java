@@ -7,17 +7,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public final class CreativeTabGR extends CreativeTabs
-{
-    public CreativeTabGR(int p1, String kstab)
-    {
+public final class CreativeTabGR extends CreativeTabs {
+    public CreativeTabGR(int p1, String kstab) {
         super(p1, kstab);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ItemStack getTabIconItem()
-    {
+    public ItemStack getTabIconItem() {
         return new ItemStack(GRItems.GlassSyringe);
     }
 }

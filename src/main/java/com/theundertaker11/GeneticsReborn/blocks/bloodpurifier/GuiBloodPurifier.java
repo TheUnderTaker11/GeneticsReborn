@@ -1,10 +1,12 @@
 package com.theundertaker11.geneticsreborn.blocks.bloodpurifier;
 
+import com.theundertaker11.geneticsreborn.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -12,34 +14,19 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.theundertaker11.geneticsreborn.Reference;
-
 
 @SideOnly(Side.CLIENT)
 public class GuiBloodPurifier extends GuiContainer {
 
-	// This is the resource location for the background image
 	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/guibasicmachine_bg.png");
-
 	private GRTileEntityBloodPurifier tileEntity;
 
 	public GuiBloodPurifier(InventoryPlayer invPlayer, GRTileEntityBloodPurifier tileInventory){
 		super(new ContainerBloodPurifier(invPlayer, tileInventory));
-
-		// Set the width and height of the gui
 		xSize = 176;
 		ySize = 207;
-
 		this.tileEntity = tileInventory;
 	}
-
-	// some [x,y] coordinates of graphical elements
-	final int COOK_BAR_XPOS = 49;
-	final int COOK_BAR_YPOS = 60;
-	final int COOK_BAR_ICON_U = 0;   // texture position of white arrow icon
-	final int COOK_BAR_ICON_V = 207;
-	final int COOK_BAR_WIDTH = 80;
-	final int COOK_BAR_HEIGHT = 17;
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks)
@@ -51,17 +38,20 @@ public class GuiBloodPurifier extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int x, int y) {
-		// Bind the image texture
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
-		// Draw the image
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
-		// get cook progress as a double between 0 and 1
+		renderEnergy();
 		double cookProgress = tileEntity.percComplete();
-		// draw the cook progress bar
-		drawTexturedModalRect(guiLeft + COOK_BAR_XPOS, guiTop + COOK_BAR_YPOS, COOK_BAR_ICON_U, COOK_BAR_ICON_V,
-						              (int)(cookProgress * COOK_BAR_WIDTH), COOK_BAR_HEIGHT);
+		drawTexturedModalRect(guiLeft + 85, guiTop + 38, 178, 61,
+				(int)(cookProgress * 22), 16);
+
+		if (this.isPointInRegion(9, 22, 14, 42, x, y)) {
+			List<String> energy = new ArrayList<String>();
+			energy.add(tileEntity.storage.getEnergyStored() + " / " + tileEntity.storage.getMaxEnergyStored() + "  FE");
+			GuiUtils.drawHoveringText(energy, x, y, mc.displayWidth, mc.displayHeight, -1, mc.fontRenderer);
+		}
 	}
 
 	@Override
@@ -71,34 +61,36 @@ public class GuiBloodPurifier extends GuiContainer {
 		final int LABEL_XPOS = 5;
 		final int LABEL_YPOS = 5;
 		fontRenderer.drawString("Blood Purifier", LABEL_XPOS, LABEL_YPOS, Color.darkGray.getRGB());
-		
-		final int POWER_XPOS = 35;
-		final int POWER_YPOS = 40;
-		fontRenderer.drawString(("Power: "+tileEntity.storage.getEnergyStored()+"/"+tileEntity.storage.getMaxEnergyStored()+" RF"), POWER_XPOS, POWER_YPOS, Color.darkGray.getRGB());
-		
+
 		final int OVERCLOCKERCOUNT_XPOS = 36;
-		final int OVERCLOCKERCOUNT_YPOS = 87;
+		final int OVERCLOCKERCOUNT_YPOS = 70;
 		fontRenderer.drawString(("Overclockers: "+tileEntity.getOverclockerCount()), OVERCLOCKERCOUNT_XPOS, OVERCLOCKERCOUNT_YPOS, Color.darkGray.getRGB());
 		
 		List<String> hoveringText = new ArrayList<String>();
 
-		// If the mouse is over the progress bar add the progress bar hovering text
-		if (isInRect(guiLeft + COOK_BAR_XPOS, guiTop + COOK_BAR_YPOS, COOK_BAR_WIDTH, COOK_BAR_HEIGHT, mouseX, mouseY))
+		if (isInRect(guiLeft + 85, guiTop + 38, 22, 16, mouseX, mouseY))
 		{
 			hoveringText.add("Progress:");
 			int cookPercentage =(int)(tileEntity.percComplete() * 100);
 			hoveringText.add(cookPercentage + "%");
 		}
 
-		// If hoveringText is not empty draw the hovering text
+
 		if (!hoveringText.isEmpty()){
 			drawHoveringText(hoveringText, mouseX - guiLeft, mouseY - guiTop, fontRenderer);
 		}
 
 	}
 
-	// Returns true if the given x,y coordinates are within the given rectangle
 	public static boolean isInRect(int x, int y, int xSize, int ySize, int mouseX, int mouseY){
 		return ((mouseX >= x && mouseX <= x+xSize) && (mouseY >= y && mouseY <= y+ySize));
+	}
+
+	public void renderEnergy() {
+		if (tileEntity.storage.getEnergyStored() > 0) {
+			int i = 40;
+			int j = tileEntity.storage.getEnergyStored() * i / tileEntity.storage.getMaxEnergyStored();
+			drawTexturedModalRect(guiLeft + 10, guiTop + 63 - j, 178, 44 - j, 12, j);
+		}
 	}
 }

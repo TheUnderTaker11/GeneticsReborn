@@ -21,33 +21,29 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensio
 
 public class CapabilityHandler {
 
-	 public static final ResourceLocation GENES_CAPABILITY = new ResourceLocation(Reference.MODID, "genes");
-	 public static final ResourceLocation MAXHEALTH_CAPABILITY = new ResourceLocation(Reference.MODID, "maxhealth");
+	public static final ResourceLocation GENES_CAPABILITY = new ResourceLocation(Reference.MODID, "genes");
+	public static final ResourceLocation MAXHEALTH_CAPABILITY = new ResourceLocation(Reference.MODID, "maxhealth");
 
-	 public static void init()
-	 {
+	public static void init() {
 		CapabilityManager.INSTANCE.register(IMaxHealth.class, new MaxHealthStorage(), MaxHealth.class);
 		CapabilityManager.INSTANCE.register(IGenes.class, new GenesStorage(), Genes.class);
-	 }
-	 @SubscribeEvent
-	 public void attachCapability(AttachCapabilitiesEvent<Entity> event)
-	 {
-		 if(event.getObject() instanceof EntityLivingBase&&event.getObject()!=null)
-		 {
-			 event.addCapability(GENES_CAPABILITY, new GeneCapabilityProvider());
-			 
-			 final MaxHealth maxHealth = new MaxHealth((EntityLivingBase) event.getObject());
-			 event.addCapability(MAXHEALTH_CAPABILITY, new MaxHealthCapabilityProvider(maxHealth));
-		 }
-	 }
-	 
-	 @SubscribeEvent
-	 public void onPlayerChangeDim(PlayerChangedDimensionEvent event)
-	 {
-		 final IMaxHealth maxHealth = ModUtils.getIMaxHealth(event.player);
-		 if (maxHealth != null)
-		 {
-			 maxHealth.synchronise();
-		 }
-	 }
+	}
+
+	@SubscribeEvent
+	public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
+		if (event.getObject() instanceof EntityLivingBase && event.getObject() != null) {
+			event.addCapability(GENES_CAPABILITY, new GeneCapabilityProvider());
+
+			final MaxHealth maxHealth = new MaxHealth((EntityLivingBase) event.getObject());
+			event.addCapability(MAXHEALTH_CAPABILITY, new MaxHealthCapabilityProvider(maxHealth));
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerChangeDim(PlayerChangedDimensionEvent event) {
+		final IMaxHealth maxHealth = ModUtils.getIMaxHealth(event.player);
+		if (maxHealth != null) {
+			maxHealth.synchronise();
+		}
+	}
 }
