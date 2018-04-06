@@ -28,12 +28,10 @@ public class GRTileEntityBloodPurifier extends GRTileEntityBasicEnergyReceiver i
 		if (canSmelt()) 
 		{
 			
-			if (this.getEnergyStored(null) > rfpertick)
+			if (this.energy > rfpertick)
 			{
 				this.energy -= rfpertick;
 				ticksCooking++;
-				if(this.energy<0)
-					this.energy = 0;
 				markDirty();
 			}
 			// Just in case

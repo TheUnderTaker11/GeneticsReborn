@@ -74,7 +74,6 @@ public class GeneticsReborn {
 	public static boolean playerGeneSharing;
 	public static boolean keepGenesOnDeath;
 	public static boolean allowGivingEntityGenes;
-	public static boolean enablePowerUse;
 	
 	public static boolean enableDragonsBreath;
 	public static boolean enableEatGrass;
@@ -154,7 +153,6 @@ public class GeneticsReborn {
 		playerGeneSharing = config.getBoolean("Enable Gene Sharing", general, false, "Setting this to true will enable players being able to take the blood of other players and get all the genes from it.");
 		keepGenesOnDeath = config.getBoolean("Keep genes on death", general, true, "Better keep some back up syringes if this is set to false.");
 		allowGivingEntityGenes = config.getBoolean("Allow giving other entities genes", general, false, "If this is enabled players can give animals such as horses genes with the metal syringe");
-		enablePowerUse = config.getBoolean("Set to false to make machines not need power.", general, true, "");
 		
 		enableDragonsBreath = config.getBoolean("Dragon's Breath", genes, true, "");
 		enableEatGrass = config.getBoolean("Eat Grass", genes, true, "");

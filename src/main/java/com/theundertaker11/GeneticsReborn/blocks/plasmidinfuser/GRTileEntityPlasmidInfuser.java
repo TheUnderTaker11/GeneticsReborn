@@ -52,12 +52,10 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 		int rfpertick = (baseRfPerTick+(this.overclockers*85));
 		if (canSmelt()) 
 		{
-			if (this.getEnergyStored(null) > rfpertick)
+			if (this.energy > rfpertick)
 			{
 				this.energy -= rfpertick;
 				ticksCooking++;
-				if(this.energy<0)
-					this.energy = 0;
 				markDirty();
 			}
 			// Just in case

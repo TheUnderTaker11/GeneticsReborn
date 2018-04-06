@@ -32,7 +32,7 @@ public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver im
 		int rfpertick = (baseRfPerTick+(this.overclockers*85));//TODO change here based on power
 		if (canSmelt()) 
 		{
-			if (this.getEnergyStored(null) > rfpertick)
+			if (this.energy > rfpertick)
 			{
 				this.energy -= rfpertick;
 				ticksCooking++;

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
 
+import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +25,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEnergyReceiver{//, IEnergyStorage{
+public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEnergyReceiver{
 	private final static int SIZE = 1;
 	protected int energy;
 	public final int maxReceive = 20000;
@@ -41,7 +42,7 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
         super.writeToNBT(compound);
         compound.setTag("inputitem", itemStackHandler.serializeNBT());
         compound.setTag("outputitem", itemStackHandlerOutput.serializeNBT());
-        compound.setInteger("Energy", this.getEnergyStored(null));
+        compound.setInteger("Energy", this.energy);
         compound.setInteger("overclockers", this.overclockers);
         return compound;
     }
@@ -89,10 +90,7 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 
 	@Override
 	public int getEnergyStored(EnumFacing facing) {
-		if(GeneticsReborn.enablePowerUse)
-			return this.energy;
-		else 
-			return this.capacity;
+		return this.energy;
 	}
 
 	@Override
@@ -102,7 +100,7 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 	
 	public double fractionOfEnergyRemaining()
 	{
-		return (this.getEnergyStored(null)/this.capacity);
+		return (this.energy/this.capacity);
 	}
 	
 	/**
@@ -210,45 +208,4 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 	{
 	    return (oldState.getBlock() != newState.getBlock());
 	}
-    /*
-    @Override
-	public int receiveEnergy(int maxReceive, boolean simulate) {
-		int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
-
-		if (!simulate) {
-			energy += energyReceived;
-		}
-		markDirty();
-		return energyReceived;
-	}
-
-	@Override
-	public int extractEnergy(int maxExtract, boolean simulate)
-	{
-		return 0;
-	}
-
-	@Override
-	public int getEnergyStored()
-	{
-		return this.getEnergyStored(null);
-	}
-
-	@Override
-	public int getMaxEnergyStored() 
-	{
-		return this.capacity;
-	}
-
-	@Override
-	public boolean canExtract()
-	{
-		return false;
-	}
-
-	@Override
-	public boolean canReceive()
-	{
-		return this.getEnergyStored(null)<this.capacity;
-	}*/
 }
