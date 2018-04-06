@@ -1,0 +1,27 @@
+#Genetics Reborn for Spain spanish language, traduction by Jaski
+
+itemGroup.GRtab=Genetics Reborn
+
+item.Debugger.name=Cheat Tool
+item.GlassSyringe.name=Jeringa de cristal
+item.GlassSyringeFull.name=Jeringa de cristal (llena)
+item.Plasmid.name=Plásmido de ADN
+item.MetalScraper.name=Raspador de metal
+item.AdvancedScraper.name=Raspador avanzado
+item.OrganicMatter.name=Materia orgánica
+item.Cell.name=Célula
+item.Overclocker.name=Sobrecargador
+item.DragonHealthCrystal.name=Cristal de salud dracónica
+item.DNAHelix.name=Cadena de ADN
+item.AntiPlasmid.name=Anti-plásmido
+item.MetalSyringe.name=Jeringa de metal
+item.AntiField.name=Orbe anti-campo
+
+tile.CellAnalyser.name=Analizador celular
+tile.DNAExtractor.name=Extractor de ADN
+tile.DNADecrypter.name=Desencriptador de ADN
+tile.PlasmidInfuser.name=Infusor de plásmidos
+tile.BloodPurifier.name=Purificador de sangre
+tile.PlasmidInjector.name=Inyector de plásmidos
+tile.CloningMachine.name=Equipo de clonación
+tile.AntiFieldBlock.name=Bloque anti-campo

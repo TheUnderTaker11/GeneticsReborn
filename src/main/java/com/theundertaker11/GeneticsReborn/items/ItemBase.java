@@ -1,7 +1,7 @@
-package com.theundertaker11.GeneticsReborn.items;
+package com.theundertaker11.geneticsreborn.items;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.render.IItemModelProvider;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.render.IItemModelProvider;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,11 +13,11 @@ public class ItemBase extends Item implements IItemModelProvider{
 	boolean hasEffct;
 	public ItemBase(String name, boolean hasEffect){
 		super();
+		setRegistryName(name);
 		this.name= name;
 		this.hasEffct=hasEffect;
 		setUnlocalizedName(name);
 		setCreativeTab(GeneticsReborn.GRtab);
-		setRegistryName(name);
 	}
 	public ItemBase(String name){
 		this(name, false);

@@ -1,14 +1,14 @@
-package com.theundertaker11.GeneticsReborn.event;
+package com.theundertaker11.geneticsreborn.event;
 
 import java.util.Iterator;
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.blocks.GRBlocks;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -33,9 +33,23 @@ public class PlayerTickEvent {
 		EntityPlayer player = event.player;
 		IGenes genes = ModUtils.getIGenes(event.player);
 		World world = event.player.getEntityWorld();
-		if(event.player==null||genes==null||event.player.getEntityWorld().isRemote) return;
-		boolean allow = !player.inventory.hasItemStack(new ItemStack(GRItems.AntiField));
-		if(GeneticsReborn.enableItemMagnet&&genes.hasGene(EnumGenes.ITEM_MAGNET)&&!player.isSneaking()&&allow)
+		if(player==null||genes==null||world.isRemote) return;
+		
+		tryItemMagnet(player, world, genes);
+		tryXPMagnet(player, world, genes);
+		tryPhotosynthesis(player, world, genes);
+	}
+	
+	/**
+	 * Checks all the requirements and tries to do the item magnet gene(Suck in all items from an area).
+	 * @param player
+	 * @param world
+	 * @param genes
+	 */
+	public static void tryItemMagnet(EntityPlayer player, World world, IGenes genes)
+	{
+		if(GeneticsReborn.enableItemMagnet&&genes.hasGene(EnumGenes.ITEM_MAGNET)&&!player.inventory.hasItemStack(new ItemStack(GRItems.AntiField))
+				&&!player.isSneaking())
 		{
 			// items
 			Iterator iterator = ModUtils.getEntitiesInRange(EntityItem.class, world, player.posX, player.posY,
@@ -43,7 +57,7 @@ public class PlayerTickEvent {
 			while (iterator.hasNext()) {
 				EntityItem itemToGet = (EntityItem) iterator.next();
 				
-				if(!itemToGet.getTags().contains("geneticsrebornLOL")&&shouldPickupItem(event.player.getEntityWorld(), itemToGet.getPosition()))
+				if(!itemToGet.getTags().contains("geneticsrebornLOL")&&shouldPickupItem(world, itemToGet.getPosition()))
 				{
 					EntityItemPickupEvent pickupEvent = new EntityItemPickupEvent(player, itemToGet);
 					MinecraftForge.EVENT_BUS.post(pickupEvent);
@@ -59,8 +73,18 @@ public class PlayerTickEvent {
 				}else if(!itemToGet.getTags().contains("geneticsrebornLOL")) itemToGet.addTag("geneticsrebornLOL");
 			}
 		}
-		
-		if(GeneticsReborn.enableXPMagnet&&genes.hasGene(EnumGenes.XP_MAGNET)&&!player.isSneaking()&&allow)
+	}
+	
+	/**
+	 * Checks all the requirements and tries to do the xp magnet gene(Suck in all xp from an area).
+	 * @param player
+	 * @param world
+	 * @param genes
+	 */
+	public static void tryXPMagnet(EntityPlayer player, World world, IGenes genes)
+	{
+		if(GeneticsReborn.enableXPMagnet&&genes.hasGene(EnumGenes.XP_MAGNET)&&!player.inventory.hasItemStack(new ItemStack(GRItems.AntiField))
+				&&!player.isSneaking())
 		{
 			Iterator iterator = ModUtils.getEntitiesInRange(EntityXPOrb.class, world, player.posX, player.posY, player.posZ,
 					6.5).iterator();
@@ -81,10 +105,28 @@ public class PlayerTickEvent {
 				
 			}
 		}
-		
 	}
-	
-	public boolean shouldPickupItem(World world, BlockPos pos)
+	/**
+	 * Checks all conditions and tries to give the player hunger when no blocks are above them, and it is day.
+	 * @param player
+	 * @param world
+	 * @param genes
+	 */
+	public static void tryPhotosynthesis(EntityPlayer player, World world, IGenes genes)
+	{
+		if(GeneticsReborn.enablePhotosynthesis&&genes.hasGene(EnumGenes.PHOTOSYNTHESIS))
+		{
+			if(world.isDaytime()&&world.getHeight(player.getPosition()).getY()<(player.getPosition().getY()+1))
+			{
+				double rand = Math.random();
+				if(rand<0.01)
+				{
+					player.getFoodStats().addStats(1, 0.5F);
+				}
+			}
+		}
+	}
+	public static boolean shouldPickupItem(World world, BlockPos pos)
 	{
 		int x = pos.getX();
 		int y = pos.getY();

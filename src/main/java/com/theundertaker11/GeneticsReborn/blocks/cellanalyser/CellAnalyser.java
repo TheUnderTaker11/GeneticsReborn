@@ -1,11 +1,11 @@
-package com.theundertaker11.GeneticsReborn.blocks.cellanalyser;
+package com.theundertaker11.geneticsreborn.blocks.cellanalyser;
 
 import javax.annotation.Nullable;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.blocks.StorageBlockBase;
-import com.theundertaker11.GeneticsReborn.gui.GuiHandler;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
+import com.theundertaker11.geneticsreborn.gui.GuiHandler;
+import com.theundertaker11.geneticsreborn.items.GRItems;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -42,43 +42,10 @@ public class CellAnalyser extends StorageBlockBase{
 			if(playerIn.getHeldItem(EnumHand.MAIN_HAND)!=null&&playerIn.getHeldItem(EnumHand.MAIN_HAND).getItem()==GRItems.Overclocker)
 			{
 				GRTileEntityCellAnalyser tile = (GRTileEntityCellAnalyser)tEntity;
-				tile.addOverclocker(playerIn, 10);
+				tile.addOverclocker(playerIn, GeneticsReborn.ocCellAnalyser);
 			}
 			else playerIn.openGui(GeneticsReborn.instance, GuiHandler.CellAnalyserGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return true;
 	}
-	//TODO make it drop whatever is inside plus however many overclockers it has
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-        TileEntity tile = worldIn.getTileEntity(pos);
-        //All the null checks are just in case and probably not actually needed
-        if (tile!=null&&tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)!=null&&tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)!=null
-        	&&tile instanceof GRTileEntityCellAnalyser&&tile.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP))
-        {
-        	GRTileEntityCellAnalyser tileentity = (GRTileEntityCellAnalyser)tile;
-        	IItemHandler input = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
-        	IItemHandler output = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-        	if(input.getStackInSlot(0)!=null)
-        	{
-        		ItemStack inputstack = input.getStackInSlot(0);
-        		EntityItem entityinput = new EntityItem(tileentity.getWorld(), tileentity.getPos().getX(), tileentity.getPos().getY(), tileentity.getPos().getZ(), inputstack);
-        		tileentity.getWorld().spawnEntityInWorld(entityinput);
-        	}
-        	if(output.getStackInSlot(0)!=null)
-        	{
-        		ItemStack outputstack = output.getStackInSlot(0);
-        		EntityItem entityoutput = new EntityItem(tileentity.getWorld(), tileentity.getPos().getX(), tileentity.getPos().getY(), tileentity.getPos().getZ(), outputstack);
-        		tileentity.getWorld().spawnEntityInWorld(entityoutput);
-        	}
-        	if(tileentity.getOverclockerCount()>0)
-        	{
-            	ItemStack overclockers = new  ItemStack(GRItems.Overclocker, tileentity.getOverclockerCount());
-            	EntityItem entityoverclockers = new EntityItem(tileentity.getWorld(), tileentity.getPos().getX(), tileentity.getPos().getY(), tileentity.getPos().getZ(), overclockers);
-        		tileentity.getWorld().spawnEntityInWorld(entityoverclockers);
-        	}
-        }
-        super.breakBlock(worldIn, pos, state);
-    }
 }

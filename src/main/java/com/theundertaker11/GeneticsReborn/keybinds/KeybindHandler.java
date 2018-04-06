@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.keybinds;
+package com.theundertaker11.geneticsreborn.keybinds;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;

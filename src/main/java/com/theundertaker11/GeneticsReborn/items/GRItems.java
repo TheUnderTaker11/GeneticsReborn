@@ -1,6 +1,6 @@
-package com.theundertaker11.GeneticsReborn.items;
+package com.theundertaker11.geneticsreborn.items;
 
-import com.theundertaker11.GeneticsReborn.render.IItemModelProvider;
+import com.theundertaker11.geneticsreborn.render.IItemModelProvider;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;

@@ -1,19 +1,10 @@
-package com.theundertaker11.GeneticsReborn.api.capability.maxhealth;
+package com.theundertaker11.geneticsreborn.api.capability.maxhealth;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import com.theundertaker11.GeneticsReborn.Reference;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
-
-import javax.annotation.Nullable;
-
 
 public class MaxHealthCapabilityProvider implements ICapabilitySerializable<NBTBase>{
 

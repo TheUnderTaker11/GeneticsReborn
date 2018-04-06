@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.api.capability.maxhealth;
+package com.theundertaker11.geneticsreborn.api.capability.maxhealth;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -10,7 +10,7 @@ import net.minecraft.world.WorldServer;
 
 import javax.annotation.Nullable;
 
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import java.util.Collections;
 import java.util.UUID;

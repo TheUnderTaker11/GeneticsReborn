@@ -1,11 +1,12 @@
-package com.theundertaker11.GeneticsReborn.blocks.dnadecrypter;
+package com.theundertaker11.geneticsreborn.blocks.dnadecrypter;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.theundertaker11.GeneticsReborn.api.capability.genes.MobToGeneRegistry;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.MobToGeneRegistry;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,8 +18,8 @@ import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver implements ITickable{
 	
-	public static final short TICKS_NEEDED = 200;
-	
+	public static int TICKS_NEEDED = GeneticsReborn.baseTickDNADecrypter;
+	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickDNADecrypter;
 	public GRTileEntityDNADecrypter(){
 		super();
 	}
@@ -26,7 +27,7 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 	@Override
 	public void update()
 	{
-		int rfpertick = (20+(this.overclockers*85));
+		int rfpertick = (baseRfPerTick+(this.overclockers*85));
 		if (canSmelt()) 
 		{
 			if (this.energy > rfpertick)
@@ -82,7 +83,7 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 	 */
 	private boolean smeltItem(boolean performSmelt)
 	{
-		ItemStack result = null;
+		ItemStack result;
 		IItemHandler inventory = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler inventoryoutput = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
 		
@@ -93,7 +94,6 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 				if (result != null)
 				{
 						//Trys to insert into output slot
-						ItemStack inputSlotStack = inventory.getStackInSlot(0);
 						ItemStack outputSlotStack = inventoryoutput.getStackInSlot(0);
 						if (outputSlotStack == null)
 						{

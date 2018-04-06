@@ -1,24 +1,24 @@
-package com.theundertaker11.GeneticsReborn.event;
+package com.theundertaker11.geneticsreborn.event;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.CapabilityHandler;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
-import com.theundertaker11.GeneticsReborn.items.DamageableItemBase;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.keybinds.KeybindHandler;
-import com.theundertaker11.GeneticsReborn.packets.GeneticsRebornPacketHandler;
-import com.theundertaker11.GeneticsReborn.packets.SendShootDragonBreath;
-import com.theundertaker11.GeneticsReborn.packets.SendTeleportPlayer;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
-import com.theundertaker11.GeneticsReborn.util.PlayerCooldowns;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.CapabilityHandler;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.GeneCapabilityProvider;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
+import com.theundertaker11.geneticsreborn.items.DamageableItemBase;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.keybinds.KeybindHandler;
+import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
+import com.theundertaker11.geneticsreborn.packets.SendShootDragonBreath;
+import com.theundertaker11.geneticsreborn.packets.SendTeleportPlayer;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;

@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.items;
+package com.theundertaker11.geneticsreborn.items;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;

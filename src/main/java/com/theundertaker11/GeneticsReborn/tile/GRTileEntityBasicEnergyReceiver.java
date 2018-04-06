@@ -1,11 +1,12 @@
-package com.theundertaker11.GeneticsReborn.tile;
+package com.theundertaker11.geneticsreborn.tile;
 
 import javax.annotation.Nullable;
 
-import com.theundertaker11.GeneticsReborn.blocks.StorageBlockBase;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
 
+import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
-import cofh.api.energy.IEnergyStorage;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,23 +20,22 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEnergyReceiver{
 	private final static int SIZE = 1;
-	protected int maxOverclockers = 10;
-	public static final int capacity = 20000;
 	protected int energy;
-	protected int maxReceive;
+	public final int maxReceive = 20000;
 	protected int overclockers;
 	protected int ticksCooking;
+	public int capacity = GeneticsReborn.maxEnergyStored;
 	
-	public GRTileEntityBasicEnergyReceiver()
-	{
-		this.maxReceive = 20000;
-	}
-	//If you overwrite either of these make sure to call the super
+	public GRTileEntityBasicEnergyReceiver(){super();}
+	
+	//If you overwrite this make sure to call the super
 	@Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
 	{
@@ -54,6 +54,7 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 	{
 		return SIZE;
 	}
+	//If you overwrite this make sure to call the super
 	@Override
 	public void readFromNBT(NBTTagCompound compound)
 	{
@@ -68,9 +69,6 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 		this.overclockers = compound.getInteger("overclockers");
 		if (energy > capacity){
 			energy = capacity;
-		}
-		if(overclockers>maxOverclockers){
-			overclockers=maxOverclockers;
 		}
 	}
 
@@ -102,9 +100,7 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
 	
 	public double fractionOfEnergyRemaining()
 	{
-		double frac = 0;
-		frac = (this.energy/this.capacity);
-		return frac;
+		return (this.energy/this.capacity);
 	}
 	
 	/**
@@ -132,8 +128,9 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
         return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 	
-	private ItemStackHandler itemStackHandler = 
-    		new ItemStackHandler(SIZE){
+	//private EnergyStorage energyCapability = new EnergyStorage(this.capacity, this.maxReceive, 0){};
+	
+	private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE){
         @Override
         protected void onContentsChanged(int slot){
             markDirty();
@@ -149,7 +146,7 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
     
 	@Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){//||capability==CapabilityEnergy.ENERGY) {
             return true;
         }
         return super.hasCapability(capability, facing);
@@ -162,6 +159,15 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
             if(facing==EnumFacing.DOWN||facing==rightSide) return (T)itemStackHandlerOutput;
             else return (T) itemStackHandler;
         }
+        else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        {
+        	if(facing==EnumFacing.DOWN) return (T)itemStackHandlerOutput;
+        	else return (T) itemStackHandler;
+        }
+       /* if(capability == CapabilityEnergy.ENERGY&&this.getWorld().getBlockState(this.pos).getBlock() instanceof StorageBlockBase)
+        {
+        	return (T)energyCapability;
+        }*/
         return super.getCapability(capability, facing);
     }
     
@@ -201,8 +207,8 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity implements IEner
     }
     
     @Override
-	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+	public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
 	{
-	    return (oldState.getBlock() != newSate.getBlock());
+	    return (oldState.getBlock() != newState.getBlock());
 	}
 }

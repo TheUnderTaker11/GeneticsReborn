@@ -1,12 +1,13 @@
-package com.theundertaker11.GeneticsReborn.event;
+package com.theundertaker11.geneticsreborn.event;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.items.DamageableItemBase;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.items.DamageableItemBase;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
+import am2.bosses.AM2Boss;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragonPart;
@@ -25,6 +26,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * This class scrapes entities, inserts genes into entities, and handles the wooly/milky gene
@@ -39,16 +41,30 @@ public class RightClickEntityEvent {
 			//Start Scraping entities code
 			EntityPlayer player = event.getEntityPlayer();
 			Entity target = event.getTarget();
-			World world = event.getWorld();
-			//DRAGON IS THE MOST SPECIAL SNOWFLAKE, DOESNT EVEN EXTEND ENTITYLIVINGBASE...
+			
 			if(target instanceof EntityDragonPart&&player.getHeldItemMainhand().getItem() instanceof DamageableItemBase) 
 			{
 				if(player.getHeldItemMainhand().getItem()==GRItems.MetalScraper||player.getHeldItemMainhand().getItem()==GRItems.AdvancedScraper)
 				{
+					boolean isArs = false;
+					try{
+						isArs = isArsBoss(target);
+					}catch(NoSuchMethodError e){}
+					
 					ItemStack organicmatter = new ItemStack(GRItems.OrganicMatter, 1);
 					target.attackEntityFrom(DamageSource.causePlayerDamage(player), 0.5F);
-					ModUtils.getTagCompound(organicmatter).setString("entityName", "Ender Dragon");
-					ModUtils.getTagCompound(organicmatter).setString("entityCodeName", "Ender Dragon");
+					
+					if(!isArs)
+					{
+						ModUtils.getTagCompound(organicmatter).setString("entityName", "Ender Dragon");
+						ModUtils.getTagCompound(organicmatter).setString("entityCodeName", "Ender Dragon");
+					}
+					else
+					{
+						try{
+							setArsMobTag(organicmatter, target);
+						}catch(NoSuchMethodError e){}
+					}
 					player.getHeldItemMainhand().damageItem(1, player);
 					EntityItem entity = new EntityItem(player.getEntityWorld(), target.getPosition().getX(), target.getPosition().getY(), target.getPosition().getZ(), organicmatter);
 					player.getEntityWorld().spawnEntityInWorld(entity);
@@ -65,6 +81,26 @@ public class RightClickEntityEvent {
 			
 			tryWoolyAndMilky(player, target);
 		}
+	}
+	
+	@Optional.Method(modid = "arsmagica2")
+	public static boolean isArsBoss(Entity entity)
+	{
+		EntityDragonPart part = (EntityDragonPart)entity;
+		
+		if(part.entityDragonObj instanceof AM2Boss)
+			return true;
+		return false;
+	}
+	
+	@Optional.Method(modid = "arsmagica2")
+	public static void setArsMobTag(ItemStack stack, Entity entity)
+	{
+		EntityDragonPart part = (EntityDragonPart)entity;
+		String rawname = part.entityDragonObj.toString();
+		String name = rawname.substring(0, rawname.indexOf('['));
+		ModUtils.getTagCompound(stack).setString("entityName", name);
+		ModUtils.getTagCompound(stack).setString("entityCodeName", name);
 	}
 	
 	/**
@@ -84,7 +120,7 @@ public class RightClickEntityEvent {
 		if(livingtarget instanceof EntitySkeleton)
 		{
 			EntitySkeleton skeleton = (EntitySkeleton)livingtarget;
-			if(skeleton.func_189771_df()==SkeletonType.WITHER)
+			if(skeleton.getSkeletonType()==SkeletonType.WITHER)
 			{
 				simplename = "Wither Skeleton";
 				name = "Wither Skeleton";

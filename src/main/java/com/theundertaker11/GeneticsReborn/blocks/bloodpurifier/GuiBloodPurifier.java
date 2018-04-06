@@ -1,4 +1,4 @@
-package com.theundertaker11.GeneticsReborn.blocks.bloodpurifier;
+package com.theundertaker11.geneticsreborn.blocks.bloodpurifier;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.Reference;
+import com.theundertaker11.geneticsreborn.Reference;
 
 
 @SideOnly(Side.CLIENT)

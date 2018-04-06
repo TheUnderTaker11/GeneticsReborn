@@ -1,8 +1,9 @@
-package com.theundertaker11.GeneticsReborn.blocks.bloodpurifier;
+package com.theundertaker11.geneticsreborn.blocks.bloodpurifier;
 
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,8 +15,8 @@ import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityBloodPurifier extends GRTileEntityBasicEnergyReceiver implements ITickable{
 	
-	public static final short TICKS_NEEDED = 200;
-	
+	public static int TICKS_NEEDED = GeneticsReborn.baseTickBloodPurifier;
+	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickBloodPurifier;
 	public GRTileEntityBloodPurifier(){
 		super();
 	}
@@ -23,7 +24,7 @@ public class GRTileEntityBloodPurifier extends GRTileEntityBasicEnergyReceiver i
 	@Override
 	public void update()
 	{
-		int rfpertick = (20+(this.overclockers*85));
+		int rfpertick = (baseRfPerTick+(this.overclockers*85));
 		if (canSmelt()) 
 		{
 			if (this.energy > rfpertick)
@@ -47,7 +48,7 @@ public class GRTileEntityBloodPurifier extends GRTileEntityBasicEnergyReceiver i
 	{
 		if(stack!=null&&(stack.getItem()==GRItems.GlassSyringe||stack.getItem()==GRItems.MetalSyringe)&&stack.getTagCompound()!=null&&stack.getItemDamage()==1)
 		{
-			ItemStack result = null;
+			ItemStack result;
 			if(stack.getItem()==GRItems.GlassSyringe) result = new ItemStack(GRItems.GlassSyringe,1,1);
 			else result = new ItemStack(GRItems.MetalSyringe,1,1);
 			NBTTagCompound tag = stack.getTagCompound().copy();
@@ -73,7 +74,7 @@ public class GRTileEntityBloodPurifier extends GRTileEntityBasicEnergyReceiver i
 	 */
 	private boolean smeltItem(boolean performSmelt)
 	{
-		ItemStack result = null;
+		ItemStack result;
 		IItemHandler inventory = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler inventoryoutput = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
 		
@@ -84,7 +85,6 @@ public class GRTileEntityBloodPurifier extends GRTileEntityBasicEnergyReceiver i
 				if (result != null)
 				{
 						//Trys to insert into output slot
-						ItemStack inputSlotStack = inventory.getStackInSlot(0);
 						ItemStack outputSlotStack = inventoryoutput.getStackInSlot(0);
 						if (outputSlotStack == null)
 						{

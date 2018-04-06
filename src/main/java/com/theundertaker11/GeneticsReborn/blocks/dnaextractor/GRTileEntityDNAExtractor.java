@@ -1,8 +1,9 @@
-package com.theundertaker11.GeneticsReborn.blocks.dnaextractor;
+package com.theundertaker11.geneticsreborn.blocks.dnaextractor;
 
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,8 +20,8 @@ import net.minecraftforge.items.IItemHandler;
  */
 public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver implements ITickable{
 	
-	public static final short TICKS_NEEDED = 200;
-	
+	public static int TICKS_NEEDED = GeneticsReborn.baseTickDNAExtractor;
+	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickDNAExtractor;
 	public GRTileEntityDNAExtractor(){
 		super();
 	}
@@ -28,7 +29,7 @@ public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver im
 	@Override
 	public void update()
 	{
-		int rfpertick = (20+(this.overclockers*85));//TODO change here based on power
+		int rfpertick = (baseRfPerTick+(this.overclockers*85));//TODO change here based on power
 		if (canSmelt()) 
 		{
 			if (this.energy > rfpertick)
@@ -75,7 +76,7 @@ public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver im
 	 */
 	private boolean smeltItem(boolean performSmelt)
 	{
-		ItemStack result = null;
+		ItemStack result;
 		IItemHandler inventory = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler inventoryoutput = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
 		
@@ -86,7 +87,6 @@ public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver im
 				if (result != null)
 				{
 						//Trys to insert into output slot
-						ItemStack inputSlotStack = inventory.getStackInSlot(0);
 						ItemStack outputSlotStack = inventoryoutput.getStackInSlot(0);
 						if (outputSlotStack == null)
 						{

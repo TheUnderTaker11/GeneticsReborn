@@ -1,14 +1,14 @@
-package com.theundertaker11.GeneticsReborn.items;
+package com.theundertaker11.geneticsreborn.items;
 
 import java.util.List;
 
-import com.theundertaker11.GeneticsReborn.GeneticsReborn;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.Genes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.GeneCapabilityProvider;
+import com.theundertaker11.geneticsreborn.api.capability.genes.Genes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -76,10 +76,10 @@ public class GlassSyringe extends ItemBase {
 			for(int i=0;i<Genes.TotalNumberOfGenes;i++)
 		 	{
 		 		String nbtname = "Null";
-		 		if(tag.hasKey(i+""))
+		 		if(tag.hasKey(Integer.toString(i)))
 		 		{
-		 			nbtname = tag.getString(i+"");
-		 			tag.removeTag(i+"");
+		 			nbtname = tag.getString(Integer.toString(i));
+		 			tag.removeTag(Integer.toString(i));
 		 		}
 		 		EnumGenes gene = Genes.getGeneFromString(nbtname);
 		 		if(gene!=null)	

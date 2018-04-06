@@ -1,10 +1,10 @@
-package com.theundertaker11.GeneticsReborn.blocks.dnaextractor;
+package com.theundertaker11.geneticsreborn.blocks.dnaextractor;
 
-import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.GRTileEntityCellAnalyser;
-import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.ContainerCellAnalyser.SlotOutput;
-import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.ContainerCellAnalyser.SlotSmeltableInput;
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.tile.GRTileEntityBasicEnergyReceiver;
+import com.theundertaker11.geneticsreborn.blocks.cellanalyser.GRTileEntityCellAnalyser;
+import com.theundertaker11.geneticsreborn.blocks.cellanalyser.ContainerCellAnalyser.SlotOutput;
+import com.theundertaker11.geneticsreborn.blocks.cellanalyser.ContainerCellAnalyser.SlotSmeltableInput;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -105,7 +105,6 @@ public class ContainerDNAExtractor extends Container {
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int sourceSlotIndex)
 	{
-		ItemStack itemstack = null;
         Slot slot = (Slot)this.inventorySlots.get(sourceSlotIndex);
         if(slot == null || !slot.getHasStack()) return null;
         if(tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP)==null) return null;

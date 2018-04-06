@@ -1,13 +1,14 @@
-package com.theundertaker11.GeneticsReborn.blocks;
+package com.theundertaker11.geneticsreborn.blocks;
 
-import com.theundertaker11.GeneticsReborn.blocks.bloodpurifier.BloodPurifier;
-import com.theundertaker11.GeneticsReborn.blocks.cellanalyser.CellAnalyser;
-import com.theundertaker11.GeneticsReborn.blocks.cloningmachine.CloningMachine;
-import com.theundertaker11.GeneticsReborn.blocks.dnadecrypter.DNADecrypter;
-import com.theundertaker11.GeneticsReborn.blocks.dnaextractor.DNAExtractor;
-import com.theundertaker11.GeneticsReborn.blocks.plasmidinfuser.PlasmidInfuser;
-import com.theundertaker11.GeneticsReborn.blocks.plasmidinjector.PlasmidInjector;
-import com.theundertaker11.GeneticsReborn.render.IItemModelProvider;
+import com.theundertaker11.geneticsreborn.blocks.bloodpurifier.BloodPurifier;
+import com.theundertaker11.geneticsreborn.blocks.cellanalyser.CellAnalyser;
+import com.theundertaker11.geneticsreborn.blocks.cloningmachine.CloningMachine;
+import com.theundertaker11.geneticsreborn.blocks.coalgenerator.CoalGenerator;
+import com.theundertaker11.geneticsreborn.blocks.dnadecrypter.DNADecrypter;
+import com.theundertaker11.geneticsreborn.blocks.dnaextractor.DNAExtractor;
+import com.theundertaker11.geneticsreborn.blocks.plasmidinfuser.PlasmidInfuser;
+import com.theundertaker11.geneticsreborn.blocks.plasmidinjector.PlasmidInjector;
+import com.theundertaker11.geneticsreborn.render.IItemModelProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -22,7 +23,7 @@ public class GRBlocks {
 	public static Block PlasmidInjector;
 	public static Block CloningMachine;
 	public static Block AntiFieldBlock;
-	
+	//public static Block CoalGenerator;
 	public static void init() 
 	{
 		CellAnalyser = register(new CellAnalyser("CellAnalyser"));
@@ -33,6 +34,7 @@ public class GRBlocks {
 		PlasmidInjector = register(new PlasmidInjector("PlasmidInjector"));
 		CloningMachine = register(new CloningMachine("CloningMachine"));
 		AntiFieldBlock = register(new BlockBase("AntiFieldBlock"));
+		//CoalGenerator = register(new CoalGenerator("CoalGenerator"));
 	}
 	private static <T extends Block> T register (T block, ItemBlock itemBlock)
 	{

@@ -1,7 +1,7 @@
-package com.theundertaker11.GeneticsReborn.crafting;
+package com.theundertaker11.geneticsreborn.crafting;
 
-import com.theundertaker11.GeneticsReborn.items.GRItems;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;

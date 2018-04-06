@@ -1,22 +1,20 @@
-package com.theundertaker11.GeneticsReborn.api.capability;
+package com.theundertaker11.geneticsreborn.api.capability;
 
-import com.theundertaker11.GeneticsReborn.Reference;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GeneCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.Genes;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.GenesStorage;
-import com.theundertaker11.GeneticsReborn.api.capability.genes.IGenes;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.IMaxHealth;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealth;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealthCapabilityProvider;
-import com.theundertaker11.GeneticsReborn.api.capability.maxhealth.MaxHealthStorage;
-import com.theundertaker11.GeneticsReborn.util.ModUtils;
+import com.theundertaker11.geneticsreborn.Reference;
+import com.theundertaker11.geneticsreborn.api.capability.genes.GeneCapabilityProvider;
+import com.theundertaker11.geneticsreborn.api.capability.genes.Genes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.GenesStorage;
+import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.MaxHealth;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.MaxHealthCapabilityProvider;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.MaxHealthStorage;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;

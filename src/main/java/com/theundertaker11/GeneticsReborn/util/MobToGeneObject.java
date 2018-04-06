@@ -1,6 +1,6 @@
-package com.theundertaker11.GeneticsReborn.util;
+package com.theundertaker11.geneticsreborn.util;
 
-import com.theundertaker11.GeneticsReborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 
 public class MobToGeneObject {
 	
