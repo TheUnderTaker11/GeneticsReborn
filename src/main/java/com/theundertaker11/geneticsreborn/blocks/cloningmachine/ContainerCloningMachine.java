@@ -68,6 +68,45 @@ public class ContainerCloningMachine extends Container {
 		return tileInventory.isUseableByPlayer(player);
 	}
 
+
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index){
+		ItemStack itemstack = ItemStack.EMPTY;
+		Slot slot = this.inventorySlots.get(index);
+
+		if(slot != null && slot.getHasStack()){ //Checks that slot is valid and has items in it.
+			ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
+			if(index <= 35){
+				if(slot.getStack().getItem()== GRItems.OrganicMatter){
+					if (!this.mergeItemStack(slot.getStack(), 36, 37, false)) {
+						this.mergeItemStack(slot.getStack(), 36, 37,false);
+						return ItemStack.EMPTY;
+					}
+					else{
+						return itemstack;
+					}
+				}
+			} else if (!this.mergeItemStack(itemstack1, 0, 37, false)) {
+				return ItemStack.EMPTY;
+			}
+
+			if (itemstack1.isEmpty()) {
+				slot.putStack(ItemStack.EMPTY);
+			} else {
+				slot.onSlotChanged();
+			}
+
+			if (itemstack1.getCount() == itemstack.getCount()) {
+				return ItemStack.EMPTY;
+			}
+
+			slot.onTake(playerIn, itemstack1);
+		}
+		return itemstack;
+	}
+
+	/* Original GeneticsReborn code
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int sourceSlotIndex) {
 		Slot slot = (Slot) this.inventorySlots.get(sourceSlotIndex);
@@ -97,7 +136,7 @@ public class ContainerCloningMachine extends Container {
 		} else return ItemStack.EMPTY;
 		return copyOfStack;
 	}
-
+*/
 	@Override
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
