@@ -3,7 +3,6 @@ package com.theundertaker11.geneticsreborn.blocks.bloodpurifier;
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
-import com.theundertaker11.geneticsreborn.util.CustomItemStackHandler;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,9 +10,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-
-import javax.annotation.Nonnull;
 
 public class GRTileEntityBloodPurifier extends GRTileEntityBasicEnergyReceiver implements ITickable {
 
