@@ -23,6 +23,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+
 @Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.NAME, acceptedMinecraftVersions = Reference.ACCEPTED_MINECRAFT)
 public class GeneticsReborn {
 
@@ -38,8 +40,9 @@ public class GeneticsReborn {
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		Configuration config = new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + "GeneticsReborn/GeneticsReborn.cfg"));
 		loadConfig(config);
+		JsonHandler.handleJson(event);
 
 		MobToGeneRegistry.init();
 		GRItems.init();

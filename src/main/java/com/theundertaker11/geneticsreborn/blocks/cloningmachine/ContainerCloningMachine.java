@@ -53,13 +53,13 @@ public class ContainerCloningMachine extends Container {
 
 		IItemHandler itemhandlerinput = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler itemhandleroutput = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
-		final int INPUT_SLOTS_XPOS = 63;
-		final int INPUT_SLOTS_YPOS = 36;
+		int INPUT_SLOTS_XPOS = 63;
+		int INPUT_SLOTS_YPOS = 36;
 		addSlotToContainer(new SlotSmeltableInput(itemhandlerinput, INPUT_SLOT_NUMBER, INPUT_SLOTS_XPOS, INPUT_SLOTS_YPOS));
 
 
-		final int OUTPUT_SLOTS_XPOS = 110;
-		final int OUTPUT_SLOTS_YPOS = 36;
+		int OUTPUT_SLOTS_XPOS = 110;
+		int OUTPUT_SLOTS_YPOS = 36;
 		addSlotToContainer(new SlotOutput(itemhandleroutput, OUTPUT_SLOT_NUMBER, OUTPUT_SLOTS_XPOS, OUTPUT_SLOTS_YPOS));
 	}
 

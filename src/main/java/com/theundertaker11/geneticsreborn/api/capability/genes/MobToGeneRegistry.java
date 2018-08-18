@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.JsonHandler;
 import com.theundertaker11.geneticsreborn.util.MobToGeneObject;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Optional;
+
 /**
  * This is used by the DNA Decrypter to tell if a mob should drop a given gene. 
  * DO NOT TRY TO ADD GENES TO MOBS I'VE ALREADY REGISTERED GENES TO. It is simply not made to handle that.
@@ -60,20 +63,17 @@ public class MobToGeneRegistry {
 		registerMob(new MobToGeneObject("EntityWither", EnumGenes.WITHER_PROOF, EnumGenes.FLY));
 		registerMob(new MobToGeneObject("Ender Dragon", EnumGenes.DRAGONS_BREATH, EnumGenes.ENDER_DRAGON_HEALTH));
 
-		try {
-			registerArsMagica();
-		} catch (NoSuchMethodError e) {
-		}
+
 
 		try {
-			registerGrimoireOfGaia();
+			if (Loader.isModLoaded("arsmagica2")) registerArsMagica();
+			if (Loader.isModLoaded("grimoireofgaia")) registerGrimoireOfGaia();
+			if (Loader.isModLoaded("mocreatures")) registerMoCreatures();
 		} catch (NoSuchMethodError e) {
+			e.printStackTrace();
 		}
 
-		try {
-			registerMoCreatures();
-		} catch (NoSuchMethodError e) {
-		}
+		JsonHandler.registerMobsFromJson();
 	}
 
 	public static void registerMob(MobToGeneObject obj) {
