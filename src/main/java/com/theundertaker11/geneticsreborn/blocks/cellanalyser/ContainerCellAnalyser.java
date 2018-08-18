@@ -69,33 +69,40 @@ public class ContainerCellAnalyser extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int sourceSlotIndex) {
-		Slot slot = (Slot) this.inventorySlots.get(sourceSlotIndex);
-		if (slot == null || !slot.getHasStack()) return ItemStack.EMPTY;
-		if (tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP) == null)
-			return ItemStack.EMPTY;
-		IItemHandler input = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index){
+		ItemStack itemstack = ItemStack.EMPTY;
+		Slot slot = this.inventorySlots.get(index);
 
-		ItemStack sourceStack = slot.getStack();
-		ItemStack copyOfStack = sourceStack.copy();
-
-		if (sourceSlotIndex >= VANILLA_FIRST_SLOT_INDEX && sourceSlotIndex < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
-			if (sourceStack.getItem() == GRItems.OrganicMatter) {
-				if (input.insertItem(0, sourceStack, true).isEmpty()) {
-					input.insertItem(0, sourceStack, false);
-					player.inventory.setInventorySlotContents(sourceSlotIndex, ItemStack.EMPTY);
-				} else if (input.insertItem(0, sourceStack, true).getCount() == sourceStack.getCount()) {
-					return ItemStack.EMPTY;
-				} else {
-					player.inventory.setInventorySlotContents(sourceSlotIndex, input.insertItem(0, sourceStack, false));
+		if(slot != null && slot.getHasStack()){ //Checks that slot is valid and has items in it.
+			ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
+			if(index <= 35){
+				if(slot.getStack().getItem()== GRItems.OrganicMatter){
+					if (!this.mergeItemStack(slot.getStack(), 36, 37, false)) {
+						this.mergeItemStack(slot.getStack(), 36, 37,false);
+						return ItemStack.EMPTY;
+					}
+					else{
+						return itemstack;
+					}
 				}
-			} else return ItemStack.EMPTY;
-		} else if (sourceSlotIndex == INPUT_SLOT_INDEX || sourceSlotIndex == OUTPUT_SLOT_INDEX) {
-			if (!this.mergeItemStack(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
+			} else if (!this.mergeItemStack(itemstack1, 0, 37, false)) {
 				return ItemStack.EMPTY;
 			}
-		} else return ItemStack.EMPTY;
-		return copyOfStack;
+
+			if (itemstack1.isEmpty()) {
+				slot.putStack(ItemStack.EMPTY);
+			} else {
+				slot.onSlotChanged();
+			}
+
+			if (itemstack1.getCount() == itemstack.getCount()) {
+				return ItemStack.EMPTY;
+			}
+
+			slot.onTake(playerIn, itemstack1);
+		}
+		return itemstack;
 	}
 
 	@Override
