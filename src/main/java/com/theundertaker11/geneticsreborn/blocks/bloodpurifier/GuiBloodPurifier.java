@@ -1,6 +1,11 @@
 package com.theundertaker11.geneticsreborn.blocks.bloodpurifier;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.theundertaker11.geneticsreborn.Reference;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,10 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @SideOnly(Side.CLIENT)

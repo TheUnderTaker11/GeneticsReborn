@@ -4,6 +4,7 @@ import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;

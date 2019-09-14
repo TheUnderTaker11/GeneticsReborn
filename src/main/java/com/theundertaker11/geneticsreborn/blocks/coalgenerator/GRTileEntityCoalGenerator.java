@@ -1,13 +1,22 @@
 package com.theundertaker11.geneticsreborn.blocks.coalgenerator;
 
+import javax.annotation.Nullable;
+
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.util.CustomEnergyStorage;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBoat;
+import net.minecraft.item.ItemDoor;
+import net.minecraft.item.ItemHoe;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -21,8 +30,6 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-
-import javax.annotation.Nullable;
 
 public class GRTileEntityCoalGenerator extends TileEntity implements ITickable {
 
