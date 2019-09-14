@@ -14,16 +14,13 @@ import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver implements ITickable {
 
-	public static int TICKS_NEEDED = GeneticsReborn.baseTickCellAnalyser;
-	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickCellAnalyser;
-
 	public GRTileEntityCellAnalyser() {
 		super();
 	}
 
 	@Override
 	public void update() {
-		int rfpertick = (baseRfPerTick + (this.overclockers * 85));
+		int rfpertick = (GeneticsReborn.baseRfPerTickCellAnalyser + (this.overclockers * 85));
 		if (canSmelt()) {
 			if (this.storage.getEnergyStored() > rfpertick) {
 				this.storage.extractEnergy(rfpertick, false);
@@ -32,7 +29,7 @@ public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver im
 			}
 			if (ticksCooking < 0) ticksCooking = 0;
 
-			if (ticksCooking >= (TICKS_NEEDED - (this.overclockers * 39))) {
+			if (ticksCooking >= (GeneticsReborn.baseTickCellAnalyser - (this.overclockers * 39))) {
 				smeltItem();
 				ticksCooking = 0;
 			}
@@ -88,7 +85,7 @@ public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver im
 	}
 
 	public double percComplete() {
-		return (double) ((double) this.ticksCooking / (double) (TICKS_NEEDED - (this.overclockers * 39)));
+		return (double) ((double) this.ticksCooking / (double) (GeneticsReborn.baseTickCellAnalyser - (this.overclockers * 39)));
 	}
 
 	@Override

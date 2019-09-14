@@ -15,16 +15,13 @@ import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver implements ITickable {
 
-	public static int TICKS_NEEDED = GeneticsReborn.baseTickPlasmidInjector;
-	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickPlasmidInjector;
-
 	public GRTileEntityPlasmidInjector() {
 		super();
 	}
 
 	@Override
 	public void update() {
-		int rfpertick = (baseRfPerTick + (this.overclockers * 85));
+		int rfpertick = (GeneticsReborn.baseRfPerTickPlasmidInjector + (this.overclockers * 85));
 		if (canSmelt()) {
 			if (this.storage.getEnergyStored() > rfpertick) {
 				this.storage.extractEnergy(rfpertick, false);
@@ -33,7 +30,7 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 			}
 			if (ticksCooking < 0) ticksCooking = 0;
 
-			if (ticksCooking >= (TICKS_NEEDED - (this.overclockers * 39))) {
+			if (ticksCooking >= (GeneticsReborn.baseTickPlasmidInjector - (this.overclockers * 39))) {
 				smeltItem();
 				ticksCooking = 0;
 			}
@@ -117,7 +114,7 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 	}
 
 	public double percComplete() {
-		return (double) ((double) this.ticksCooking / (double) (TICKS_NEEDED - (this.overclockers * 39)));
+		return (double) ((double) this.ticksCooking / (double) (GeneticsReborn.baseTickPlasmidInjector - (this.overclockers * 39)));
 	}
 
 	@Override

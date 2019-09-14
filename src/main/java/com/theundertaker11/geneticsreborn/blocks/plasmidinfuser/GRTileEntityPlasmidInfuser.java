@@ -16,8 +16,6 @@ import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver implements ITickable {
 
-	public static int TICKS_NEEDED = GeneticsReborn.baseTickPlasmidInfuser;
-	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickPlasmidInfuser;
 	public int num;
 	public int numNeeded;
 	private int timer;
@@ -43,7 +41,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 				this.numNeeded = 0;
 			}
 		}
-		int rfpertick = (baseRfPerTick + (this.overclockers * 85));
+		int rfpertick = (GeneticsReborn.baseRfPerTickPlasmidInfuser + (this.overclockers * 85));
 		if (canSmelt()) {
 			if (this.storage.getEnergyStored() > rfpertick) {
 				this.storage.extractEnergy(rfpertick, false);
@@ -52,7 +50,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 			}
 			if (ticksCooking < 0) ticksCooking = 0;
 
-			if (ticksCooking >= (TICKS_NEEDED - (this.overclockers * 39))) {
+			if (ticksCooking >= (GeneticsReborn.baseTickPlasmidInfuser - (this.overclockers * 39))) {
 				smeltItem();
 				ticksCooking = 0;
 			}
@@ -155,7 +153,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 	}
 
 	public double percComplete() {
-		return (double) ((double) this.ticksCooking / (double) (TICKS_NEEDED - (this.overclockers * 39)));
+		return (double) ((double) this.ticksCooking / (double) (GeneticsReborn.baseTickPlasmidInfuser - (this.overclockers * 39)));
 	}
 
 	@Override
