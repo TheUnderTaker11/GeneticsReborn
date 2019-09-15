@@ -1,28 +1,21 @@
 package com.theundertaker11.geneticsreborn.blocks.coalgenerator;
 
+import com.theundertaker11.geneticsreborn.blocks.BaseContainer;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerCoalGenerator extends Container {
+public class ContainerCoalGenerator extends BaseContainer {
 
     public ContainerCoalGenerator(InventoryPlayer player, GRTileEntityCoalGenerator te) {
         super();
         addSlotToContainer(new SlotItemHandler(te.inventory, 0, 52, 34));
 
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                this.addSlotToContainer(new Slot(player, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-            }
-        }
-
-        for (int k = 0; k < 9; ++k) {
-            this.addSlotToContainer(new Slot(player, k, 8 + k * 18, 142));
-        }
+        attachPlayerInventory(player);
     }
 
     @Override
@@ -61,11 +54,6 @@ public class ContainerCoalGenerator extends Container {
                 slot.onSlotChanged();
             }
 
-            if (itemstack1.getCount() == itemstack.getCount()) {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTake(playerIn, itemstack1);
         }
         return itemstack;
     }

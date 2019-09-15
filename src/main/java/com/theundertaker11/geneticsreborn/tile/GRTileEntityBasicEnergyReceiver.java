@@ -27,7 +27,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class GRTileEntityBasicEnergyReceiver extends TileEntity {
     private final static int SIZE = 1;
-    public CustomEnergyStorage storage = new CustomEnergyStorage(GeneticsReborn.maxEnergyStored, 20000, 0);
+    public CustomEnergyStorage storage = new CustomEnergyStorage(GeneticsReborn.maxEnergyStored, 20000);
     protected int overclockers;
     protected int ticksCooking;
 

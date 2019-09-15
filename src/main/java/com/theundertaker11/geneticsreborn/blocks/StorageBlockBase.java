@@ -2,6 +2,7 @@ package com.theundertaker11.geneticsreborn.blocks;
 
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;

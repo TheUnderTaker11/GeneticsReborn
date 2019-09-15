@@ -4,6 +4,7 @@ import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -13,16 +14,13 @@ import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver implements ITickable {
 
-	public static int TICKS_NEEDED = GeneticsReborn.baseTickDNAExtractor;
-	public static int baseRfPerTick = GeneticsReborn.baseRfPerTickDNAExtractor;
-
 	public GRTileEntityDNAExtractor() {
 		super();
 	}
 
 	@Override
 	public void update() {
-		int rfpertick = (baseRfPerTick + (this.overclockers * 85));//TODO change here based on power
+		int rfpertick = (GeneticsReborn.baseRfPerTickDNAExtractor + (this.overclockers * 85));//TODO change here based on power
 		if (canSmelt()) {
 			if (this.storage.getEnergyStored() > rfpertick) {
 				this.storage.extractEnergy(rfpertick, false);
@@ -31,7 +29,7 @@ public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver im
 			}
 			if (ticksCooking < 0) ticksCooking = 0;
 
-			if (ticksCooking >= (TICKS_NEEDED - (this.overclockers * 39))) {//TODO change here based on power
+			if (ticksCooking >= (GeneticsReborn.baseTickDNAExtractor - (this.overclockers * 39))) {//TODO change here based on power
 				smeltItem();
 				ticksCooking = 0;
 			}
@@ -97,7 +95,7 @@ public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver im
 	}
 
 	public double percComplete() {
-		return (double) ((double) this.ticksCooking / (double) (TICKS_NEEDED - (this.overclockers * 39)));//TODO change here based on power
+		return (double) ((double) this.ticksCooking / (double) (GeneticsReborn.baseTickDNAExtractor - (this.overclockers * 39)));//TODO change here based on power
 	}
 
 	@Override

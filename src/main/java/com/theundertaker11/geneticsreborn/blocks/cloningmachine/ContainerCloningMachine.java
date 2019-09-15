@@ -1,9 +1,10 @@
 package com.theundertaker11.geneticsreborn.blocks.cloningmachine;
 
+import com.theundertaker11.geneticsreborn.blocks.BaseContainer;
 import com.theundertaker11.geneticsreborn.items.GRItems;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 
-public class ContainerCloningMachine extends Container {
+public class ContainerCloningMachine extends BaseContainer {
 
 	private GRTileEntityCloningMachine tileInventory;
 
@@ -23,33 +24,13 @@ public class ContainerCloningMachine extends Container {
 	private int cachedEnergyStored;
 	private int cachedOverclockers;
 
-	private final int HOTBAR_SLOT_COUNT = 9;
-	private final int PLAYER_INVENTORY_ROW_COUNT = 3;
-	private final int PLAYER_INVENTORY_COLUMN_COUNT = 9;
-	private final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
-	private final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
-
-	public final int INPUT_SLOTS_COUNT = 1;
-
-	private final int VANILLA_FIRST_SLOT_INDEX = 0;
-	private final int INPUT_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
-	private final int OUTPUT_SLOT_INDEX = INPUT_SLOT_INDEX + INPUT_SLOTS_COUNT;
 
 	private final int INPUT_SLOT_NUMBER = 0;
 	private final int OUTPUT_SLOT_NUMBER = 0;
 
 	public ContainerCloningMachine(InventoryPlayer invPlayer, GRTileEntityCloningMachine tileInventory) {
 		this.tileInventory = tileInventory;
-
-		for (int i = 0; i < 3; ++i) {
-			for (int j = 0; j < 9; ++j) {
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-			}
-		}
-
-		for (int k = 0; k < 9; ++k) {
-			this.addSlotToContainer(new Slot(invPlayer, k, 8 + k * 18, 142));
-		}
+		attachPlayerInventory(invPlayer);
 
 		IItemHandler itemhandlerinput = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler itemhandleroutput = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
@@ -64,47 +45,15 @@ public class ContainerCloningMachine extends Container {
 	}
 
 	@Override
+	protected boolean canAcceptItem(Slot slot) {
+		return slot.getStack().getItem() == GRItems.OrganicMatter;
+	}
+	
+	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return tileInventory.isUseableByPlayer(player);
 	}
 
-
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index){
-		ItemStack itemstack = ItemStack.EMPTY;
-		Slot slot = this.inventorySlots.get(index);
-
-		if(slot != null && slot.getHasStack()){ //Checks that slot is valid and has items in it.
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
-			if(index <= 35){
-				if(slot.getStack().getItem()== GRItems.OrganicMatter){
-					if (!this.mergeItemStack(slot.getStack(), 36, 37, false)) {
-						this.mergeItemStack(slot.getStack(), 36, 37,false);
-						return ItemStack.EMPTY;
-					}
-					else{
-						return itemstack;
-					}
-				}
-			} else if (!this.mergeItemStack(itemstack1, 0, 37, false)) {
-				return ItemStack.EMPTY;
-			}
-
-			if (itemstack1.isEmpty()) {
-				slot.putStack(ItemStack.EMPTY);
-			} else {
-				slot.onSlotChanged();
-			}
-
-			if (itemstack1.getCount() == itemstack.getCount()) {
-				return ItemStack.EMPTY;
-			}
-
-			slot.onTake(playerIn, itemstack1);
-		}
-		return itemstack;
-	}
 
 	/* Original GeneticsReborn code
 	@Override

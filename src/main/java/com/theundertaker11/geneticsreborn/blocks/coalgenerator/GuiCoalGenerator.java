@@ -1,12 +1,13 @@
 package com.theundertaker11.geneticsreborn.blocks.coalgenerator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.theundertaker11.geneticsreborn.Reference;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.config.GuiUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuiCoalGenerator extends GuiContainer {
 
