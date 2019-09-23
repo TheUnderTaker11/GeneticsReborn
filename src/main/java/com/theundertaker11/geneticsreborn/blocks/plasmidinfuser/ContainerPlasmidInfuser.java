@@ -2,6 +2,7 @@ package com.theundertaker11.geneticsreborn.blocks.plasmidinfuser;
 
 import com.theundertaker11.geneticsreborn.blocks.BaseContainer;
 import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -50,6 +51,7 @@ public class ContainerPlasmidInfuser extends BaseContainer {
 		return tileInventory.isUseableByPlayer(player);
 	}
 
+	
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index){
 		ItemStack itemstack = ItemStack.EMPTY;
@@ -59,14 +61,16 @@ public class ContainerPlasmidInfuser extends BaseContainer {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 			if(index < VANILLA_SLOT_COUNT){
-				if(slot.getStack().getItem()== GRItems.DNAHelix){
-					if (!this.mergeItemStack(slot.getStack(), 36, 37, false)) {
-						this.mergeItemStack(slot.getStack(), 36, 37,false);
+				if(itemstack1.getItem() == GRItems.DNAHelix) {
+					if (itemstack1.getTagCompound() != null && ModUtils.getTagCompound(itemstack1).hasKey("gene") && 
+					!"GeneticsRebornBasicGene".equals( ModUtils.getTagCompound(itemstack1).getString("gene"))){
+						if (!this.mergeItemStack(slot.getStack(), 36, 37, false)) {
+							this.mergeItemStack(slot.getStack(), 36, 37,false);
+							return ItemStack.EMPTY;
+						}
+						else return itemstack;
+					} else 
 						return ItemStack.EMPTY;
-					}
-					else{
-						return itemstack;
-					}
 				}
 				if(slot.getStack().getItem() == GRItems.Plasmid){
 					if (!this.mergeItemStack(slot.getStack(), 37, 38, false)) {
@@ -141,7 +145,9 @@ public class ContainerPlasmidInfuser extends BaseContainer {
 
 		@Override
 		public boolean isItemValid(ItemStack stack) {
-			return (stack.getItem() == GRItems.DNAHelix);
+			return stack.getItem() == GRItems.DNAHelix &&
+			stack.getTagCompound() != null && ModUtils.getTagCompound(stack).hasKey("gene") && 
+			!"GeneticsRebornBasicGene".equals( ModUtils.getTagCompound(stack).getString("gene"));
 		}
 	}
 

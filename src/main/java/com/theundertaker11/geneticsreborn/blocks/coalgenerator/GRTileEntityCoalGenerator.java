@@ -214,7 +214,7 @@ public class GRTileEntityCoalGenerator extends TileEntity implements ITickable {
     }
 
     public double percentage() {
-        return (double) (this.burnTime / this.currentItemBurnTime) * 100;
+        return (double) ((double)this.burnTime / (double)this.currentItemBurnTime) * 100;
     }
 
     public static boolean isEnergyTE(TileEntity te) {

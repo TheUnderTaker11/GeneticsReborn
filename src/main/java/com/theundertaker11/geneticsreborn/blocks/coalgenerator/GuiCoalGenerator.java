@@ -51,24 +51,26 @@ public class GuiCoalGenerator extends GuiContainer {
         }
 
         if (tile.burnTime > 0) {
-            if (this.isPointInRegion(76, 35, 22, 15, mouseX, mouseY)) {
+            if (this.isPointInRegion(52, 52, 14, 14, mouseX, mouseY)) {
                 List<String> energy = new ArrayList<String>();
-                energy.add(tile.percentage() + " %");
+                energy.add(String.format("%.1f%%", 100-tile.percentage()));
                 GuiUtils.drawHoveringText(energy, mouseX, mouseY, mc.displayWidth, mc.displayHeight, -1, mc.fontRenderer);
             }
         }
     }
 
     public void renderProgress() {
+    	/*
         if (tile.burnTime > 0) {
             int i = 22;
             int j = tile.burnTime * i / tile.currentItemBurnTime;
             drawTexturedModalRect(guiLeft + 76, guiTop + 35, 178, 61, j, 16);
         }
+        */
 
         if (tile.burnTime > 0) {
             int i = 14;
-            int j = tile.burnTime * i / tile.currentItemBurnTime;
+            int j = i - (tile.burnTime * i / tile.currentItemBurnTime);
             drawTexturedModalRect(guiLeft + 53, guiTop + 66 - j, 177, 59 - j, 14, j);
         }
 
