@@ -76,7 +76,7 @@ public class AntiPlasmidCrafting implements IRecipe {
 
 	@Override
 	public boolean canFit(int width, int height) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class AntiPlasmidCrafting implements IRecipe {
 	@Nullable
 	@Override
 	public ResourceLocation getRegistryName() {
-		return GRItems.AntiPlasmid.getRegistryName();
+		return new ResourceLocation(GRItems.AntiPlasmid.getRegistryName()+"_complete");
 	}
 
 	@Override
