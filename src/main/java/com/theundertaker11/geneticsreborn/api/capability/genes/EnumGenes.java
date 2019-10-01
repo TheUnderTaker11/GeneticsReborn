@@ -28,5 +28,7 @@ public enum EnumGenes {
 	WOOLY,
 	WITHER_HIT,
 	WITHER_PROOF,
-	XP_MAGNET;
+	XP_MAGNET,
+	STEP_ASSIST,
+	INFINITY;
 }

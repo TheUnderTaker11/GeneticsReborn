@@ -11,6 +11,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class CraftingManager {
 
 	public static void RegisterRecipes() {
+		GameRegistry.addShapedRecipe(GRBlocks.CoalGen.getRegistryName(), null, new ItemStack(GRBlocks.CoalGen), new Object[]{
+				"zzz",
+				"xax",
+				"xyx", 'x', "ingotIron", 'a', Blocks.FURNACE, 'y', "dustRedstone", 'z', Blocks.GLASS});
+
 		GameRegistry.addShapedRecipe(GRItems.MetalScraper.getRegistryName(), null, new ItemStack(GRItems.MetalScraper), new Object[]{
 				" yx",
 				" xy",

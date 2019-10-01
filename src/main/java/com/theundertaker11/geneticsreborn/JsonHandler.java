@@ -59,27 +59,19 @@ public class JsonHandler {
             while (reader.hasNext()) {
                 String name = reader.nextName();
 
-                if (!name.toLowerCase().contains("test")) {
-                    String[] genes = new String[]{};
+                if (!name.toLowerCase().contains("entitytest")) {
+                	EnumGenes[] genes = new EnumGenes[]{};
                     int i = 0;
                     reader.beginArray();
                     while (reader.hasNext()) {
-                        genes[i] = reader.nextString();
+                        EnumGenes g = EnumGenes.valueOf(reader.nextString().toUpperCase());
+                        if (g != null) genes[i] = g;
                         i++;
                     }
-
-                    switch (genes.length) {
-                        case 1:
-                            MobToGeneRegistry.registerMob(new MobToGeneObject(name, EnumGenes.valueOf(genes[0].toUpperCase())));
-                        case 2:
-                            MobToGeneRegistry.registerMob(new MobToGeneObject(name, EnumGenes.valueOf(genes[0].toUpperCase()), EnumGenes.valueOf(genes[1].toUpperCase())));
-                        case 3:
-                            MobToGeneRegistry.registerMob(new MobToGeneObject(name, EnumGenes.valueOf(genes[0].toUpperCase()), EnumGenes.valueOf(genes[1].toUpperCase()), EnumGenes.valueOf(genes[2].toUpperCase())));
-                        default:
-                            GeneticsReborn.log.log(Level.WARN, "Error registering genes for " + name + ", invalid count!");
-                    }
+                    
+                    MobToGeneRegistry.registerMob(new MobToGeneObject(name, genes));
                     reader.endArray();
-                }else {
+                } else {
                     reader.skipValue();
                 }
             }

@@ -13,7 +13,6 @@ import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntity;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -36,10 +35,11 @@ public class GeneticsReborn {
 	@SidedProxy(clientSide = Reference.CLIENTPROXY, serverSide = Reference.SERVERPROXY)
 	public static CommonProxy proxy;
 
-	public static final Logger log = FMLLog.getLogger();
+	public static Logger log;
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		log = event.getModLog();
 		Configuration config = new Configuration(new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + "GeneticsReborn/GeneticsReborn.cfg"));
 		loadConfig(config);
 		JsonHandler.handleJson(event);
@@ -99,8 +99,14 @@ public class GeneticsReborn {
 	public static boolean enableXPMagnet;
 	public static boolean enableExplosiveExit;
 	public static boolean enablePhotosynthesis;
+	public static boolean enableInfinity;
+	public static boolean enableStepAssist;
 	public static String[] CloningBlacklist;
 
+	
+	public static boolean registerDefaultGenes;
+	public static boolean registerModGenes;
+	
 	public static int maxEnergyStored;
 
 	public static int baseRfPerTickBloodPurifier;
@@ -130,7 +136,7 @@ public class GeneticsReborn {
 
 	public static int CoalGeneratorBaseRF;
 
-	public static void loadConfig(Configuration config) {
+		public static void loadConfig(Configuration config) {
 		config.load();
 		final String general = "General Config";
 		final String genes = "Genes";
@@ -148,6 +154,9 @@ public class GeneticsReborn {
 		keepGenesOnDeath = config.getBoolean("Keep genes on death", general, true, "Better keep some back up syringes if this is set to false.");
 		allowGivingEntityGenes = config.getBoolean("Allow giving other entities genes", general, false, "If this is enabled players can give animals such as horses genes with the metal syringe");
 
+		registerDefaultGenes = config.getBoolean("Register default gene list", general, true, "If this is enabled default gene mappings will be loaded for standard mobs");
+		registerModGenes = config.getBoolean("Register default mod gene list", general, true, "If this is enabled default gene mappings will be loaded for mobs from supported mods");
+		
 		enableDragonsBreath = config.getBoolean("Dragon's Breath", genes, true, "");
 		enableEatGrass = config.getBoolean("Eat Grass", genes, true, "");
 		enableEmeraldHeart = config.getBoolean("Emerald Heart", genes, true, "");
@@ -176,6 +185,8 @@ public class GeneticsReborn {
 		enableXPMagnet = config.getBoolean("XP Attraction Field", genes, true, "");
 		enableExplosiveExit = config.getBoolean("Explosive Exit", genes, true, "");
 		enablePhotosynthesis = config.getBoolean("Photosynthesis", genes, true, "");
+		enableInfinity = config.getBoolean("Infinity", genes, true, "");
+		enableStepAssist = config.getBoolean("Step Assist", genes, true, "");
 		CloningBlacklist = config.getStringList("Cloning Blacklist", general, new String[]{"EntityWither"}, "Add the name of the Entity's class you want blacklisted. (The ender dragon will always be hardcode blacklisted.)");
 
 		maxEnergyStored = config.getInt("Max", general, 20000, 10000, 1000000000, "Changes max RF stored by all machines");

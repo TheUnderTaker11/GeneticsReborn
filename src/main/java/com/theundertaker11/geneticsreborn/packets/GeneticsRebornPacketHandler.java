@@ -1,5 +1,6 @@
 package com.theundertaker11.geneticsreborn.packets;
 
+import com.theundertaker11.geneticsreborn.packets.StepHeightChange.Handler3;
 import com.theundertaker11.geneticsreborn.packets.SendShootDragonBreath.Handler2;
 import com.theundertaker11.geneticsreborn.packets.SendTeleportPlayer.Handler;
 
@@ -14,5 +15,6 @@ public class GeneticsRebornPacketHandler {
 	public static void init() {
 		INSTANCE.registerMessage(Handler.class, SendTeleportPlayer.class, 0, Side.SERVER);
 		INSTANCE.registerMessage(Handler2.class, SendShootDragonBreath.class, 1, Side.SERVER);
+		INSTANCE.registerMessage(Handler3.class, StepHeightChange.class, 3, Side.CLIENT);
 	}
 }

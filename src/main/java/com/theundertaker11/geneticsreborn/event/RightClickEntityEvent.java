@@ -14,7 +14,6 @@ import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityWitherSkeleton;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,7 +40,6 @@ public class RightClickEntityEvent {
 		if (event.getHand() == EnumHand.MAIN_HAND && !event.getWorld().isRemote && event.getEntityPlayer().getHeldItemMainhand() != null) {
 			EntityPlayer player = event.getEntityPlayer();
 			Entity target = event.getTarget();
-			World world = event.getWorld();
 			if (target instanceof MultiPartEntityPart && player.getHeldItemMainhand().getItem() instanceof DamageableItemBase) {
 				if (player.getHeldItemMainhand().getItem() == GRItems.MetalScraper || player.getHeldItemMainhand().getItem() == GRItems.AdvancedScraper) {
 					ItemStack organicmatter = new ItemStack(GRItems.OrganicMatter, 1);
@@ -94,7 +92,6 @@ public class RightClickEntityEvent {
 		String name = livingtarget.getName();
 
 		if (livingtarget instanceof EntityWitherSkeleton) {
-			EntityWitherSkeleton skeleton = (EntityWitherSkeleton) livingtarget;
 			simplename = "Wither Skeleton";
 			name = "Wither Skeleton";
 		}

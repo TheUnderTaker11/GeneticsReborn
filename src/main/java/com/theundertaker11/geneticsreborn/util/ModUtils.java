@@ -120,6 +120,14 @@ public class ModUtils{
 		{
 			genename="Dragon's Breath";
 		}
+		if(rawname.equals("GeneticsRebornINFINITY"))
+		{
+			genename="Infinity";
+		}
+		if(rawname.equals("GeneticsRebornSTEP_ASSIST"))
+		{
+			genename="Step Assist";
+		}
 		if(rawname.equals("GeneticsRebornEAT_GRASS"))
 		{
 			genename="Eat Grass";
@@ -246,6 +254,14 @@ public class ModUtils{
 		if(rawname.equals("GeneticsRebornDRAGONS_BREATH"))
 		{
 			return GeneticsReborn.enableDragonsBreath;
+		}
+		if(rawname.equals("GeneticsRebornINFINITY"))
+		{
+			return GeneticsReborn.enableInfinity;
+		}
+		if(rawname.equals("GeneticsRebornSTEP_ASSIST"))
+		{
+			return GeneticsReborn.enableStepAssist;
 		}
 		if(rawname.equals("GeneticsRebornEAT_GRASS"))
 		{

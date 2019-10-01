@@ -1,8 +1,6 @@
 package com.theundertaker11.geneticsreborn.api.capability.genes;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
@@ -26,51 +24,54 @@ public class MobToGeneRegistry {
 	private static HashSet<MobToGeneObject> list = new HashSet<>();
 
 	public static void init() {
-		//Peacefuls
-		registerMob(new MobToGeneObject("EntityVillager", EnumGenes.EMERALD_HEART));
-		registerMob(new MobToGeneObject("EntitySheep", EnumGenes.EAT_GRASS, EnumGenes.WOOLY));
-		registerMob(new MobToGeneObject("EntityCow", EnumGenes.EAT_GRASS, EnumGenes.MILKY));
-		registerMob(new MobToGeneObject("EntityHorse", EnumGenes.JUMP_BOOST));
-		registerMob(new MobToGeneObject("EntityChicken", EnumGenes.NO_FALL_DAMAGE));
-		registerMob(new MobToGeneObject("EntityBat", EnumGenes.FLY, EnumGenes.NIGHT_VISION));
-		registerMob(new MobToGeneObject("EntityOcelot", EnumGenes.SPEED, EnumGenes.SCARE_CREEPERS));
-		registerMob(new MobToGeneObject("EntityPolarBear", EnumGenes.STRENGTH));
-		registerMob(new MobToGeneObject("EntityRabbit", EnumGenes.JUMP_BOOST, EnumGenes.SPEED));
-		registerMob(new MobToGeneObject("EntitySquid", EnumGenes.WATER_BREATHING));
-		registerMob(new MobToGeneObject("EntityIronGolem", EnumGenes.MORE_HEARTS));
+		if (GeneticsReborn.registerModGenes) {
+			//Peacefuls
+			registerMob(new MobToGeneObject("EntityVillager", EnumGenes.EMERALD_HEART));
+			registerMob(new MobToGeneObject("EntitySheep", new EnumGenes[] {EnumGenes.EAT_GRASS, EnumGenes.WOOLY}));
+			registerMob(new MobToGeneObject("EntityCow", new EnumGenes[] {EnumGenes.EAT_GRASS, EnumGenes.MILKY}));
+			registerMob(new MobToGeneObject("EntityHorse", new EnumGenes[] {EnumGenes.JUMP_BOOST, EnumGenes.STEP_ASSIST, EnumGenes.SPEED}));
+			registerMob(new MobToGeneObject("EntityChicken", EnumGenes.NO_FALL_DAMAGE));
+			registerMob(new MobToGeneObject("EntityBat", new EnumGenes[] {EnumGenes.NIGHT_VISION}));
+			registerMob(new MobToGeneObject("EntityOcelot", new EnumGenes[] {EnumGenes.SPEED, EnumGenes.SCARE_CREEPERS}));
+			registerMob(new MobToGeneObject("EntityPolarBear", new EnumGenes[] {EnumGenes.STRENGTH, EnumGenes.STEP_ASSIST}));
+			registerMob(new MobToGeneObject("EntityRabbit", new EnumGenes[] {EnumGenes.JUMP_BOOST, EnumGenes.SPEED}));
+			registerMob(new MobToGeneObject("EntitySquid", EnumGenes.WATER_BREATHING));
+			registerMob(new MobToGeneObject("EntityIronGolem", EnumGenes.MORE_HEARTS));
+	
+			//Overworld Hostiles
+			registerMob(new MobToGeneObject("EntityZombie", EnumGenes.RESISTANCE));
+			registerMob(new MobToGeneObject("EntityCreeper", EnumGenes.EXPLOSIVE_EXIT));
+			registerMob(new MobToGeneObject("EntitySpider", EnumGenes.NIGHT_VISION));
+			registerMob(new MobToGeneObject("EntityCaveSpider", new EnumGenes[] {EnumGenes.NIGHT_VISION, EnumGenes.POISON_PROOF}));
+			registerMob(new MobToGeneObject("EntitySlime", EnumGenes.NO_FALL_DAMAGE));
+			registerMob(new MobToGeneObject("EntityGuardian", EnumGenes.WATER_BREATHING));
+			registerMob(new MobToGeneObject("EntitySkeleton", EnumGenes.INFINITY));
+	
+			//End hostiles
+			registerMob(new MobToGeneObject("EntityEndermite", new EnumGenes[] {EnumGenes.SAVE_INVENTORY, EnumGenes.ITEM_MAGNET, EnumGenes.XP_MAGNET}));
+			registerMob(new MobToGeneObject("EntityEnderman", new EnumGenes[] {EnumGenes.TELEPORTER, EnumGenes.MORE_HEARTS}));
+			registerMob(new MobToGeneObject("EntityShulker", EnumGenes.RESISTANCE));
+	
+			//Nether hostiles
+			registerMob(new MobToGeneObject("Wither Skeleton", new EnumGenes[] {EnumGenes.WITHER_HIT, EnumGenes.INFINITY} ));
+			registerMob(new MobToGeneObject("EntityBlaze", new EnumGenes[] {EnumGenes.FLY, EnumGenes.SHOOT_FIREBALLS, EnumGenes.FIRE_PROOF}));
+			registerMob(new MobToGeneObject("EntityGhast", new EnumGenes[] {EnumGenes.FLY, EnumGenes.SHOOT_FIREBALLS}));
+			registerMob(new MobToGeneObject("EntityPigZombie", EnumGenes.FIRE_PROOF));
+			registerMob(new MobToGeneObject("EntityMagmaCube", EnumGenes.FIRE_PROOF));
+	
+			//Bosses
+			registerMob(new MobToGeneObject("EntityWither", new EnumGenes[] {EnumGenes.WITHER_PROOF, EnumGenes.FLY}));
+			registerMob(new MobToGeneObject("Ender Dragon", new EnumGenes[] {EnumGenes.DRAGONS_BREATH, EnumGenes.ENDER_DRAGON_HEALTH}));
+		}
 
-		//Overworld Hostiles
-		registerMob(new MobToGeneObject("EntityZombie", EnumGenes.RESISTANCE));
-		registerMob(new MobToGeneObject("EntityCreeper", EnumGenes.EXPLOSIVE_EXIT));
-		registerMob(new MobToGeneObject("EntitySpider", EnumGenes.NIGHT_VISION));
-		registerMob(new MobToGeneObject("EntityCaveSpider", EnumGenes.NIGHT_VISION, EnumGenes.POISON_PROOF));
-		registerMob(new MobToGeneObject("EntitySlime", EnumGenes.SLIMY));
-		registerMob(new MobToGeneObject("EntityGuardian", EnumGenes.WATER_BREATHING));
-
-		//End hostiles
-		registerMob(new MobToGeneObject("EntityEndermite", EnumGenes.SAVE_INVENTORY, EnumGenes.ITEM_MAGNET, EnumGenes.XP_MAGNET));
-		registerMob(new MobToGeneObject("EntityEnderman", EnumGenes.TELEPORTER, EnumGenes.MORE_HEARTS));
-		registerMob(new MobToGeneObject("EntityShulker", EnumGenes.RESISTANCE));
-
-		//Nether hostiles
-		registerMob(new MobToGeneObject("Wither Skeleton", EnumGenes.WITHER_HIT));
-		registerMob(new MobToGeneObject("EntityBlaze", EnumGenes.SHOOT_FIREBALLS, EnumGenes.FIRE_PROOF));
-		registerMob(new MobToGeneObject("EntityGhast", EnumGenes.FLY, EnumGenes.SHOOT_FIREBALLS));
-		registerMob(new MobToGeneObject("EntityPigZombie", EnumGenes.FIRE_PROOF));
-		registerMob(new MobToGeneObject("EntityMagmaCube", EnumGenes.FIRE_PROOF));
-
-		//Bosses
-		registerMob(new MobToGeneObject("EntityWither", EnumGenes.WITHER_PROOF, EnumGenes.FLY));
-		registerMob(new MobToGeneObject("Ender Dragon", EnumGenes.DRAGONS_BREATH, EnumGenes.ENDER_DRAGON_HEALTH));
-
-
-
-		try {
-			if (Loader.isModLoaded("arsmagica2")) registerArsMagica();
-			if (Loader.isModLoaded("grimoireofgaia")) registerGrimoireOfGaia();
-			if (Loader.isModLoaded("mocreatures")) registerMoCreatures();
-		} catch (NoSuchMethodError e) {
-			e.printStackTrace();
+		if (GeneticsReborn.registerModGenes) {
+			try {
+				if (Loader.isModLoaded("arsmagica2")) registerArsMagica();
+				if (Loader.isModLoaded("grimoireofgaia")) registerGrimoireOfGaia();
+				if (Loader.isModLoaded("mocreatures")) registerMoCreatures();
+			} catch (NoSuchMethodError e) {
+				e.printStackTrace();
+			}
 		}
 
 		JsonHandler.registerMobsFromJson();
@@ -104,19 +105,7 @@ public class MobToGeneRegistry {
 			return g + genename;
 
 
-		List<EnumGenes> genes = new ArrayList<>();
-		genes.add(object.Gene1);
-		if (object.Gene2 != null)
-			genes.add(object.Gene2);
-		if (object.Gene3 != null)
-			genes.add(object.Gene3);
-		if (genes.size() == 1)
-			genename = genes.get(0).toString();
-		else if (genes.size() == 2)
-			genename = genes.get(ThreadLocalRandom.current().nextInt(2)).toString();
-		else if (genes.size() == 3)
-			genename = genes.get(ThreadLocalRandom.current().nextInt(3)).toString();
-
+		genename = object.getRandomGene();
 		String fullname = g + genename;
 
 		if (!ModUtils.isGeneEnabled(fullname)) {
@@ -159,7 +148,7 @@ public class MobToGeneRegistry {
 		registerMob(new MobToGeneObject("MoCEntityPiranha", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("MoCEntityRay", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("MoCEntitySalmon", EnumGenes.WATER_BREATHING));
-		registerMob(new MobToGeneObject("MoCEntityShark", EnumGenes.WATER_BREATHING, EnumGenes.STRENGTH));
+		registerMob(new MobToGeneObject("MoCEntityShark", new EnumGenes[] {EnumGenes.WATER_BREATHING, EnumGenes.STRENGTH}));
 		registerMob(new MobToGeneObject("MoCEntitySmallFish", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("MoCEntityStringRay", EnumGenes.WATER_BREATHING));
 
