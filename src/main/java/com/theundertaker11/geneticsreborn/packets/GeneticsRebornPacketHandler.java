@@ -12,9 +12,11 @@ public class GeneticsRebornPacketHandler {
 
 	public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel("GeneticsReborn");
 
-	public static void init() {
+	public static void init(Side side) {
 		INSTANCE.registerMessage(Handler.class, SendTeleportPlayer.class, 0, Side.SERVER);
 		INSTANCE.registerMessage(Handler2.class, SendShootDragonBreath.class, 1, Side.SERVER);
-		INSTANCE.registerMessage(Handler3.class, StepHeightChange.class, 3, Side.CLIENT);
+		
+		if (side == Side.CLIENT) 
+			INSTANCE.registerMessage(Handler3.class, StepHeightChange.class, 3, Side.CLIENT);
 	}
 }

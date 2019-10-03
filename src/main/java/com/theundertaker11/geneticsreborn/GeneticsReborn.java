@@ -48,7 +48,7 @@ public class GeneticsReborn {
 		GRItems.init();
 		GRBlocks.init();
 		GRTileEntity.regTileEntitys();
-		GeneticsRebornPacketHandler.init();
+		GeneticsRebornPacketHandler.init(event.getSide());
 
 		if (event.getSide() == Side.CLIENT)
 			KeybindHandler.init();
