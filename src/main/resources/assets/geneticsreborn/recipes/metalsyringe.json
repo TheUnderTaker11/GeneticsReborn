@@ -1,0 +1,28 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "xzx",
+        "xax",
+        "xyx"
+    ],
+    "key": {
+        "z": {
+    		"type": "forge:ore_dict",
+		    "ore": "gemDiamond"
+		},
+        "x": {
+    		"type": "forge:ore_dict",
+		    "ore": "ingotIron"
+		},
+        "y": {
+    		"item": "minecraft:obsidian"
+		},
+        "a": {
+    		"item": "geneticsreborn:glasssyringe"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:metalsyringe",
+        "count": 1
+    }
+}

@@ -1,14 +1,18 @@
 package com.theundertaker11.geneticsreborn;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.MobToGeneRegistry;
 import com.theundertaker11.geneticsreborn.util.MobToGeneObject;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import org.apache.logging.log4j.Level;
 
-import java.io.*;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class JsonHandler {
 

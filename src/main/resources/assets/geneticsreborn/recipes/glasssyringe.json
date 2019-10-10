@@ -1,0 +1,27 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+		" z ",
+		"xax",
+		"xyx"
+    ],
+    "key": {
+        "z": {
+    		"item": "minecraft:piston"
+		},
+        "x": {
+    		"type": "forge:ore_dict",
+		    "ore": "glass"
+		},
+        "y": {
+    		"item": "minecraft:arrow"
+		},
+        "a": {
+    		"item": "minecraft:glass_bottle"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:glasssyringe",
+        "count": 1
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "  y",
+        " x ",
+        "x  "
+    ],
+    "key": {
+
+        "y": {
+    		"type": "forge:ore_dict",
+		    "ore": "gemDiamond"
+		},
+        "x": {
+    		"item": "geneticsreborn:metalscraper"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:advancedscraper",
+        "count": 1
+    }
+}

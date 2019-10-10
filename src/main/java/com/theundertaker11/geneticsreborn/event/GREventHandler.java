@@ -1,20 +1,22 @@
 package com.theundertaker11.geneticsreborn.event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.CapabilityHandler;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.keybinds.KeybindHandler;
 import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
 import com.theundertaker11.geneticsreborn.packets.SendShootDragonBreath;
 import com.theundertaker11.geneticsreborn.packets.SendTeleportPlayer;
 import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GREventHandler {
 
@@ -73,12 +75,12 @@ public class GREventHandler {
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void clientPlayerTick(TickEvent.PlayerTickEvent event) {
-		if (GeneticsReborn.enableTeleporter) {
+		if (EnumGenes.TELEPORTER.isActive()) {
 			if (KeybindHandler.keybindTeleport.isPressed()) {
 				GeneticsRebornPacketHandler.INSTANCE.sendToServer(new SendTeleportPlayer());
 			}
 		}
-		if (GeneticsReborn.enableDragonsBreath) {
+		if (EnumGenes.DRAGONS_BREATH.isActive()) {
 			if (KeybindHandler.keybindDragonsBreath.isPressed()) {
 				GeneticsRebornPacketHandler.INSTANCE.sendToServer(new SendShootDragonBreath());
 			}

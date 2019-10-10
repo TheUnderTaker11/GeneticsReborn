@@ -1,0 +1,28 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zaz",
+		"yxy",
+		"zaz"
+    ],
+    "key": {
+        "z": {
+    		"type": "forge:ore_dict",
+		    "ore": "ingotIron"
+		},
+        "x": {
+    		"type": "forge:ore_dict",
+		    "ore": "ingotGold"
+		},
+        "y": {
+    		"item": "geneticsreborn:dnahelix"
+		},
+        "a": {
+    		"item": "minecraft:glass"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:dnadecrypter",
+        "count": 1
+    }
+}

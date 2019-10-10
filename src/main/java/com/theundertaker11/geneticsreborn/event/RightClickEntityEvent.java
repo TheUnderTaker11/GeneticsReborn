@@ -138,14 +138,14 @@ public class RightClickEntityEvent {
 			if (ModUtils.getIGenes(targetentity) != null) {
 				IGenes targetentitygenes = ModUtils.getIGenes(targetentity);
 
-				if (GeneticsReborn.enableWooly && player.getHeldItemMainhand().getItem() instanceof ItemShears && targetentitygenes.hasGene(EnumGenes.WOOLY)) {
+				if (EnumGenes.WOOLY.isActive() && player.getHeldItemMainhand().getItem() instanceof ItemShears && targetentitygenes.hasGene(EnumGenes.WOOLY)) {
 					ItemStack wool = new ItemStack(Blocks.WOOL, 1);
 					player.getHeldItemMainhand().damageItem(1, player);
 					EntityItem entitywool = new EntityItem(world, targetentity.getPosition().getX(), targetentity.getPosition().getY(), targetentity.getPosition().getZ(), wool);
 					world.spawnEntity(entitywool);
 				}
 
-				if (GeneticsReborn.enableMilky && player.getHeldItemMainhand().getItem() == Items.BUCKET && targetentitygenes.hasGene(EnumGenes.MILKY)) {
+				if (EnumGenes.MILKY.isActive() && player.getHeldItemMainhand().getItem() == Items.BUCKET && targetentitygenes.hasGene(EnumGenes.MILKY)) {
 
 					if ((player.getHeldItemMainhand().getCount() - 1) <= 0)
 						player.setHeldItem(EnumHand.MAIN_HAND, new ItemStack(Items.MILK_BUCKET));

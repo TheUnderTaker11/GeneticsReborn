@@ -1,0 +1,28 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zaz",
+		"yxy",
+		"zaz"
+    ],
+    "key": {
+        "z": {
+    		"type": "forge:ore_dict",
+		    "ore": "ingotIron"
+		},
+        "x": {
+    		"item": "minecraft:bucket"
+		},
+        "y": {
+        	"item": "geneticsreborn:glasssyringe"
+		},
+        "a": {
+    		"item": "minecraft:wool",
+		    "data": 32767
+    	}		
+    },
+    "result": {
+        "item": "geneticsreborn:bloodpurifier",
+        "count": 1
+    }
+}

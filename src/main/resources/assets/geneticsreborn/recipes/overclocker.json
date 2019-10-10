@@ -1,0 +1,24 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zyz",
+		"yxy",
+		"zyz"
+    ],
+    "key": {
+        "z": {
+    		"item": "geneticsreborn:cell"
+		},
+        "x": {
+    		"item": "minecraft:clock"
+		},
+        "y": {
+    		"type": "forge:ore_dict",
+		    "ore": "gemLapis"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:overclocker",
+        "count": 1
+    }
+}

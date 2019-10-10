@@ -1,12 +1,10 @@
 package com.theundertaker11.geneticsreborn.blocks;
 
-import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.EntityLivingBase;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -64,7 +62,7 @@ public class GRTileEntityLightBlock extends TileEntity implements ITickable {
     
     public static final boolean needsLight(EntityLivingBase entity) {
         IGenes genes = ModUtils.getIGenes(entity);
-        return GeneticsReborn.enableBiolumin && genes.hasGene(EnumGenes.BIOLUMIN);
+        return EnumGenes.BIOLUMIN.isActive() && genes.hasGene(EnumGenes.BIOLUMIN);
     }
 
     @Override

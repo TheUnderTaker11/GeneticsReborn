@@ -1,0 +1,24 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zyz",
+		"yxy",
+		"zyz"
+    ],
+    "key": {
+        "z": {
+    		"type": "forge:ore_dict",
+		    "ore": "ingotIron"
+		},
+        "x": {
+    		"item": "minecraft:bucket"
+		},
+        "y": {
+    		"item": "geneticsreborn:glasssyringe"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:plasmidinjector",
+        "count": 1
+    }
+}

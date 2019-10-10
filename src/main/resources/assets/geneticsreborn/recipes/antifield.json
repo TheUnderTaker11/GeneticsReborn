@@ -1,0 +1,23 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "xzx",
+		"zyz",
+		"xzx"
+    ],
+    "key": {
+        "z": {
+    		"item": "minecraft:glass"
+		},
+        "x": {
+    		"item": "minecraft:ender_pearl"
+		},
+        "y": {
+    		"item": "minecraft:fermented_spider_eye"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:antifield",
+        "count": 1
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zzz",
+		"yxy",
+		"zzz"
+    ],
+    "key": {
+        "z": {
+    		"type": "forge:ore_dict",
+		    "ore": "ingotIron"
+		},
+        "x": {
+    		"item": "geneticsreborn:cell"
+		},
+        "y": {
+    		"item": "minecraft:sticky_piston"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:dnaextractor",
+        "count": 1
+    }
+}

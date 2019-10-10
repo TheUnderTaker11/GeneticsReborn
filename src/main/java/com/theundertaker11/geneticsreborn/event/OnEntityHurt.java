@@ -5,6 +5,7 @@ import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -27,7 +28,7 @@ public class OnEntityHurt {
 	@SubscribeEvent
 	public void onRawHurt(LivingAttackEvent event) {
 		if (!event.getEntity().getEntityWorld().isRemote) {
-			if (GeneticsReborn.enableWitherHit && event.getSource().getTrueSource() instanceof EntityLivingBase) {
+			if (EnumGenes.WITHER_HIT.isActive() && event.getSource().getTrueSource() instanceof EntityLivingBase) {
 				EntityLivingBase entityattacker = (EntityLivingBase) event.getSource().getTrueSource();
 				if (ModUtils.getIGenes(entityattacker) != null) {
 					IGenes genes = ModUtils.getIGenes(entityattacker);
@@ -44,19 +45,19 @@ public class OnEntityHurt {
 			if (ModUtils.getIGenes(entityliving) != null) {
 				IGenes genes = ModUtils.getIGenes(entityliving);
 
-				if (GeneticsReborn.enableFireProof && genes.hasGene(EnumGenes.FIRE_PROOF)) {
+				if (EnumGenes.FIRE_PROOF.isActive() && genes.hasGene(EnumGenes.FIRE_PROOF)) {
 					if (event.getSource().equals(DamageSource.LAVA) || event.getSource().equals(DamageSource.IN_FIRE)
 							|| event.getSource().equals(DamageSource.ON_FIRE)) {
 						entityliving.extinguish();
 						event.setCanceled(true);
 					}
 				}
-				if (GeneticsReborn.enableWitherProof && genes.hasGene(EnumGenes.WITHER_PROOF)) {
+				if (EnumGenes.WITHER_PROOF.isActive() && genes.hasGene(EnumGenes.WITHER_PROOF)) {
 					if (event.getSource().equals(DamageSource.WITHER)) {
 						event.setCanceled(true);
 					}
 				}
-				if (GeneticsReborn.enablePoisonProof && genes.hasGene(EnumGenes.POISON_PROOF)) {
+				if (EnumGenes.POISON_PROOF.isActive() && genes.hasGene(EnumGenes.POISON_PROOF)) {
 					if (event.getSource().equals(DamageSource.MAGIC) && entityliving.getActivePotionEffect(Potion.getPotionById(ModUtils.poison)) != null) {
 						event.setCanceled(true);
 					}
@@ -77,7 +78,7 @@ public class OnEntityHurt {
 		if (!event.getEntity().getEntityWorld().isRemote && event.getEntity() instanceof EntityPlayer && ModUtils.getIGenes(event.getEntityLiving()) != null) {
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			IGenes genes = ModUtils.getIGenes(player);
-			if (GeneticsReborn.enableEnderDragonHealth && genes.hasGene(EnumGenes.ENDER_DRAGON_HEALTH)) {
+			if (EnumGenes.ENDER_DRAGON_HEALTH.isActive() && genes.hasGene(EnumGenes.ENDER_DRAGON_HEALTH)) {
 				for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 					if (player.inventory.getStackInSlot(i).getItem() == GRItems.DragonHealthCrystal) {
 						ItemStack stack = player.inventory.getStackInSlot(i);
@@ -99,7 +100,7 @@ public class OnEntityHurt {
 	 */
 	@SubscribeEvent
 	public void onFall(LivingAttackEvent event) {
-		if (GeneticsReborn.enableNoFallDamage && event.getSource().equals(DamageSource.FALL)) {
+		if (EnumGenes.NO_FALL_DAMAGE.isActive() && event.getSource().equals(DamageSource.FALL)) {
 			EntityLivingBase entityliving = event.getEntityLiving();
 			if (!GeneticsReborn.allowGivingEntityGenes && !(entityliving instanceof EntityPlayer)) return;
 

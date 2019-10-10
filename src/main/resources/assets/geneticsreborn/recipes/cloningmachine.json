@@ -1,0 +1,25 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "yyy",
+		"zxz",
+		"yyy"
+    ],
+    "key": {
+        "z": {
+    		"type": "forge:ore_dict",
+		    "ore": "gemDiamond"
+		},
+        "x": {
+    		"item": "minecraft:nether_star"
+		},
+        "y": {
+    		"type": "forge:ore_dict",
+		    "ore": "blockGold"
+		}
+    },
+    "result": {
+        "item": "geneticsreborn:cloningmachine",
+        "count": 1
+    }
+}

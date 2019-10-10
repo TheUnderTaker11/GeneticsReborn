@@ -1,0 +1,28 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zzz",
+        "xax",
+        "xyx"
+    ],
+    "key": {
+        "z": {
+    		"type": "forge:ore_dict",
+		    "ore": "ingotIron"
+		},
+        "x": {
+    		"item": "minecraft:glass"
+		},
+        "y": {
+    		"type": "forge:ore_dict",
+		    "ore": "dustRedstone"
+		},
+        "a": {
+    		"item": "minecraft:furnace"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:coalgenerator",
+        "count": 1
+    }
+}

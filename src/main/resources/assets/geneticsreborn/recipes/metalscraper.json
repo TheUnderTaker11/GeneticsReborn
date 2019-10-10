@@ -1,0 +1,22 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        " yx",
+        " xy",
+        "x  "
+    ],
+    "key": {
+        "y": {
+    		"type": "forge:ore_dict",
+		    "ore": "ingotIron"
+		},
+        "x": {
+    		"type": "forge:ore_dict",
+		    "ore": "stickWood"
+		}
+    },
+    "result": {
+        "item": "geneticsreborn:metalscraper",
+        "count": 1
+    }
+}

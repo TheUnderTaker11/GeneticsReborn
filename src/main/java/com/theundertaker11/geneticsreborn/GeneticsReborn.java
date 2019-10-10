@@ -1,9 +1,13 @@
 package com.theundertaker11.geneticsreborn;
 
+import java.io.File;
+
+import org.apache.logging.log4j.Logger;
+
 import com.theundertaker11.geneticsreborn.api.capability.CapabilityHandler;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.MobToGeneRegistry;
 import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
-import com.theundertaker11.geneticsreborn.crafting.CraftingManager;
 import com.theundertaker11.geneticsreborn.event.GREventHandler;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.keybinds.KeybindHandler;
@@ -11,6 +15,7 @@ import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
 import com.theundertaker11.geneticsreborn.proxy.CommonProxy;
 import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntity;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -20,9 +25,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import org.apache.logging.log4j.Logger;
-
-import java.io.File;
 
 @Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.NAME, acceptedMinecraftVersions = Reference.ACCEPTED_MINECRAFT)
 public class GeneticsReborn {
@@ -56,7 +58,6 @@ public class GeneticsReborn {
 
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
-		CraftingManager.RegisterRecipes();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
 		CapabilityHandler.init();
 		GREventHandler.init();
@@ -72,40 +73,6 @@ public class GeneticsReborn {
 	public static boolean allowGivingEntityGenes;
 
 	public static boolean hardMode;
-	public static boolean enableDragonsBreath;
-	public static boolean enableEatGrass;
-	public static boolean enableEmeraldHeart;
-	public static boolean enableEnderDragonHealth;
-	public static boolean enableFireProof;
-	public static boolean enableFlight;
-	public static boolean enableJumpBoost;
-	public static boolean enableMilky;
-	public static boolean enableMoreHearts;
-	public static boolean enableNightVision;
-	public static boolean enableNoFallDamage;
-	public static boolean enablePoisonProof;
-	public static boolean enableResistance;
-	public static boolean enableSaveInventory;
-	public static boolean enableScareCreepers;
-	public static boolean enableShootFireballs;
-	public static boolean enableSlimy;
-	public static boolean enableSpeed;
-	public static boolean enableStrength;
-	public static boolean enableTeleporter;
-	public static boolean enableWaterBreathing;
-	public static boolean enableWooly;
-	public static boolean enableWitherHit;
-	public static boolean enableWitherProof;
-	public static boolean enableItemMagnet;
-	public static boolean enableXPMagnet;
-	public static boolean enableExplosiveExit;
-	public static boolean enablePhotosynthesis;
-	public static boolean enableInfinity;
-	public static boolean enableStepAssist;
-	public static boolean enableBiolumin;
-	public static boolean enableRespawn;
-	public static boolean enableCybernetics;
-	
 	
 	public static String[] CloningBlacklist;
 
@@ -170,39 +137,40 @@ public class GeneticsReborn {
 		BioluminLightLevel = config.getFloat("Bioluminescence light level", general, 12.0F, 1.0f, 15.0f, "How much light does the Bioluminescence gene produce");
 		
 
-		enableDragonsBreath = config.getBoolean("Dragon's Breath", genes, true, "");
-		enableEatGrass = config.getBoolean("Eat Grass", genes, true, "");
-		enableEmeraldHeart = config.getBoolean("Emerald Heart", genes, true, "");
-		enableEnderDragonHealth = config.getBoolean("Ender Dragon Health", genes, true, "");
-		enableFireProof = config.getBoolean("Fire-Proof", genes, true, "");
-		enableFlight = config.getBoolean("Flight", genes, true, "");
-		enableJumpBoost = config.getBoolean("Jump Boost", genes, true, "");
-		enableMilky = config.getBoolean("Milky", genes, true, "");
-		enableMoreHearts = config.getBoolean("More Hearts", genes, true, "");
-		enableNightVision = config.getBoolean("Night Vision", genes, true, "");
-		enableNoFallDamage = config.getBoolean("No Fall Damage", genes, true, "");
-		enablePoisonProof = config.getBoolean("Poison Proof", genes, true, "");
-		enableResistance = config.getBoolean("Resistance", genes, true, "");
-		enableSaveInventory = config.getBoolean("Keep Inventory", genes, true, "");
-		enableScareCreepers = config.getBoolean("Scare Creepers", genes, true, "");
-		enableShootFireballs = config.getBoolean("Shoot Fireballs", genes, true, "");
-		enableSlimy = config.getBoolean("Slimy", genes, true, "");
-		enableSpeed = config.getBoolean("Speed", genes, true, "");
-		enableStrength = config.getBoolean("Strength", genes, true, "");
-		enableTeleporter = config.getBoolean("Teleporter", genes, true, "");
-		enableWaterBreathing = config.getBoolean("Water Breathing", genes, true, "");
-		enableWooly = config.getBoolean("Wooly", genes, true, "");
-		enableWitherHit = config.getBoolean("Wither Hit", genes, true, "");
-		enableWitherProof = config.getBoolean("Wither Proof", genes, true, "");
-		enableItemMagnet = config.getBoolean("Item Attraction Field", genes, true, "");
-		enableXPMagnet = config.getBoolean("XP Attraction Field", genes, true, "");
-		enableExplosiveExit = config.getBoolean("Explosive Exit", genes, true, "");
-		enablePhotosynthesis = config.getBoolean("Photosynthesis", genes, true, "");
-		enableInfinity = config.getBoolean("Infinity", genes, true, "");
-		enableStepAssist = config.getBoolean("Step Assist", genes, true, "");
-		enableBiolumin = config.getBoolean("Bioluminescence", genes, true, "");
-		enableRespawn = config.getBoolean("Respawn", genes, true, "");
-		enableCybernetics = config.getBoolean("Cybernetics", genes, true, "");
+		EnumGenes.DRAGONS_BREATH.setActive(config.getBoolean("Dragon's Breath", genes, true, ""));
+		EnumGenes.EAT_GRASS.setActive(config.getBoolean("Eat Grass", genes, true, ""));
+		EnumGenes.EMERALD_HEART.setActive(config.getBoolean("Emerald Heart", genes, true, ""));
+		EnumGenes.ENDER_DRAGON_HEALTH.setActive(config.getBoolean("Ender Dragon Health", genes, true, ""));
+		EnumGenes.FIRE_PROOF.setActive(config.getBoolean("Fire-Proof", genes, true, ""));
+		EnumGenes.FLY.setActive(config.getBoolean("Flight", genes, true, ""));
+		EnumGenes.JUMP_BOOST.setActive(config.getBoolean("Jump Boost", genes, true, ""));
+		EnumGenes.MILKY.setActive(config.getBoolean("Milky", genes, true, ""));
+		EnumGenes.MORE_HEARTS.setActive(config.getBoolean("More Hearts", genes, true, ""));
+		EnumGenes.NIGHT_VISION.setActive(config.getBoolean("Night Vision", genes, true, ""));
+		EnumGenes.NO_FALL_DAMAGE.setActive(config.getBoolean("No Fall Damage", genes, true, ""));
+		EnumGenes.POISON_PROOF.setActive(config.getBoolean("Poison Proof", genes, true, ""));
+		EnumGenes.RESISTANCE.setActive(config.getBoolean("Resistance", genes, true, ""));
+		EnumGenes.SAVE_INVENTORY.setActive(config.getBoolean("Keep Inventory", genes, true, ""));
+		EnumGenes.SCARE_CREEPERS.setActive(config.getBoolean("Scare Creepers", genes, true, ""));
+		EnumGenes.SHOOT_FIREBALLS.setActive(config.getBoolean("Shoot Fireballs", genes, true, ""));
+		EnumGenes.SLIMY.setActive(config.getBoolean("Slimy", genes, true, ""));
+		EnumGenes.SPEED.setActive(config.getBoolean("Speed", genes, true, ""));
+		EnumGenes.STRENGTH.setActive(config.getBoolean("Strength", genes, true, ""));
+		EnumGenes.TELEPORTER.setActive(config.getBoolean("Teleporter", genes, true, ""));
+		EnumGenes.WATER_BREATHING.setActive(config.getBoolean("Water Breathing", genes, true, ""));
+		EnumGenes.WOOLY.setActive(config.getBoolean("Wooly", genes, true, ""));
+		EnumGenes.WITHER_HIT.setActive(config.getBoolean("Wither Hit", genes, true, ""));
+		EnumGenes.WITHER_PROOF.setActive(config.getBoolean("Wither Proof", genes, true, ""));
+		EnumGenes.ITEM_MAGNET.setActive(config.getBoolean("Item Attraction Field", genes, true, ""));
+		EnumGenes.XP_MAGNET.setActive(config.getBoolean("XP Attraction Field", genes, true, ""));
+		EnumGenes.EXPLOSIVE_EXIT.setActive(config.getBoolean("Explosive Exit", genes, true, ""));
+		EnumGenes.PHOTOSYNTHESIS.setActive(config.getBoolean("Photosynthesis", genes, true, ""));
+		EnumGenes.INFINITY.setActive(config.getBoolean("Infinity", genes, true, ""));
+		EnumGenes.STEP_ASSIST.setActive(config.getBoolean("Step Assist", genes, true, ""));
+		EnumGenes.BIOLUMIN.setActive(config.getBoolean("Bioluminescence", genes, true, ""));
+		EnumGenes.RESPAWN.setActive(config.getBoolean("Respawn", genes, true, ""));
+		EnumGenes.CYBERNETIC.setActive(config.getBoolean("Cybernetics", genes, true, ""));
+		EnumGenes.LAY_EGG.setActive(config.getBoolean("Lay Eggs", genes, true, ""));
 		
 		CloningBlacklist = config.getStringList("Cloning Blacklist", general, new String[]{"EntityWither"}, "Add the name of the Entity's class you want blacklisted. (The ender dragon will always be hardcode blacklisted.)");
 

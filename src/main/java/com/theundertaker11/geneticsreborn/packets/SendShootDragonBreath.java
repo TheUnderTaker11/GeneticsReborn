@@ -1,11 +1,11 @@
 package com.theundertaker11.geneticsreborn.packets;
 
-import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.event.GREventHandler;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.projectile.EntityDragonFireball;
 import net.minecraft.util.IThreadListener;
@@ -50,7 +50,7 @@ public class SendShootDragonBreath implements IMessage {
 							break;
 						}
 					}
-					if (GeneticsReborn.enableDragonsBreath && allow && ModUtils.getIGenes(serverPlayer) != null) {
+					if (EnumGenes.DRAGONS_BREATH.isActive() && allow && ModUtils.getIGenes(serverPlayer) != null) {
 						IGenes genes = ModUtils.getIGenes(serverPlayer);
 						if (genes.hasGene(EnumGenes.DRAGONS_BREATH)) {
 							float x = -MathHelper.sin(serverPlayer.rotationYaw * 0.017453292F) * MathHelper.cos(serverPlayer.rotationPitch * 0.017453292F);

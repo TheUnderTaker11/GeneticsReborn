@@ -1,11 +1,11 @@
 package com.theundertaker11.geneticsreborn.packets;
 
-import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.event.GREventHandler;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.Vec3d;
@@ -47,7 +47,7 @@ public class SendTeleportPlayer implements IMessage {
 							break;
 						}
 					}
-					if (GeneticsReborn.enableTeleporter && allowteleport && ModUtils.getIGenes(serverPlayer) != null) {
+					if (EnumGenes.TELEPORTER.isActive()  && allowteleport && ModUtils.getIGenes(serverPlayer) != null) {
 						IGenes genes = ModUtils.getIGenes(serverPlayer);
 						if (genes.hasGene(EnumGenes.TELEPORTER)) {
 							int distance = 6;

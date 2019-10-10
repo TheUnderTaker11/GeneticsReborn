@@ -1,0 +1,28 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zzz",
+		"yxy",
+		"zaz"
+    ],
+    "key": {
+        "z": {
+    		"type": "forge:ore_dict",
+		    "ore": "ingotIron"
+		},
+        "x": {
+    		"item": "minecraft:piston"
+		},
+        "y": {
+    		"item": "geneticsreborn:plasmid"
+		},
+        "a": {
+    		"type": "forge:ore_dict",
+		    "ore": "gemDiamond"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:plasmidinfuser",
+        "count": 1
+    }
+}

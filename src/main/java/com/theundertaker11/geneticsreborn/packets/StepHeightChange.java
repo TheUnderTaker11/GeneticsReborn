@@ -1,6 +1,7 @@
 package com.theundertaker11.geneticsreborn.packets;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;

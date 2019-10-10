@@ -1,0 +1,21 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "xzx",
+        "zxz",
+        "xzx"
+    ],
+    "key": {
+        "z": {
+    		"item": "minecraft:end_crystal"
+		},		
+        "x": {
+    		"type": "forge:ore_dict",
+		    "ore": "gemDiamond"
+		}	
+    },
+    "result": {
+        "item": "geneticsreborn:dragonhealthcrystal",
+        "count": 1
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zzz",
+        "z z",
+        "zzz"
+    ],
+    "key": {
+        "z": {
+    		"item": "geneticsreborn:dnahelix"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:plasmid",
+        "count": 1
+    }
+}

@@ -1,6 +1,7 @@
 package com.theundertaker11.geneticsreborn.event;
 
-import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import java.util.Iterator;
+
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
@@ -35,14 +36,12 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.util.Iterator;
-
 public class PlayerTickEvent {  
     @SubscribeEvent
     public void infinityFix(ArrowNockEvent event) {
 		EntityPlayer player = event.getEntityPlayer();
 		IGenes genes = ModUtils.getIGenes(player);
-		if (GeneticsReborn.enableInfinity && genes.hasGene(EnumGenes.INFINITY)) {
+		if (EnumGenes.INFINITY.isActive() && genes.hasGene(EnumGenes.INFINITY)) {
             event.getEntityPlayer().setActiveHand(event.getHand());
             event.setAction(new ActionResult<>(EnumActionResult.SUCCESS, event.getBow()));
 		}
@@ -130,10 +129,10 @@ public class PlayerTickEvent {
 		float step_height = 1.1f;
 		float old_step_height = 0.6f;
 		
-		if (GeneticsReborn.enableStepAssist && genes.hasGene(EnumGenes.STEP_ASSIST) && (player.stepHeight != step_height)) {
+		if (EnumGenes.STEP_ASSIST.isActive() && genes.hasGene(EnumGenes.STEP_ASSIST) && (player.stepHeight != step_height)) {
 			player.stepHeight = step_height;
 			GeneticsRebornPacketHandler.INSTANCE.sendTo(new StepHeightChange(step_height), (EntityPlayerMP) player);			
-		} else if (!GeneticsReborn.enableStepAssist || !genes.hasGene(EnumGenes.STEP_ASSIST) && (player.stepHeight != old_step_height)) {
+		} else if (!EnumGenes.STEP_ASSIST.isActive() || !genes.hasGene(EnumGenes.STEP_ASSIST) && (player.stepHeight != old_step_height)) {
 			player.stepHeight = old_step_height;
 			GeneticsRebornPacketHandler.INSTANCE.sendTo(new StepHeightChange(old_step_height), (EntityPlayerMP) player);			
 		}
@@ -148,7 +147,7 @@ public class PlayerTickEvent {
 	 * @param genes
 	 */
 	public static void tryItemMagnet(EntityPlayer player, World world, IGenes genes) {
-		if (GeneticsReborn.enableItemMagnet && genes.hasGene(EnumGenes.ITEM_MAGNET) && !player.inventory.hasItemStack(new ItemStack(GRItems.AntiField))
+		if (EnumGenes.ITEM_MAGNET.isActive() && genes.hasGene(EnumGenes.ITEM_MAGNET) && !player.inventory.hasItemStack(new ItemStack(GRItems.AntiField))
 				&& !player.isSneaking()) {
 			Iterator<Entity> iterator = ModUtils.getEntitiesInRange(EntityItem.class, world, player.posX, player.posY,
 					player.posZ, 6.5).iterator();
@@ -179,7 +178,7 @@ public class PlayerTickEvent {
 	 * @param genes
 	 */
 	public static void tryXPMagnet(EntityPlayer player, World world, IGenes genes) {
-		if (GeneticsReborn.enableXPMagnet && genes.hasGene(EnumGenes.XP_MAGNET) && !player.inventory.hasItemStack(new ItemStack(GRItems.AntiField))
+		if (EnumGenes.XP_MAGNET.isActive() && genes.hasGene(EnumGenes.XP_MAGNET) && !player.inventory.hasItemStack(new ItemStack(GRItems.AntiField))
 				&& !player.isSneaking()) {
 			Iterator<Entity> iterator = ModUtils.getEntitiesInRange(EntityXPOrb.class, world, player.posX, player.posY, player.posZ,
 					6.5).iterator();
@@ -210,7 +209,7 @@ public class PlayerTickEvent {
 	 * @param genes
 	 */
 	public static void tryPhotosynthesis(EntityPlayer player, World world, IGenes genes) {
-		if (GeneticsReborn.enablePhotosynthesis && genes.hasGene(EnumGenes.PHOTOSYNTHESIS)) {
+		if (EnumGenes.PHOTOSYNTHESIS.isActive() && genes.hasGene(EnumGenes.PHOTOSYNTHESIS)) {
 			if (world.isDaytime() && world.getHeight(player.getPosition()).getY() < (player.getPosition().getY() + 1)) {
 				double rand = Math.random();
 				if (rand < 0.01) {

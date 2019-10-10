@@ -1,9 +1,9 @@
 package com.theundertaker11.geneticsreborn.event;
 
-import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.init.Blocks;
@@ -20,7 +20,7 @@ public class OnRightClick {
 		EntityPlayer player = event.getEntityPlayer();
 		if (player.getFoodStats().needFood() == true && event.getEntityPlayer().getHeldItemMainhand().isEmpty() && ModUtils.getIGenes(player) != null && event.getWorld().getBlockState(event.getPos()).getBlock() == Blocks.GRASS) {
 			IGenes playergenes = ModUtils.getIGenes(player);
-			if (GeneticsReborn.enableEatGrass && playergenes.hasGene(EnumGenes.EAT_GRASS)) {
+			if (EnumGenes.EAT_GRASS.isActive() && playergenes.hasGene(EnumGenes.EAT_GRASS)) {
 				player.getFoodStats().setFoodLevel(player.getFoodStats().getFoodLevel() + 1);
 				event.getWorld().setBlockState(event.getPos(), Blocks.DIRT.getDefaultState());
 			} else return;
@@ -34,7 +34,7 @@ public class OnRightClick {
 	 */
 	@SubscribeEvent
 	public void onRightClickItem(RightClickItem event) {
-		if (GeneticsReborn.enableShootFireballs) {
+		if (EnumGenes.SHOOT_FIREBALLS.isActive()) {
 			if (event.getItemStack().getItem() == Items.BLAZE_ROD) {
 				EntityPlayer player = event.getEntityPlayer();
 				if (ModUtils.getIGenes(player) != null) {

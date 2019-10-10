@@ -37,7 +37,7 @@ public class OnWorldTickEvent {
 
 	@SubscribeEvent
 	public void WorldTick(WorldTickEvent event) {
-		if ((GeneticsReborn.enableFlight || !GeneticsReborn.allowGivingEntityGenes) && GREventHandler.flightticktimer > 30 && event.world.provider.getDimension() == 0 && !event.world.isRemote) {
+		if ((EnumGenes.FLY.isActive() || !GeneticsReborn.allowGivingEntityGenes) && GREventHandler.flightticktimer > 30 && event.world.provider.getDimension() == 0 && !event.world.isRemote) {
 			GREventHandler.flightticktimer = 0;
 			for (EntityPlayerMP player : event.world.getMinecraftServer().getPlayerList().getPlayers()) {
 				IGenes genes = ModUtils.getIGenes(player);
@@ -125,22 +125,22 @@ public class OnWorldTickEvent {
 	 */
 	public void worldTickGeneLogic(IGenes genes, EntityLivingBase entity) {
 		if (genes != null) {
-			if (GeneticsReborn.enableWaterBreathing && genes.hasGene(EnumGenes.WATER_BREATHING)) {
+			if (EnumGenes.WATER_BREATHING.isActive() && genes.hasGene(EnumGenes.WATER_BREATHING)) {
 				entity.setAir(300);
 			}
-			if (GeneticsReborn.enableNightVision && entity instanceof EntityPlayer && genes.hasGene(EnumGenes.NIGHT_VISION)) {
+			if (EnumGenes.NIGHT_VISION.isActive() && entity instanceof EntityPlayer && genes.hasGene(EnumGenes.NIGHT_VISION)) {
 				entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.nightVision), 328, 0, false, false)));
 			}
-			if (GeneticsReborn.enableJumpBoost && genes.hasGene(EnumGenes.JUMP_BOOST)) {
+			if (EnumGenes.JUMP_BOOST.isActive() && genes.hasGene(EnumGenes.JUMP_BOOST)) {
 				entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.jumpBoost), 110, 1, false, false)));
 			}
-			if (GeneticsReborn.enableSpeed && genes.hasGene(EnumGenes.SPEED)) {
+			if (EnumGenes.SPEED.isActive() && genes.hasGene(EnumGenes.SPEED)) {
 				entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSpeed), 110, 1, false, false)));
 			}
-			if (GeneticsReborn.enableResistance && genes.hasGene(EnumGenes.RESISTANCE)) {
+			if (EnumGenes.RESISTANCE.isActive() && genes.hasGene(EnumGenes.RESISTANCE)) {
 				entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.resistance), 110, 1, false, false)));
 			}
-			if (GeneticsReborn.enableStrength && genes.hasGene(EnumGenes.STRENGTH)) {
+			if (EnumGenes.STRENGTH.isActive() && genes.hasGene(EnumGenes.STRENGTH)) {
 				entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.strength), 110, 0, false, false)));
 			}
 		}
