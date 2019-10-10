@@ -29,12 +29,30 @@ public class GlassSyringe extends ItemBase {
 		this.setMaxDamage(0);
 	}
 
+	private static final String getGeneList(NBTTagCompound tag) {
+		StringBuffer buf = new StringBuffer();
+		buf.append(" (");
+		boolean found = false;
+		for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
+			String nbtname = "";
+			if (tag.hasKey(Integer.toString(i))) 
+				nbtname = tag.getString(Integer.toString(i));
+			if (!"".equals(nbtname)) {
+				buf.append(ModUtils.getGeneNameForShow(nbtname)).append(", ");
+				found = true;
+			}
+		}
+		if (!found) return "";
+		return buf.delete(buf.length()-2, buf.length()).append(")").toString();
+	}
+	
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("Right click to draw blood, shift right click to inject blood");
 		if (stack.getTagCompound() != null && stack.getItemDamage() == 1) {
-			if (stack.getTagCompound().getBoolean("pure")) tooltip.add("This blood is purified");
-			else tooltip.add("This blood is contaminated");
+			String s = getGeneList(stack.getTagCompound());
+			if (stack.getTagCompound().getBoolean("pure")) tooltip.add("This blood is purified"+s);
+			else tooltip.add("This blood is contaminated"+s);
 		}
 	}
 
@@ -48,12 +66,12 @@ public class GlassSyringe extends ItemBase {
 			stack.setItemDamage(1);
 			playerIn.attackEntityFrom(DamageSource.GENERIC, 2);
 			tag.setBoolean("pure", false);
-			tag.setString("owner", playerIn.getUUID(playerIn.getGameProfile()).toString());
+			tag.setString("owner", EntityPlayer.getUUID(playerIn.getGameProfile()).toString());
 			Genes.setNBTStringsFromGenes(stack, playerIn);
 		} else if (playerIn.isSneaking()) {
 			Boolean configallows = true;
 			if (!GeneticsReborn.playerGeneSharing) {
-				configallows = tag.getString("owner").equals(playerIn.getUUID(playerIn.getGameProfile()).toString());
+				configallows = tag.getString("owner").equals(EntityPlayer.getUUID(playerIn.getGameProfile()).toString());
 			}
 			if (configallows && stack.getItemDamage() == 1 && tag.getBoolean("pure")) {
 				stack.setItemDamage(0);

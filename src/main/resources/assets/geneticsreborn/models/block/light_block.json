@@ -1,0 +1,20 @@
+{      
+    "textures": {
+        "pole": "blocks/log_big_oak"
+    },
+   "elements":[  
+      {  
+         "__comment":"an invisible block", 
+         "from":[ 0.5, 0.5, 0.5 ],
+         "to":[ 0.5, 0.5, 0.5 ],
+         "faces":{  
+            "down":{ "uv": [ 0, 0, 15, 15 ], "texture":"#pole" },
+            "up":{ "uv": [ 0, 0, 15, 15 ], "texture": "#pole" },
+            "north":{ "uv": [ 0, 0, 15, 15 ], "texture":"#pole" },
+            "south":{ "uv": [ 0, 0, 15, 15 ], "texture":"#pole" },
+            "west":{ "uv": [ 0, 0, 15, 15 ], "texture":"#pole" },
+            "east":{ "uv": [ 0, 0, 15, 15 ], "texture":"#pole" }
+         }
+      }
+   ]
+}

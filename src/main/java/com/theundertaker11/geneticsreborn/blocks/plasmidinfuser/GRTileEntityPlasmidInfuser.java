@@ -122,49 +122,55 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 
 	private static int numNeededLogic(String gene) {
 		EnumGenes enumGene = Genes.getGeneFromString(gene);
-		switch (enumGene) {
-		case STEP_ASSIST:
-		case JUMP_BOOST:
-			return 10;
-		case MILKY:
-		case WOOLY:
-		case SLIMY:
-			return 12;
-		case EAT_GRASS:
-		case NIGHT_VISION:
-		case WATER_BREATHING:
-			return 16;
-		case DRAGONS_BREATH:
-		case SCARE_CREEPERS:
-		case WITHER_HIT:
-		case SPEED: 
-		case STRENGTH:
-		case EXPLOSIVE_EXIT:
-			return 20;
-		case FIRE_PROOF:
-		case POISON_PROOF:
-		case SHOOT_FIREBALLS:
-		case TELEPORTER:
+		if (!GeneticsReborn.hardMode)
 			return 24;
-		case EMERALD_HEART:
-		case NO_FALL_DAMAGE:
-		case RESISTANCE:
-		case XP_MAGNET:
-		case ITEM_MAGNET:
-		case INFINITY:
-			return 30;
-		case WITHER_PROOF:
-		case MORE_HEARTS:
-		case SAVE_INVENTORY:
-		case PHOTOSYNTHESIS:
-			return 40;
-		case FLY:
-			return 50;
-		case ENDER_DRAGON_HEALTH:
-			return 60;
-		default: 
-			return 20;			
-		}
+		else 
+			switch (enumGene) {
+			case STEP_ASSIST:
+			case JUMP_BOOST:
+				return 10;
+			case MILKY:
+			case WOOLY:
+			case SLIMY:
+				return 12;
+			case EAT_GRASS:
+			case NIGHT_VISION:
+			case WATER_BREATHING:
+			case BIOLUMIN:
+				return 16;
+			case DRAGONS_BREATH:
+			case SCARE_CREEPERS:
+			case WITHER_HIT:
+			case SPEED: 
+			case STRENGTH:
+			case EXPLOSIVE_EXIT:
+				return 20;
+			case FIRE_PROOF:
+			case POISON_PROOF:
+			case SHOOT_FIREBALLS:
+			case TELEPORTER:
+				return 24;
+			case EMERALD_HEART:
+			case NO_FALL_DAMAGE:
+			case RESISTANCE:
+			case XP_MAGNET:
+			case ITEM_MAGNET:
+			case INFINITY:
+			case CYBERNETIC:
+				return 30;
+			case WITHER_PROOF:
+			case MORE_HEARTS:
+			case SAVE_INVENTORY:
+			case PHOTOSYNTHESIS:
+				return 40;
+			case RESPAWN:
+			case FLY:
+				return 50;
+			case ENDER_DRAGON_HEALTH:
+				return 60;
+			default: 
+				return 20;			
+			}
 	}
 
 	public double percComplete() {

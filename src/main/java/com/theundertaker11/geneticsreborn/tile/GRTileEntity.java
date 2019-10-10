@@ -1,5 +1,6 @@
 package com.theundertaker11.geneticsreborn.tile;
 
+import com.theundertaker11.geneticsreborn.blocks.GRTileEntityLightBlock;
 import com.theundertaker11.geneticsreborn.blocks.bloodpurifier.GRTileEntityBloodPurifier;
 import com.theundertaker11.geneticsreborn.blocks.cellanalyser.GRTileEntityCellAnalyser;
 import com.theundertaker11.geneticsreborn.blocks.cloningmachine.GRTileEntityCloningMachine;
@@ -21,5 +22,6 @@ public class GRTileEntity {
 		GameRegistry.registerTileEntity(GRTileEntityPlasmidInjector.class, "GRTileEntityPlasmidInjector");
 		GameRegistry.registerTileEntity(GRTileEntityCloningMachine.class, "GRTileEntityCloningMachine");
 		GameRegistry.registerTileEntity(GRTileEntityCoalGenerator.class, "GRTileEntityCoalGenerator");
+		GameRegistry.registerTileEntity(GRTileEntityLightBlock.class, "GRTileEntityLightBlock");
 	}
 }

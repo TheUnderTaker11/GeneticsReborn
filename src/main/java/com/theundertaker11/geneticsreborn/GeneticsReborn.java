@@ -71,6 +71,7 @@ public class GeneticsReborn {
 	public static boolean keepGenesOnDeath;
 	public static boolean allowGivingEntityGenes;
 
+	public static boolean hardMode;
 	public static boolean enableDragonsBreath;
 	public static boolean enableEatGrass;
 	public static boolean enableEmeraldHeart;
@@ -101,6 +102,11 @@ public class GeneticsReborn {
 	public static boolean enablePhotosynthesis;
 	public static boolean enableInfinity;
 	public static boolean enableStepAssist;
+	public static boolean enableBiolumin;
+	public static boolean enableRespawn;
+	public static boolean enableCybernetics;
+	
+	
 	public static String[] CloningBlacklist;
 
 	
@@ -135,6 +141,9 @@ public class GeneticsReborn {
 	public static int ocCoalGenerator;
 
 	public static int CoalGeneratorBaseRF;
+	
+	public static float BioluminLightLevel;
+	
 
 		public static void loadConfig(Configuration config) {
 		config.load();
@@ -156,7 +165,11 @@ public class GeneticsReborn {
 
 		registerDefaultGenes = config.getBoolean("Register default gene list", general, true, "If this is enabled default gene mappings will be loaded for standard mobs");
 		registerModGenes = config.getBoolean("Register default mod gene list", general, true, "If this is enabled default gene mappings will be loaded for mobs from supported mods");
+
+		hardMode = config.getBoolean("Hard Mode", general, false, "Make earning traits harder, better balance when playing with Mods, see Wiki");
+		BioluminLightLevel = config.getFloat("Bioluminescence light level", general, 12.0F, 1.0f, 15.0f, "How much light does the Bioluminescence gene produce");
 		
+
 		enableDragonsBreath = config.getBoolean("Dragon's Breath", genes, true, "");
 		enableEatGrass = config.getBoolean("Eat Grass", genes, true, "");
 		enableEmeraldHeart = config.getBoolean("Emerald Heart", genes, true, "");
@@ -187,6 +200,10 @@ public class GeneticsReborn {
 		enablePhotosynthesis = config.getBoolean("Photosynthesis", genes, true, "");
 		enableInfinity = config.getBoolean("Infinity", genes, true, "");
 		enableStepAssist = config.getBoolean("Step Assist", genes, true, "");
+		enableBiolumin = config.getBoolean("Bioluminescence", genes, true, "");
+		enableRespawn = config.getBoolean("Respawn", genes, true, "");
+		enableCybernetics = config.getBoolean("Cybernetics", genes, true, "");
+		
 		CloningBlacklist = config.getStringList("Cloning Blacklist", general, new String[]{"EntityWither"}, "Add the name of the Entity's class you want blacklisted. (The ender dragon will always be hardcode blacklisted.)");
 
 		maxEnergyStored = config.getInt("Max", general, 20000, 10000, 1000000000, "Changes max RF stored by all machines");

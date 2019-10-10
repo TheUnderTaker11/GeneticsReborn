@@ -1,5 +1,6 @@
 package com.theundertaker11.geneticsreborn.blocks.plasmidinfuser;
 
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.BaseContainer;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
@@ -63,7 +64,7 @@ public class ContainerPlasmidInfuser extends BaseContainer {
 			if(index < VANILLA_SLOT_COUNT){
 				if(itemstack1.getItem() == GRItems.DNAHelix) {
 					if (itemstack1.getTagCompound() != null && ModUtils.getTagCompound(itemstack1).hasKey("gene") && 
-					!"GeneticsRebornBasicGene".equals( ModUtils.getTagCompound(itemstack1).getString("gene"))){
+					(!GeneticsReborn.hardMode || !"GeneticsRebornBasicGene".equals( ModUtils.getTagCompound(itemstack1).getString("gene")))){
 						if (!this.mergeItemStack(slot.getStack(), 36, 37, false)) {
 							this.mergeItemStack(slot.getStack(), 36, 37,false);
 							return ItemStack.EMPTY;
@@ -146,8 +147,7 @@ public class ContainerPlasmidInfuser extends BaseContainer {
 		@Override
 		public boolean isItemValid(ItemStack stack) {
 			return stack.getItem() == GRItems.DNAHelix &&
-			stack.getTagCompound() != null && ModUtils.getTagCompound(stack).hasKey("gene") && 
-			!"GeneticsRebornBasicGene".equals( ModUtils.getTagCompound(stack).getString("gene"));
+			(!GeneticsReborn.hardMode || !"GeneticsRebornBasicGene".equals(ModUtils.getTagCompound(stack).getString("gene")));
 		}
 	}
 

@@ -1,5 +1,6 @@
 package com.theundertaker11.geneticsreborn.blocks;
 
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.bloodpurifier.BloodPurifier;
 import com.theundertaker11.geneticsreborn.blocks.cellanalyser.CellAnalyser;
 import com.theundertaker11.geneticsreborn.blocks.cloningmachine.CloningMachine;
@@ -25,6 +26,8 @@ public class GRBlocks {
 	public static Block CloningMachine;
 	public static Block AntiFieldBlock;
 	public static Block CoalGen;
+	
+	public static Block lightBlock;
 
 	public static void init() {
 		CellAnalyser = register(new CellAnalyser("cellanalyser"));
@@ -36,6 +39,8 @@ public class GRBlocks {
 		CloningMachine = register(new CloningMachine("cloningmachine"));
 		AntiFieldBlock = register(new BlockBase("antifieldblock"));
 		CoalGen = register(new CoalGenerator("coalgenerator"));
+		
+		lightBlock = register(new LightBlock("light_block", GeneticsReborn.BioluminLightLevel / 15.0F), null);
 	}
 
 	private static <T extends Block> T register(T block, ItemBlock itemBlock) {

@@ -1,22 +1,32 @@
 package com.theundertaker11.geneticsreborn.event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
+import com.theundertaker11.geneticsreborn.blocks.GRTileEntityLightBlock;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
+
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This handles the enabling/disabling of flight based on player genes.
@@ -69,8 +79,44 @@ public class OnWorldTickEvent {
 				}
 			}
 		}
+		
+	    if (event.phase == WorldTickEvent.Phase.START ) {
+	            trackLightBlocks(event.world);
+	    }		
+	}
+	
+	private static final void trackLightBlocks(World w) {
+        for (EntityLivingBase e : w.getEntities(EntityLivingBase.class, EntitySelectors.IS_ALIVE)) {
+			if (GRTileEntityLightBlock.needsLight(e)) {
+			      BlockPos loc = new BlockPos(
+			              MathHelper.floor(e.posX), 
+			              MathHelper.floor(e.posY - 0.2D - e.getYOffset()), 
+			              MathHelper.floor(e.posZ))
+			    		  .up();
+			      Block block = w.getBlockState(loc).getBlock();
+			
+			      if (block == Blocks.AIR)
+			          placeLightBlock(e, loc);
+			      else {
+			    	  loc = loc.up();
+			          block = w.getBlockState(loc).getBlock();
+			          
+			          if (block == Blocks.AIR)
+			              placeLightBlock(e, loc);
+			     }
+			}
+      	}
 	}
 
+	private static void placeLightBlock(EntityLivingBase entity, BlockPos pos) {
+		entity.world.setBlockState(pos, GRBlocks.lightBlock.getDefaultState());
+		TileEntity te = entity.world.getTileEntity(pos);
+		if (te instanceof GRTileEntityLightBlock) {
+			  GRTileEntityLightBlock teLight = (GRTileEntityLightBlock) te;
+		      teLight.entity = entity;
+		}
+	}
+	
 	/**
 	 * This handles a few genes just so I don't have to copy paste them.
 	 *

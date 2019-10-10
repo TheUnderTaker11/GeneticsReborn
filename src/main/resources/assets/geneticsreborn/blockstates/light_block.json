@@ -1,0 +1,7 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "normal": { "model": "geneticsreborn:light_block" },
+        "inventory": { "model": "geneticsreborn:light_block" }
+    }
+}

@@ -7,11 +7,13 @@ import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.geneticsreborn.api.capability.maxhealth.MaxHealthCapabilityProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -112,6 +114,7 @@ public class ModUtils{
 	public static String getGeneNameForShow(String rawname)
 	{
 		String genename = "This is an error. Report to Genetics Reborn Github.";
+
 		if(rawname.equals("GeneticsRebornBasicGene"))
 		{
 			genename="Basic Gene";
@@ -235,6 +238,18 @@ public class ModUtils{
 		if(rawname.equals("GeneticsRebornPHOTOSYNTHESIS"))
 		{
 			genename="Photosynthesis";
+		}
+		if(rawname.equals("GeneticsRebornBIOLUMIN"))
+		{
+			genename="Bioluminescence";
+		}
+		if(rawname.equals("GeneticsRebornRESPAWN"))
+		{
+			genename="Respawn";
+		}
+		if(rawname.equals("GeneticsRebornCYBERNETIC"))
+		{
+			genename="Cybernetic";
 		}
 		return genename;
 	}
@@ -371,6 +386,18 @@ public class ModUtils{
 		{
 			return GeneticsReborn.enablePhotosynthesis;
 		}
+		if(rawname.equals("GeneticsRebornBIOLUMIN"))
+		{
+			return GeneticsReborn.enableBiolumin;
+		}
+		if(rawname.equals("GeneticsRebornRESPAWN"))
+		{
+			return GeneticsReborn.enableRespawn;
+		}
+		if(rawname.equals("GeneticsRebornCYBERNETIC"))
+		{
+			return GeneticsReborn.enableCybernetics;
+		}
 		return false;
 	}
 	
@@ -382,5 +409,30 @@ public class ModUtils{
 	public static List<Entity> getEntitesInTange(Class<? extends Entity> entityType, World world, double x, double y, double z, double x2,
 			double y2, double z2) {
 		return world.getEntitiesWithinAABB(entityType, new AxisAlignedBB(x, y, z, x2, y2, z2));
+	}
+	
+    private static double getDistanceSq(BlockPos pos1, BlockPos pos2)  {
+        return ((pos1.getX() - pos2.getX()) * (pos1.getX() - pos2.getX())
+                + (pos1.getY() - pos2.getY()) * (pos1.getY() - pos2.getY())
+                + (pos1.getZ() - pos2.getZ()) * (pos1.getZ() - pos2.getZ()));
+    }
+    
+	public static EntityLivingBase getNearestEntity(World w, BlockPos pos, double reach) {
+        if (reach <= 0.0D) return null;
+        if (w == null || pos == null) return null;
+
+        EntityLivingBase closest = null;
+        double distanceSq = reach * reach;
+        AxisAlignedBB aabb = new AxisAlignedBB(
+        		pos.getX() - reach, pos.getY() - reach, pos.getZ() - reach,
+        		pos.getX() + reach,	pos.getY() + reach,	pos.getZ() + reach);
+        List<EntityLivingBase> listEntitiesInRange = w.getEntitiesWithinAABB(EntityLivingBase.class, aabb);
+        for (EntityLivingBase next : listEntitiesInRange) {
+            if (getDistanceSq(next.getPosition(), pos) < distanceSq) {
+                closest = next;
+            }
+        }
+
+        return closest;		
 	}
 }

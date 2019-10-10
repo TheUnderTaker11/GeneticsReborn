@@ -31,7 +31,10 @@ public class MobToGeneRegistry {
 			registerMob(new MobToGeneObject("EntityCow", new EnumGenes[] {EnumGenes.EAT_GRASS, EnumGenes.MILKY}));
 			registerMob(new MobToGeneObject("EntityHorse", new EnumGenes[] {EnumGenes.JUMP_BOOST, EnumGenes.STEP_ASSIST, EnumGenes.SPEED}));
 			registerMob(new MobToGeneObject("EntityChicken", EnumGenes.NO_FALL_DAMAGE));
-			registerMob(new MobToGeneObject("EntityBat", new EnumGenes[] {EnumGenes.NIGHT_VISION}));
+			if (GeneticsReborn.hardMode)
+				registerMob(new MobToGeneObject("EntityBat", new EnumGenes[] {EnumGenes.NIGHT_VISION}));
+			else 
+				registerMob(new MobToGeneObject("EntityBat", new EnumGenes[] {EnumGenes.FLY, EnumGenes.NIGHT_VISION}));
 			registerMob(new MobToGeneObject("EntityOcelot", new EnumGenes[] {EnumGenes.SPEED, EnumGenes.SCARE_CREEPERS}));
 			registerMob(new MobToGeneObject("EntityPolarBear", new EnumGenes[] {EnumGenes.STRENGTH, EnumGenes.STEP_ASSIST}));
 			registerMob(new MobToGeneObject("EntityRabbit", new EnumGenes[] {EnumGenes.JUMP_BOOST, EnumGenes.SPEED}));
@@ -54,10 +57,10 @@ public class MobToGeneRegistry {
 	
 			//Nether hostiles
 			registerMob(new MobToGeneObject("Wither Skeleton", new EnumGenes[] {EnumGenes.WITHER_HIT, EnumGenes.INFINITY} ));
-			registerMob(new MobToGeneObject("EntityBlaze", new EnumGenes[] {EnumGenes.FLY, EnumGenes.SHOOT_FIREBALLS, EnumGenes.FIRE_PROOF}));
+			registerMob(new MobToGeneObject("EntityBlaze", new EnumGenes[] {EnumGenes.FLY, EnumGenes.SHOOT_FIREBALLS, EnumGenes.FIRE_PROOF, EnumGenes.BIOLUMIN}));
 			registerMob(new MobToGeneObject("EntityGhast", new EnumGenes[] {EnumGenes.FLY, EnumGenes.SHOOT_FIREBALLS}));
 			registerMob(new MobToGeneObject("EntityPigZombie", EnumGenes.FIRE_PROOF));
-			registerMob(new MobToGeneObject("EntityMagmaCube", EnumGenes.FIRE_PROOF));
+			registerMob(new MobToGeneObject("EntityMagmaCube", new EnumGenes[] {EnumGenes.FIRE_PROOF, EnumGenes.BIOLUMIN}));
 	
 			//Bosses
 			registerMob(new MobToGeneObject("EntityWither", new EnumGenes[] {EnumGenes.WITHER_PROOF, EnumGenes.FLY}));
@@ -122,7 +125,7 @@ public class MobToGeneRegistry {
 		registerMob(new MobToGeneObject("EntityNatureGuardian", EnumGenes.PHOTOSYNTHESIS));
 		registerMob(new MobToGeneObject("EntityWaterGuardian", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("EntityAirGuardian", EnumGenes.NO_FALL_DAMAGE));
-		registerMob(new MobToGeneObject("EntityFireGuardian", EnumGenes.FIRE_PROOF));
+		registerMob(new MobToGeneObject("EntityFireGuardian", new EnumGenes[] {EnumGenes.FIRE_PROOF, EnumGenes.BIOLUMIN}));
 	}
 
 	@Optional.Method(modid = "grimoireofgaia")
@@ -136,7 +139,7 @@ public class MobToGeneRegistry {
 		registerMob(new MobToGeneObject("MoCEntityFly", EnumGenes.FLY));
 		registerMob(new MobToGeneObject("MoCEntityAnchovy", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("MoCEntityAngelFish", EnumGenes.WATER_BREATHING));
-		registerMob(new MobToGeneObject("MoCEntityAngler", EnumGenes.WATER_BREATHING));
+		registerMob(new MobToGeneObject("MoCEntityAngler", new EnumGenes[] {EnumGenes.WATER_BREATHING, EnumGenes.BIOLUMIN}));
 		registerMob(new MobToGeneObject("MoCEntityBass", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("MoCEntityClownFish", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("MoCEntityCod", EnumGenes.WATER_BREATHING));
@@ -152,7 +155,7 @@ public class MobToGeneRegistry {
 		registerMob(new MobToGeneObject("MoCEntitySmallFish", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("MoCEntityStringRay", EnumGenes.WATER_BREATHING));
 
-		registerMob(new MobToGeneObject("MoCEntityFireOgre", EnumGenes.FIRE_PROOF));
+		registerMob(new MobToGeneObject("MoCEntityFireOgre", new EnumGenes[] {EnumGenes.FIRE_PROOF, EnumGenes.BIOLUMIN}));
 		registerMob(new MobToGeneObject("MoCEntityOgre", EnumGenes.STRENGTH));
 		registerMob(new MobToGeneObject("MoCEntityWerewolf", EnumGenes.STRENGTH));
 		registerMob(new MobToGeneObject("MoCEntityBear", EnumGenes.STRENGTH));
