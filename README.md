@@ -12,7 +12,8 @@ You may use this mod in any pack you like, without restriction, and change whate
 You do not need my permission to use this mod, nor do you need a response from me to use it. All I ask is you let me know.
 
 ## Contributors
-Current Mod dev/maintainer (1.12+)- abused_master
+Current Mod dev/maintainer (1.12+)- ClubPetey
+Other Dev who ported to 1.12- abused_master
 Block texture artist- NanoHeart    
 Some Ideas/Suggestions- mcpecommander    
 German Translation- ACGaming    
