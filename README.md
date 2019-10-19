@@ -8,8 +8,8 @@ To get the API, just use the API folder here- https://github.com/TheUnderTaker11
 
 
 ## Modpack Permissions-    
-You may use this mod in any pack you like, without restriction, and change whatever parts you see fit as long as you message me the pack and/or a link to it.(You may contact me through Github or MinecraftForums username TheUnderTaker11)    
-You do not need my permission to use this mod, nor do you need a response from me to use it. All I ask is you let me know.
+You may use this mod in any pack you like, without restriction, and change whatever parts you see fit with no resrictions. I would like it if you message me the pack and/or a link to it, but that's just cause I enjoy knowing what stuff people are using it for!(You may contact me through Github or MinecraftForums username TheUnderTaker11)    
+You do not need my permission to use this mod, nor do you need a response from me to use it.
 
 ## Contributors
 Current Mod dev/maintainer (1.12+)- ClubPetey                  
