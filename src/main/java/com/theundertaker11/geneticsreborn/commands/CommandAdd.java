@@ -57,5 +57,10 @@ public class CommandAdd extends CommandBase {
 	public String getUsage(ICommandSender sender) {
 		return "/" + Reference.MODID + " add <player> [ all | <gene_name>...]";
 	}
+	
+	@Override
+	public int getRequiredPermissionLevel() {
+		return 2;
+	}
 
 }

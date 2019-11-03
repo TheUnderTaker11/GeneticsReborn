@@ -57,5 +57,11 @@ public class CommandRemove extends CommandBase {
 	public String getUsage(ICommandSender sender) {
 		return "/" + Reference.MODID + " remove <player> all | <gene_name>...";
 	}
+	
+	@Override
+	public int getRequiredPermissionLevel() {
+		return 2;
+	}
+
 
 }
