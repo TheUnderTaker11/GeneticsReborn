@@ -49,4 +49,14 @@ public class CustomEnergyStorage extends EnergyStorage {
         nbt.setInteger("Energy", energy);
         return nbt;
     }
+    
+    @Override
+    public boolean canExtract() {
+    	return super.canExtract() && (getEnergyStored() > 0);
+    }
+    
+    @Override
+    public boolean canReceive() {
+    	return super.canReceive() && (getEnergyStored() < getMaxEnergyStored());
+    }
 }

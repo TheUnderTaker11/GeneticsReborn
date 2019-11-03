@@ -2,6 +2,7 @@ package com.theundertaker11.geneticsreborn.items;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.render.IItemModelProvider;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;

@@ -2,8 +2,8 @@ package com.theundertaker11.geneticsreborn.blocks.plasmidinjector;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
-import com.theundertaker11.geneticsreborn.gui.GuiHandler;
 import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +21,7 @@ public class PlasmidInjector extends StorageBlockBase {
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new GRTileEntityPlasmidInjector();
+		return new GRTileEntityPlasmidInjector(getRegistryName().getResourcePath());
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class PlasmidInjector extends StorageBlockBase {
 				GRTileEntityPlasmidInjector tile = (GRTileEntityPlasmidInjector) tEntity;
 				tile.addOverclocker(playerIn, GeneticsReborn.ocPlasmidInjector);
 			} else
-				playerIn.openGui(GeneticsReborn.instance, GuiHandler.PlasmidInjectorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+				playerIn.openGui(GeneticsReborn.instance, GuiProxy.PlasmidInjectorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return true;
 	}

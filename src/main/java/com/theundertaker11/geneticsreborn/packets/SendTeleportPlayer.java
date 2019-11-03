@@ -4,7 +4,6 @@ import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.event.GREventHandler;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
-import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.IThreadListener;
@@ -39,15 +38,8 @@ public class SendTeleportPlayer implements IMessage {
 				@Override
 				public void run() {
 					net.minecraft.entity.player.EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
-					boolean allowteleport = true;
-					for (int i = 0; i < GREventHandler.cooldownList.size(); i++) {
-						PlayerCooldowns cooldownEntry = GREventHandler.cooldownList.get(i);
-						if ("teleport".equals(cooldownEntry.getName()) && serverPlayer.getName().equals(cooldownEntry.getPlayerName())) {
-							allowteleport = false;
-							break;
-						}
-					}
-					if (EnumGenes.TELEPORTER.isActive()  && allowteleport && ModUtils.getIGenes(serverPlayer) != null) {
+					long now = serverPlayer.world.getWorldTime();
+					if (EnumGenes.TELEPORTER.isActive()  && !GREventHandler.isInCooldown(serverPlayer, "teleport", now) && ModUtils.getIGenes(serverPlayer) != null) {
 						IGenes genes = ModUtils.getIGenes(serverPlayer);
 						if (genes.hasGene(EnumGenes.TELEPORTER)) {
 							int distance = 6;
@@ -59,7 +51,7 @@ public class SendTeleportPlayer implements IMessage {
 							Vec3d end = start.addVector(lookVec.x * distance, lookVec.y * distance, lookVec.z * distance);
 
 							serverPlayer.setPositionAndUpdate(end.x, end.y, end.z);
-							GREventHandler.cooldownList.add(new PlayerCooldowns(serverPlayer, "teleport", 10));
+							GREventHandler.addCooldown(serverPlayer, "teleport", now, 10);
 						}
 					}
 				}

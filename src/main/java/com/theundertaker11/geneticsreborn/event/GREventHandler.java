@@ -1,34 +1,32 @@
 package com.theundertaker11.geneticsreborn.event;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.CapabilityHandler;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.keybinds.KeybindHandler;
 import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
 import com.theundertaker11.geneticsreborn.packets.SendShootDragonBreath;
 import com.theundertaker11.geneticsreborn.packets.SendTeleportPlayer;
-import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
+import com.theundertaker11.geneticsreborn.potions.GRPotions;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GREventHandler {
 
 	public static int flightticktimer;
-	public static int potionRefreshTimer;
-	public static int worldTickTimer;
 
-	public static List<PlayerCooldowns> cooldownList = new ArrayList<PlayerCooldowns>();
+	public static Map<String, Long> cooldownList = new HashMap<String, Long>();
 
 	public static void init() {
 		MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
-
 		MinecraftForge.EVENT_BUS.register(new GREventHandler());
 		MinecraftForge.EVENT_BUS.register(new RightClickEntityEvent());
 		MinecraftForge.EVENT_BUS.register(new OnWorldTickEvent());
@@ -37,34 +35,42 @@ public class GREventHandler {
 		MinecraftForge.EVENT_BUS.register(new DeathRelatedEvents());
 		MinecraftForge.EVENT_BUS.register(new AIChangeEvents());
 		MinecraftForge.EVENT_BUS.register(new PlayerTickEvent());
+		MinecraftForge.EVENT_BUS.register(new GRPotions());
 	}
 
-	/**
-	 * Just a counter, and keeps track of a thing or two. Its called twice for whatever reason so I have a boolean
-	 * thats toggled each time its run.
-	 */
-	private boolean canRun = true;
-
 	@SubscribeEvent
-	public void GameTick(TickEvent.ServerTickEvent event) {
-		if (canRun) {
+	public void GameTick(TickEvent.WorldTickEvent event) {
+		if (event.phase == Phase.END) {
 			if (flightticktimer < 100) ++flightticktimer;
-			if (potionRefreshTimer < 600) ++potionRefreshTimer;
-			if (GeneticsReborn.allowGivingEntityGenes) worldTickTimer++;
-			if (worldTickTimer > 39) {
-				worldTickTimer = 0;
-			}
-
-			if (!cooldownList.isEmpty()) {
-				for (int i = 0; i < cooldownList.size(); i++) {
-					cooldownList.get(i).removeTick();
-					if (cooldownList.get(i).isFinished()) {
-						cooldownList.remove(i);
-					}
-				}
-			}
 		}
-		canRun = (!canRun);
+	}
+	
+	//these two functions do different things...
+	//use this one usually
+	public static boolean isInCooldown(EntityLivingBase elb, String type, long now) {
+		return !cooldownList.isEmpty() && !cooldownList.containsKey(getCooldownString(elb, type)) || 
+		isCooldownExpired(elb, type, now, true);	
+	}
+	
+	//use this one for seeing if the next item drop is ready..
+	public static boolean isCooldownExpired(EntityLivingBase elb, String type, long now, boolean remove) {
+		if (cooldownList.isEmpty()) return false;
+		final String key = getCooldownString(elb, type);
+		long time = cooldownList.get(key);
+		if (time < now) {
+			if (remove) cooldownList.remove(key);
+			return true;
+		}
+		return false;
+	}
+	
+	public static void addCooldown(EntityLivingBase elb, String type, long now, int duration) {
+		final String name = getCooldownString(elb, type);
+		cooldownList.put(name, now+duration);
+	}
+	
+	private static final String getCooldownString(EntityLivingBase elb, String type) {
+		return elb.getUniqueID().toString() + "/" + type;
 	}
 
 	/**
@@ -78,6 +84,7 @@ public class GREventHandler {
 		if (EnumGenes.TELEPORTER.isActive()) {
 			if (KeybindHandler.keybindTeleport.isPressed()) {
 				GeneticsRebornPacketHandler.INSTANCE.sendToServer(new SendTeleportPlayer());
+				
 			}
 		}
 		if (EnumGenes.DRAGONS_BREATH.isActive()) {

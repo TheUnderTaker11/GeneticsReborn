@@ -2,8 +2,8 @@ package com.theundertaker11.geneticsreborn.blocks.dnaextractor;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
-import com.theundertaker11.geneticsreborn.gui.GuiHandler;
 import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +21,7 @@ public class DNAExtractor extends StorageBlockBase {
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new GRTileEntityDNAExtractor();//TODO change all with this name using ctrl F
+		return new GRTileEntityDNAExtractor(getRegistryName().getResourcePath());
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class DNAExtractor extends StorageBlockBase {
 				GRTileEntityDNAExtractor tile = (GRTileEntityDNAExtractor) tEntity;
 				tile.addOverclocker(playerIn, GeneticsReborn.ocDNAExtractor);//TODO maybe change the 5 based on power
 			} else
-				playerIn.openGui(GeneticsReborn.instance, GuiHandler.DNAExtractorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ()); //TODO change here
+				playerIn.openGui(GeneticsReborn.instance, GuiProxy.DNAExtractorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ()); //TODO change here
 		}
 		return true;
 	}

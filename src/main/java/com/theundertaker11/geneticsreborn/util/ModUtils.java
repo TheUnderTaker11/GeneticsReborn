@@ -10,22 +10,26 @@ import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.geneticsreborn.api.capability.maxhealth.MaxHealthCapabilityProvider;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class ModUtils{
 
 	public static final int moveSpeed = 1;
 	public static final int moveSlowness = 2;
-	public static final int digSpeed = 3;
-	public static final int miningSlowDown = 4;
+	public static final int haste = 3;
+	public static final int miningFatigure = 4;
 	public static final int strength = 5;
 	public static final int jumpBoost = 8;
 	public static final int nausea = 9;
@@ -40,6 +44,11 @@ public class ModUtils{
 	public static final int weakness = 18;
 	public static final int poison = 19;
 	public static final int wither = 20;
+	public static final int absorbtion = 22;
+	public static final int glowing = 24;
+	public static final int levetation= 25;
+	public static final int luck = 26;
+	public static final int badLuck = 27;
 	
 	public static final int ATTRIBUTE_MODIFIER_OPERATION_ADD = 0;
 	
@@ -98,9 +107,11 @@ public class ModUtils{
 	 * @return
 	 */
 	@Nullable
-	public static IGenes getIGenes(EntityLivingBase entityliving)
+	public static IGenes getIGenes(Entity entityliving)
 	{
-		return entityliving.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
+		if (entityliving instanceof EntityLivingBase)
+			return entityliving.getCapability(GeneCapabilityProvider.GENES_CAPABILITY, null);
+		return null;
 	}
 	
 	/**
@@ -115,29 +126,23 @@ public class ModUtils{
 	public static String getGeneNameForShow(String rawname)
 	{	
 		if ("GeneticsRebornBasicGene".equals(rawname)) return "Basic Gene";
+		if ("GeneticsRebornMutatedGene".equals(rawname)) return "Mutated Gene";
 		EnumGenes gene = EnumGenes.fromGeneName(rawname);
 		if (gene == null) return "This is an error. Report to Genetics Reborn Github.";
-		return gene.getDescrption();
+		return gene.getDescription();
 	}
 	
-	public static boolean isGeneEnabled(String rawname)
-	{
-		
+	public static boolean isGeneEnabled(String rawname) {		
 		if(rawname.equals("GeneticsRebornBasicGene")) return true;
+		if(rawname.equals("GeneticsRebornMutatedGene")) return true;
 		EnumGenes gene = EnumGenes.fromGeneName(rawname);
 		return (gene == null) ? false : gene.isActive();
 	}
 	
 	public static List<Entity> getEntitiesInRange(Class<? extends Entity> entityType, World world, double x, double y, double z, double radius) {
-		return getEntitesInTange(entityType, world, x - radius, y - radius, z - radius, x + radius, y + radius,
-				z + radius);
+		return world.getEntitiesWithinAABB(entityType, new AxisAlignedBB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius));
 	}
 
-	public static List<Entity> getEntitesInTange(Class<? extends Entity> entityType, World world, double x, double y, double z, double x2,
-			double y2, double z2) {
-		return world.getEntitiesWithinAABB(entityType, new AxisAlignedBB(x, y, z, x2, y2, z2));
-	}
-	
     private static double getDistanceSq(BlockPos pos1, BlockPos pos2)  {
         return ((pos1.getX() - pos2.getX()) * (pos1.getX() - pos2.getX())
                 + (pos1.getY() - pos2.getY()) * (pos1.getY() - pos2.getY())
@@ -162,4 +167,26 @@ public class ModUtils{
 
         return closest;		
 	}
+	
+	public static Vec3d findRandomBlockNear(World w, double dx, double dy, double dz, int range) {
+		boolean blockOK = false;
+		int x=0, y=0, z=0, xx=0, yy=0, zz=0;
+		while (!blockOK) {
+			x = MathHelper.floor(dx);
+			y = MathHelper.floor(dy);
+			z = MathHelper.floor(dz);
+			xx = w.rand.nextInt(range) - (range/2);
+			zz = w.rand.nextInt(range) - (range/2);
+			yy = 0;
+			
+			while (!w.isAirBlock(new BlockPos(x+xx, y+yy, z+xx))) yy++; 
+			while (w.isAirBlock(new BlockPos(x+xx, y+yy-1, z+xx))) yy--; 
+
+			Block b = w.getBlockState(new BlockPos(x+xx, y+yy-1, z+xx)).getBlock();
+			blockOK = b != Blocks.LAVA && b != Blocks.FLOWING_LAVA;
+		}
+		
+		return new Vec3d(x+xx, y+yy, z+zz);
+	}	
+	
 }

@@ -13,14 +13,17 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver implements ITickable {
-
 	public GRTileEntityCellAnalyser() {
 		super();
+	}
+	
+	public GRTileEntityCellAnalyser(String name) {
+		super(name);
 	}
 
 	@Override
 	public void update() {
-		int rfpertick = (GeneticsReborn.baseRfPerTickCellAnalyser + (this.overclockers * 85));
+		int rfpertick = (GeneticsReborn.baseRfPerTickCellAnalyser + (this.overclockers * GeneticsReborn.OVERCLOCK_RF_COST));
 		if (canSmelt()) {
 			if (this.storage.getEnergyStored() > rfpertick) {
 				this.storage.extractEnergy(rfpertick, false);
@@ -29,7 +32,7 @@ public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver im
 			}
 			if (ticksCooking < 0) ticksCooking = 0;
 
-			if (ticksCooking >= (GeneticsReborn.baseTickCellAnalyser - (this.overclockers * 39))) {
+			if (ticksCooking >= getTotalTicks()) {
 				smeltItem();
 				ticksCooking = 0;
 			}
@@ -84,8 +87,8 @@ public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver im
 		return false;
 	}
 
-	public double percComplete() {
-		return (double) ((double) this.ticksCooking / (double) (GeneticsReborn.baseTickCellAnalyser - (this.overclockers * 39)));
+	public double getTotalTicks() {
+		return (double) (GeneticsReborn.baseTickCellAnalyser - (this.overclockers * GeneticsReborn.OVERCLOCK_BONUS));
 	}
 
 	@Override
@@ -98,35 +101,5 @@ public class GRTileEntityCellAnalyser extends GRTileEntityBasicEnergyReceiver im
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-	}
-
-	private static final byte TICKS_COOKING_FIELD_ID = 0;
-	private static final byte ENERGY_STORED_FIELD_ID = 1;
-	private static final byte OVERCLOCKERS_FIELD_ID = 2;
-
-	private static final byte NUMBER_OF_FIELDS = 3;
-
-	public int getField(int id) {
-		if (id == TICKS_COOKING_FIELD_ID) return ticksCooking;
-		if (id == ENERGY_STORED_FIELD_ID) return this.storage.getEnergyStored();
-		if (id == OVERCLOCKERS_FIELD_ID) return this.overclockers;
-		System.err.println("Invalid field ID in GRTileEntity.getField:" + id);
-		return 0;
-	}
-
-	public void setField(int id, int value) {
-		if (id == TICKS_COOKING_FIELD_ID) {
-			ticksCooking = (short) value;
-		} else if (id == ENERGY_STORED_FIELD_ID) {
-			this.storage.setEnergyStored((short) value);
-		} else if (id == OVERCLOCKERS_FIELD_ID) {
-			this.overclockers = (short) value;
-		} else {
-			System.err.println("Invalid field ID in GRTileEntity.setField:" + id);
-		}
-	}
-
-	public int getFieldCount() {
-		return NUMBER_OF_FIELDS;
 	}
 }

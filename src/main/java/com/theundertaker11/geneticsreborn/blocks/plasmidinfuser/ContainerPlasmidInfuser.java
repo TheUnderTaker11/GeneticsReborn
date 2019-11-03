@@ -19,11 +19,6 @@ import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerPlasmidInfuser extends BaseContainer {
 
-	private GRTileEntityPlasmidInfuser tileInventory;
-
-	private int cachedEnergyUsed;
-	private int cachedEnergyStored;
-	private int cachedOverclockers;
 	private int cachedNum;
 	private int cachedNumNeeded;
 
@@ -100,18 +95,8 @@ public class ContainerPlasmidInfuser extends BaseContainer {
 	public void detectAndSendChanges() {
 		super.detectAndSendChanges();
 
-		boolean fieldHasChanged = false;
-		boolean overclockersChanged = false;
 		boolean numChanged = false;
-		if (cachedEnergyUsed != tileInventory.getField(0) || cachedEnergyStored != tileInventory.getField(1)) {
-			this.cachedEnergyUsed = tileInventory.getField(0);
-			this.cachedEnergyStored = tileInventory.getField(1);
-			fieldHasChanged = true;
-		}
-		if (cachedOverclockers != tileInventory.getField(2)) {
-			this.cachedOverclockers = tileInventory.getField(2);
-			overclockersChanged = true;
-		}
+
 		if (cachedNum != tileInventory.getField(3) || cachedNumNeeded != tileInventory.getField(4)) {
 			this.cachedNum = tileInventory.getField(3);
 			this.cachedNumNeeded = tileInventory.getField(4);
@@ -119,13 +104,6 @@ public class ContainerPlasmidInfuser extends BaseContainer {
 		}
 
 		for (IContainerListener listener : this.listeners) {
-			if (fieldHasChanged) {
-				listener.sendWindowProperty(this, 0, this.cachedEnergyUsed);
-				listener.sendWindowProperty(this, 1, this.cachedEnergyStored);
-			}
-			if (overclockersChanged) {
-				listener.sendWindowProperty(this, 2, this.cachedOverclockers);
-			}
 			if (numChanged) {
 				listener.sendWindowProperty(this, 3, this.cachedNum);
 				listener.sendWindowProperty(this, 4, this.cachedNumNeeded);

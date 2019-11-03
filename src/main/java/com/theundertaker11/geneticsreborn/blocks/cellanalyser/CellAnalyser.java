@@ -2,8 +2,8 @@ package com.theundertaker11.geneticsreborn.blocks.cellanalyser;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
-import com.theundertaker11.geneticsreborn.gui.GuiHandler;
 import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +21,7 @@ public class CellAnalyser extends StorageBlockBase {
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new GRTileEntityCellAnalyser();
+		return new GRTileEntityCellAnalyser(getRegistryName().getResourcePath());
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class CellAnalyser extends StorageBlockBase {
 				GRTileEntityCellAnalyser tile = (GRTileEntityCellAnalyser) tEntity;
 				tile.addOverclocker(playerIn, GeneticsReborn.ocCellAnalyser);
 			} else
-				playerIn.openGui(GeneticsReborn.instance, GuiHandler.CellAnalyserGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+				playerIn.openGui(GeneticsReborn.instance, GuiProxy.CellAnalyserGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return true;
 	}

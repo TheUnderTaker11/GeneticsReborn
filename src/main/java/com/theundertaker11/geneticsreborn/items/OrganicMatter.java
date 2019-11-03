@@ -1,12 +1,18 @@
 package com.theundertaker11.geneticsreborn.items;
 
-import com.theundertaker11.geneticsreborn.util.ModUtils;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class OrganicMatter extends ItemBase {
 
@@ -15,10 +21,20 @@ public class OrganicMatter extends ItemBase {
 	}
 
 	@Override
+    @SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		if (stack.getTagCompound() != null) {
-			tooltip.add("Cell type: " + ModUtils.getTagCompound(stack).getString("entityName"));
+		NBTTagCompound tag = stack.getTagCompound();
+		if (tag != null) {
+			tooltip.add("Cell type: " + tag.getString("entityName"));
+			if (tag.hasKey("forceGene")) {
+				if (tag.hasKey("mutation")) { 
+					EnumGenes gene = EnumGenes.fromGeneName(tag.getString("forceGene"));
+					if (gene != null) tooltip.add(TextFormatting.DARK_RED +  "Mutation: " + gene.getDescription() + TextFormatting.RESET);
+				} else
+					tooltip.add("Gene Focus: " + EnumGenes.fromGeneName(tag.getString("forceGene")).getDescription());				
+			}
 		} else tooltip.add("Cell type: Blank");
+		
 	}
 	
 	/* Code for use later to spawn the type of mob the organic matter was caught from

@@ -2,8 +2,8 @@ package com.theundertaker11.geneticsreborn.blocks.coalgenerator;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
-import com.theundertaker11.geneticsreborn.gui.GuiHandler;
 import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -41,20 +41,20 @@ public class CoalGenerator extends StorageBlockBase {
 						tile.addOverclocker();
 						playerIn.setHeldItem(hand, ItemStack.EMPTY);
 					} else {
-						playerIn.openGui(GeneticsReborn.instance, GuiHandler.CoalGeneratorGuiUD, worldIn, pos.getX(), pos.getY(), pos.getZ());
+						playerIn.openGui(GeneticsReborn.instance, GuiProxy.CoalGeneratorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 					}
 				} else {
-					playerIn.openGui(GeneticsReborn.instance, GuiHandler.CoalGeneratorGuiUD, worldIn, pos.getX(), pos.getY(), pos.getZ());
+					playerIn.openGui(GeneticsReborn.instance, GuiProxy.CoalGeneratorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 				}
 			} else if (playerIn.isSneaking()) {
 				if (tile.hasOverclocker) {
 					playerIn.setHeldItem(hand, new ItemStack(GRItems.Overclocker, 1));
 					tile.removeOverclocker();
 				} else {
-					playerIn.openGui(GeneticsReborn.instance, GuiHandler.CoalGeneratorGuiUD, worldIn, pos.getX(), pos.getY(), pos.getZ());
+					playerIn.openGui(GeneticsReborn.instance, GuiProxy.CoalGeneratorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 				}
 			} else {
-				playerIn.openGui(GeneticsReborn.instance, GuiHandler.CoalGeneratorGuiUD, worldIn, pos.getX(), pos.getY(), pos.getZ());
+				playerIn.openGui(GeneticsReborn.instance, GuiProxy.CoalGeneratorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 			}
 		}
 		return true;

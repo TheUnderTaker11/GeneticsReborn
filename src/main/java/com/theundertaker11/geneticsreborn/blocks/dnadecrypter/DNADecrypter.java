@@ -2,8 +2,8 @@ package com.theundertaker11.geneticsreborn.blocks.dnadecrypter;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
-import com.theundertaker11.geneticsreborn.gui.GuiHandler;
 import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +21,7 @@ public class DNADecrypter extends StorageBlockBase {
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return new GRTileEntityDNADecrypter();
+		return new GRTileEntityDNADecrypter(getRegistryName().getResourcePath());
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class DNADecrypter extends StorageBlockBase {
 				GRTileEntityDNADecrypter tile = (GRTileEntityDNADecrypter) tEntity;
 				tile.addOverclocker(playerIn, GeneticsReborn.ocDNADecrypter);
 			} else
-				playerIn.openGui(GeneticsReborn.instance, GuiHandler.DNADecrypterGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+				playerIn.openGui(GeneticsReborn.instance, GuiProxy.DNADecrypterGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return true;
 	}

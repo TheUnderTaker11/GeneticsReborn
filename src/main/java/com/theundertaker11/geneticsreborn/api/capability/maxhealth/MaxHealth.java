@@ -1,5 +1,12 @@
 package com.theundertaker11.geneticsreborn.api.capability.maxhealth;
 
+import java.util.Collections;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
+import com.theundertaker11.geneticsreborn.util.ModUtils;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeMap;
@@ -7,13 +14,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.network.play.server.SPacketEntityProperties;
 import net.minecraft.world.WorldServer;
-
-import javax.annotation.Nullable;
-
-import com.theundertaker11.geneticsreborn.util.ModUtils;
-
-import java.util.Collections;
-import java.util.UUID;
 
 /**
  * Default implementation of {@link IMaxHealth}.

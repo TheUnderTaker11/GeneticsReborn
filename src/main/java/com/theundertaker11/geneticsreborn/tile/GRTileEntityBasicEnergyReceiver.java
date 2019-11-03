@@ -4,8 +4,8 @@ import javax.annotation.Nullable;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
-
 import com.theundertaker11.geneticsreborn.util.CustomEnergyStorage;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,21 +20,28 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class GRTileEntityBasicEnergyReceiver extends TileEntity {
     private final static int SIZE = 1;
-    public CustomEnergyStorage storage = new CustomEnergyStorage(GeneticsReborn.maxEnergyStored, 20000);
+    protected CustomEnergyStorage storage = new CustomEnergyStorage(GeneticsReborn.maxEnergyStored, 20000);
     protected int overclockers;
     protected int ticksCooking;
+    protected String name;
 
     public GRTileEntityBasicEnergyReceiver() {
-        super();
+    	
     }
 
+    public GRTileEntityBasicEnergyReceiver(String name) {
+        this.name = name;
+    }
+    
+    public String getName() {
+    	return name;
+    }
+    
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
@@ -53,6 +60,14 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity {
         return SIZE;
     }
 
+	public double getTotalTicks() {
+		return 0;		
+	}
+    
+	public double percComplete() {
+		return (double) (this.ticksCooking / getTotalTicks());
+	}
+	
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
@@ -115,7 +130,8 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity {
         return super.hasCapability(capability, facing);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.getWorld().getBlockState(this.pos).getBlock() instanceof StorageBlockBase) {
             EnumFacing rightSide = this.getWorld().getBlockState(this.pos).getValue(StorageBlockBase.FACING).rotateAround(Axis.Y).getOpposite();
@@ -161,4 +177,39 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity {
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
         return (oldState.getBlock() != newState.getBlock());
     }
+    
+	private static final byte TICKS_COOKING_FIELD_ID = 0;
+	private static final byte ENERGY_STORED_FIELD_ID = 1;
+	private static final byte OVERCLOCKERS_FIELD_ID = 2;
+
+	protected byte NUMBER_OF_FIELDS = 3;
+
+	public int getField(int id) {
+		if (id == TICKS_COOKING_FIELD_ID) return ticksCooking;
+		if (id == ENERGY_STORED_FIELD_ID) return this.storage.getEnergyStored();
+		if (id == OVERCLOCKERS_FIELD_ID) return this.overclockers;
+		
+		if (id > NUMBER_OF_FIELDS) System.err.println("Invalid field ID in GRTileEntity.getField:" + id);
+		return 0;
+	}
+
+	public void setField(int id, int value) {
+		if (id == TICKS_COOKING_FIELD_ID) ticksCooking = (short) value;
+		else if (id == ENERGY_STORED_FIELD_ID) this.storage.setEnergyStored((short) value);
+		else if (id == OVERCLOCKERS_FIELD_ID) this.overclockers = (short) value;
+		
+    	if (id > NUMBER_OF_FIELDS) System.err.println("Invalid field ID in GRTileEntity.getField:" + id);
+	}
+
+	public int getFieldCount() {
+		return NUMBER_OF_FIELDS;
+	}
+
+	public int getEnergyStored() {
+		return storage.getEnergyStored();
+	}
+
+	public int getMaxEnergyStored() {
+		return storage.getMaxEnergyStored();
+	}    
 }

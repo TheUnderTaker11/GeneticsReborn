@@ -7,15 +7,16 @@ Also check out the main thread here-http://www.minecraftforum.net/forums/mapping
 To get the API, just use the API folder here- https://github.com/TheUnderTaker11/GeneticsReborn/tree/master/src/main/java/com/theundertaker11/GeneticsReborn
 
 
-## Modpack Permissions-    
+## Modpack Permissions: 
 You may use this mod in any pack you like, without restriction, and change whatever parts you see fit as long as you message me the pack and/or a link to it.(You may contact me through Github or MinecraftForums username TheUnderTaker11)    
 You do not need my permission to use this mod, nor do you need a response from me to use it. All I ask is you let me know.
 
-## Contributors
-Current Mod dev/maintainer (1.12+)- abused_master
-Block texture artist- NanoHeart    
-Some Ideas/Suggestions- mcpecommander    
-German Translation- ACGaming    
+## Contributors:
+Current Mod dev/maintainer (1.12+) - ClubPetey
+Past Mod dev/maintainer (1.12+) - abused_master
+Block texture artist - NanoHeart    
+Some Ideas/Suggestions - mcpecommander    
+German Translation - ACGaming    
 
 ## Disclaimer:    
 I did not use any textures, code, or other material from the Advanced Genetics mod. I haven't ever looked into its source code or API and never plan to. All of this mod was made using the ideas from the orginal 1.7.10 mod, but almost all the code and textures were made by me, excluding the few things gotten from tutorials and/or other open source mods.

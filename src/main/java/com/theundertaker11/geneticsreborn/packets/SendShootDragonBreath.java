@@ -4,7 +4,6 @@ import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.event.GREventHandler;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
-import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.projectile.EntityDragonFireball;
@@ -42,14 +41,9 @@ public class SendShootDragonBreath implements IMessage {
 				@Override
 				public void run() {
 					net.minecraft.entity.player.EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
-					boolean allow = true;
-					for (int i = 0; i < GREventHandler.cooldownList.size(); i++) {
-						PlayerCooldowns cooldownEntry = GREventHandler.cooldownList.get(i);
-						if ("dragonsbreath".equals(cooldownEntry.getName()) && serverPlayer.getName().equals(cooldownEntry.getPlayerName())) {
-							allow = false;
-							break;
-						}
-					}
+					long now = serverPlayer.world.getWorldTime();
+					boolean allow = GREventHandler.isInCooldown(serverPlayer, "dragonsbreath", now);
+
 					if (EnumGenes.DRAGONS_BREATH.isActive() && allow && ModUtils.getIGenes(serverPlayer) != null) {
 						IGenes genes = ModUtils.getIGenes(serverPlayer);
 						if (genes.hasGene(EnumGenes.DRAGONS_BREATH)) {
@@ -64,7 +58,7 @@ public class SendShootDragonBreath implements IMessage {
 							dragonfireball.accelerationZ = z * 0.1D;
 
 							serverPlayer.getEntityWorld().spawnEntity(dragonfireball);
-							GREventHandler.cooldownList.add(new PlayerCooldowns(serverPlayer, "dragonsbreath", 1));
+							GREventHandler.addCooldown(serverPlayer, "dragonsbreath", now, 1);							
 						}
 					}
 				}

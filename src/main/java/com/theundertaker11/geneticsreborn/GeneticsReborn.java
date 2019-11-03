@@ -8,21 +8,29 @@ import com.theundertaker11.geneticsreborn.api.capability.CapabilityHandler;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.MobToGeneRegistry;
 import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
+import com.theundertaker11.geneticsreborn.commands.CommandTree;
 import com.theundertaker11.geneticsreborn.event.GREventHandler;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.keybinds.KeybindHandler;
 import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
+import com.theundertaker11.geneticsreborn.potions.GRPotions;
 import com.theundertaker11.geneticsreborn.proxy.CommonProxy;
 import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -38,6 +46,14 @@ public class GeneticsReborn {
 	public static CommonProxy proxy;
 
 	public static Logger log;
+	
+	public static final int OVERCLOCK_BONUS = 39;
+	public static final int OVERCLOCK_RF_COST = 85;
+	
+    @EventHandler
+    public void serverStarting (FMLServerStartingEvent event) {
+    	event.registerServerCommand(new CommandTree());
+    }	
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -49,11 +65,19 @@ public class GeneticsReborn {
 		MobToGeneRegistry.init();
 		GRItems.init();
 		GRBlocks.init();
+		GRPotions.init();
 		GRTileEntity.regTileEntitys();
 		GeneticsRebornPacketHandler.init(event.getSide());
 
 		if (event.getSide() == Side.CLIENT)
-			KeybindHandler.init();
+			KeybindHandler.init();	
+		
+		//will this work? seems to...
+		if (stackPotions) {
+			Items.POTIONITEM.setMaxStackSize(64);
+			Items.SPLASH_POTION.setMaxStackSize(64);
+			Items.LINGERING_POTION.setMaxStackSize(64);
+		}
 	}
 
 	@Mod.EventHandler
@@ -61,7 +85,7 @@ public class GeneticsReborn {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
 		CapabilityHandler.init();
 		GREventHandler.init();
-
+		proxy.initPotionRender();
 	}
 
 	@Mod.EventHandler
@@ -89,6 +113,8 @@ public class GeneticsReborn {
 	public static int baseRfPerTickDNAExtractor;
 	public static int baseRfPerTickPlasmidInfuser;
 	public static int baseRfPerTickPlasmidInjector;
+	public static int baseRfPerTickIncubatorLow;
+	public static int baseRfPerTickIncubatorHigh;
 
 	public static int baseTickBloodPurifier;
 	public static int baseTickCellAnalyser;
@@ -97,6 +123,8 @@ public class GeneticsReborn {
 	public static int baseTickDNAExtractor;
 	public static int baseTickPlasmidInfuser;
 	public static int baseTickPlasmidInjector;
+	public static int baseTickIncubatorLow;
+	public static int baseTickIncubatorHigh;
 
 	public static int ocBloodPurifier;
 	public static int ocCellAnalyser;
@@ -106,13 +134,23 @@ public class GeneticsReborn {
 	public static int ocPlasmidInfuser;
 	public static int ocPlasmidInjector;
 	public static int ocCoalGenerator;
+	public static int ocIncubator;
 
 	public static int CoalGeneratorBaseRF;
 	
 	public static float BioluminLightLevel;
+	public static float thornsDamage;
+	public static float clawsDamage;
+	public static int clawsChance;
+	public static int mutationAmp;
+	public static int cyberToleranceBonus;
+	public static float virusRange;
+	public static boolean enableVirus;
+	public static boolean stackPotions;
+	
 	
 
-		public static void loadConfig(Configuration config) {
+	public static void loadConfig(Configuration config) {
 		config.load();
 		final String general = "General Config";
 		final String genes = "Genes";
@@ -135,14 +173,19 @@ public class GeneticsReborn {
 
 		hardMode = config.getBoolean("Hard Mode", general, false, "Make earning traits harder, better balance when playing with Mods, see Wiki");
 		BioluminLightLevel = config.getFloat("Bioluminescence light level", general, 12.0F, 1.0f, 15.0f, "How much light does the Bioluminescence gene produce");
-		
+		thornsDamage = config.getFloat("Thorns damage", general, 0.0F, 6.0f, 10000.0f, "How much damage does an entity take when hitting an entity with thorns");
+		clawsDamage = config.getFloat("Claws damage", general, 0.0F, 1.0f, 100.0f, "How much damage does the claws bleed effect do (per second)");
+		clawsChance = config.getInt("Claws chance", general, 33, 1, 100, "Chance that claws applies bleed effect");
+		mutationAmp = config.getInt("Mutation Amplifier", general, 0, 0, 100, "Increase the effect of all status effect caused by mutations");
+		cyberToleranceBonus = config.getInt("Cybernetic Tolerance", general, 20, 0, 100, "Increase the tolerance for cyberware");
+		virusRange = config.getFloat("Virus Range", general, 4.0F, 0.5f, 100.0f, "Range that viral potion is effective");
+		stackPotions = config.getBoolean("Stack Potions", general, true, "All potions will stack to 64");
 
 		EnumGenes.DRAGONS_BREATH.setActive(config.getBoolean("Dragon's Breath", genes, true, ""));
 		EnumGenes.EAT_GRASS.setActive(config.getBoolean("Eat Grass", genes, true, ""));
 		EnumGenes.EMERALD_HEART.setActive(config.getBoolean("Emerald Heart", genes, true, ""));
 		EnumGenes.ENDER_DRAGON_HEALTH.setActive(config.getBoolean("Ender Dragon Health", genes, true, ""));
 		EnumGenes.FIRE_PROOF.setActive(config.getBoolean("Fire-Proof", genes, true, ""));
-		EnumGenes.FLY.setActive(config.getBoolean("Flight", genes, true, ""));
 		EnumGenes.JUMP_BOOST.setActive(config.getBoolean("Jump Boost", genes, true, ""));
 		EnumGenes.MILKY.setActive(config.getBoolean("Milky", genes, true, ""));
 		EnumGenes.MORE_HEARTS.setActive(config.getBoolean("More Hearts", genes, true, ""));
@@ -168,10 +211,48 @@ public class GeneticsReborn {
 		EnumGenes.INFINITY.setActive(config.getBoolean("Infinity", genes, true, ""));
 		EnumGenes.STEP_ASSIST.setActive(config.getBoolean("Step Assist", genes, true, ""));
 		EnumGenes.BIOLUMIN.setActive(config.getBoolean("Bioluminescence", genes, true, ""));
-		EnumGenes.RESPAWN.setActive(config.getBoolean("Respawn", genes, true, ""));
 		EnumGenes.CYBERNETIC.setActive(config.getBoolean("Cybernetics", genes, true, ""));
 		EnumGenes.LAY_EGG.setActive(config.getBoolean("Lay Eggs", genes, true, ""));
+		EnumGenes.MEATY.setActive(config.getBoolean("Meaty", genes, true, ""));
+		EnumGenes.SCARE_CREEPERS.setActive(config.getBoolean("Scare Creepers", genes, true, ""));
+		EnumGenes.SCARE_SKELETONS.setActive(config.getBoolean("Scare Skeletons", genes, true, ""));
+		EnumGenes.CLIMB_WALLS.setActive(config.getBoolean("Climb Walls", genes, true, ""));
+		EnumGenes.CLAWS.setActive(config.getBoolean("Claws", genes, true, ""));
+		EnumGenes.THORNS.setActive(config.getBoolean("Thorns", genes, true, ""));
+		EnumGenes.HASTE.setActive(config.getBoolean("Haste", genes, true, ""));
+		EnumGenes.EFFICIENCY.setActive(config.getBoolean("Efficiency", genes, true, ""));
+		EnumGenes.REGENERATION.setActive(config.getBoolean("Regeneration", genes, true, ""));
+		EnumGenes.MOB_SIGHT.setActive(config.getBoolean("Mob Sight", genes, true, ""));
+
+		//mutations
+		EnumGenes.FLY.setActive(config.getBoolean("Flight Mutation", genes, true, ""));
+		EnumGenes.INVISIBLE.setActive(config.getBoolean("Invisiblity Mutation", genes, true, ""));
+		EnumGenes.SCARE_ZOMBIES.setActive(config.getBoolean("Scare Zombies", genes, true, ""));
+		EnumGenes.SCARE_SPIDERS.setActive(config.getBoolean("Scare Spiders", genes, true, ""));
+		EnumGenes.NO_HUNGER.setActive(config.getBoolean("No Hunger", genes, true, ""));
+		EnumGenes.LUCK.setActive(config.getBoolean("Luck", genes, true, ""));
 		
+		//virus are all-or-nothing
+		enableVirus = config.getBoolean("Enabled Viruses", genes, true, "");
+		EnumGenes.POISON.setActive(enableVirus);
+		EnumGenes.POISON_4.setActive(enableVirus);
+		EnumGenes.WITHER.setActive(enableVirus);
+		EnumGenes.WEAKNESS.setActive(enableVirus);
+		EnumGenes.BLINDNESS.setActive(enableVirus);
+		EnumGenes.SLOWNESS.setActive(enableVirus);
+		EnumGenes.SLOWNESS_4.setActive(enableVirus);
+		EnumGenes.SLOWNESS_6.setActive(enableVirus);
+		EnumGenes.NAUSEA.setActive(enableVirus);
+		EnumGenes.HUNGER.setActive(enableVirus);
+		EnumGenes.FLAME.setActive(enableVirus);
+		EnumGenes.CURSED.setActive(enableVirus);
+		EnumGenes.LEVITATION.setActive(enableVirus);
+		EnumGenes.MINING_WEAKNESS.setActive(enableVirus);
+		EnumGenes.DEAD_CREEPERS.setActive(enableVirus);
+		EnumGenes.DEAD_UNDEAD.setActive(enableVirus);
+		EnumGenes.DEAD_OLD_AGE.setActive(enableVirus);
+		EnumGenes.DEAD_ALL.setActive(enableVirus);
+
 		CloningBlacklist = config.getStringList("Cloning Blacklist", general, new String[]{"EntityWither"}, "Add the name of the Entity's class you want blacklisted. (The ender dragon will always be hardcode blacklisted.)");
 
 		maxEnergyStored = config.getInt("Max", general, 20000, 10000, 1000000000, "Changes max RF stored by all machines");
@@ -183,6 +264,8 @@ public class GeneticsReborn {
 		baseTickDNAExtractor = config.getInt("DNA Extractor", baseticks, 200, 2, 5000, "");
 		baseTickPlasmidInfuser = config.getInt("Plasmid Infuser", baseticks, 400, 2, 5000, "");
 		baseTickPlasmidInjector = config.getInt("Plasmid Injector", baseticks, 400, 2, 5000, "");
+		baseTickIncubatorLow = config.getInt("Incubator-Low Temp", baseticks, 24000, 1200, 100000, "");
+		baseTickIncubatorHigh = config.getInt("Incubator-High Temp", baseticks, 300, 2, 100000, "");
 
 		baseRfPerTickBloodPurifier = config.getInt("Blood Purifier", baserf, 20, 1, 100000, "");
 		baseRfPerTickCellAnalyser = config.getInt("Cell Analyser", baserf, 20, 1, 100000, "");
@@ -191,6 +274,8 @@ public class GeneticsReborn {
 		baseRfPerTickDNAExtractor = config.getInt("DNA Extractor", baserf, 20, 1, 100000, "");
 		baseRfPerTickPlasmidInfuser = config.getInt("Plasmid Infuser", baserf, 20, 1, 100000, "");
 		baseRfPerTickPlasmidInjector = config.getInt("Plasmid Injector", baserf, 20, 1, 100000, "");
+		baseRfPerTickIncubatorLow = config.getInt("Incubator-Low Temp", baserf, 1, 1, 100000, "");
+		baseRfPerTickIncubatorHigh = config.getInt("Incubator-High Temp", baserf, 100, 1, 100000, "");
 
 		ocBloodPurifier = config.getInt("Blood Purifier", oclockers, 5, 0, 5, "");
 		ocCellAnalyser = config.getInt("Cell Analyser", oclockers, 10, 0, 10, "");
@@ -200,6 +285,7 @@ public class GeneticsReborn {
 		ocPlasmidInfuser = config.getInt("Plasmid Infuser", oclockers, 10, 0, 10, "");
 		ocPlasmidInjector = config.getInt("Plasmid Injector", oclockers, 10, 0, 10, "");
 		ocCoalGenerator = config.getInt("Coal Generator", oclockers, 10, 0, 10, "");
+		ocIncubator = config.getInt("Incubator", oclockers, 2, 0, 2, "");
 
 		CoalGeneratorBaseRF = config.getInt("Base rf/t production", "Power Gen", 10, 5, 1000000, "");
 		config.save();

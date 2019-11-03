@@ -1,12 +1,15 @@
 package com.theundertaker11.geneticsreborn.items;
 
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
+import com.theundertaker11.geneticsreborn.potions.GRItemPotion;
+import com.theundertaker11.geneticsreborn.potions.ViralSplashPotion;
 import com.theundertaker11.geneticsreborn.render.IItemModelProvider;
+
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class GRItems {
 
-	public static Item Debugger;
 	public static Item AdvancedScraper;
 	public static Item AntiField;
 	public static Item AntiPlasmid;
@@ -19,10 +22,11 @@ public class GRItems {
 	public static Item OrganicMatter;
 	public static Item Overclocker;
 	public static Item Plasmid;
-
-
+	public static Item ViralPotion;
+	public static Item GRPotion;
+	public static Item GRSplashPotion;
+	
 	public static void init() {
-		Debugger = register(new Debugger("debugger"));
 		GlassSyringe = register(new GlassSyringe("glasssyringe"));
 		MetalSyringe = register(new MetalSyringe("metalsyringe"));
 		MetalScraper = register(new DamageableItemBase("metalscraper", 200, true));
@@ -34,8 +38,15 @@ public class GRItems {
 		AntiPlasmid = register(new Plasmid("antiplasmid"));
 		Plasmid = register(new Plasmid("plasmid"));
 		AntiField = register(new AntiField("antifield"));
-
+		
+		GRPotion = register(new GRItemPotion("grpotion"));
+		GeneticsReborn.proxy.registerItemRenderer(GRPotion, 0, "grpotion");
+		ViralPotion = register(new ViralSplashPotion("viralpotion"));
+		GeneticsReborn.proxy.registerItemRenderer(ViralPotion, 0, "viralpotion");
+		
 		DragonHealthCrystal = register(new DamageableItemBase("dragonhealthcrystal", 1000, true));
+		
+		
 	}
 
 	private static <T extends Item> T register(T item) {

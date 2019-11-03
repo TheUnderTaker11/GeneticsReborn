@@ -1,5 +1,6 @@
 package com.theundertaker11.geneticsreborn.blocks;
 
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 
@@ -9,9 +10,11 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -93,5 +96,20 @@ public class StorageBlockBase extends BlockBase {
 			}
 		}
 		super.breakBlock(worldIn, pos, state);
+	}
+	
+	public boolean overclockerOrGUI(World world, BlockPos pos, EntityPlayer player, EnumHand hand, int maxOC, int guiID) {
+		if (world.isRemote) return true;
+		TileEntity tEntity = world.getTileEntity(pos);
+
+		if (tEntity != null && tEntity instanceof GRTileEntityBasicEnergyReceiver && hand == EnumHand.MAIN_HAND) {
+			if (player.getHeldItem(EnumHand.MAIN_HAND).getItem() == GRItems.Overclocker) {
+				GRTileEntityBasicEnergyReceiver tile = (GRTileEntityBasicEnergyReceiver) tEntity;
+				tile.addOverclocker(player, maxOC);
+			} else
+				player.openGui(GeneticsReborn.instance, guiID, world, pos.getX(), pos.getY(), pos.getZ());
+		}
+		return true;
+		
 	}
 }

@@ -30,7 +30,7 @@ public class MobToGeneObject {
 		return this.genes.length;
 	}
 	
-	public String getRandomGene() {
-		 return genes[ThreadLocalRandom.current().nextInt(getValidGenesNum())].toString();		
+	public EnumGenes getRandomGene() {
+		 return genes[ThreadLocalRandom.current().nextInt(getValidGenesNum())];		
 	}
 }

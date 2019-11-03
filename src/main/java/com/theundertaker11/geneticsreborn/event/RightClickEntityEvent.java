@@ -134,6 +134,7 @@ public class RightClickEntityEvent {
 		if (target instanceof EntityLivingBase && !(target instanceof EntityCow)) {
 			EntityLivingBase targetentity = (EntityLivingBase) target;
 			if (!GeneticsReborn.allowGivingEntityGenes && !(targetentity instanceof EntityPlayer)) return;
+			
 			World world = player.getEntityWorld();
 			if (ModUtils.getIGenes(targetentity) != null) {
 				IGenes targetentitygenes = ModUtils.getIGenes(targetentity);
@@ -143,6 +144,11 @@ public class RightClickEntityEvent {
 					player.getHeldItemMainhand().damageItem(1, player);
 					EntityItem entitywool = new EntityItem(world, targetentity.getPosition().getX(), targetentity.getPosition().getY(), targetentity.getPosition().getZ(), wool);
 					world.spawnEntity(entitywool);
+				}
+
+				if (EnumGenes.MEATY.isActive() && player.getHeldItemMainhand().getItem() instanceof ItemShears && targetentitygenes.hasGene(EnumGenes.MEATY)) {
+					player.getHeldItemMainhand().damageItem(1, player);
+					targetentity.dropItem(Items.PORKCHOP, 1);
 				}
 
 				if (EnumGenes.MILKY.isActive() && player.getHeldItemMainhand().getItem() == Items.BUCKET && targetentitygenes.hasGene(EnumGenes.MILKY)) {

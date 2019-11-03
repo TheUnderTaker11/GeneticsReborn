@@ -2,7 +2,6 @@ package com.theundertaker11.geneticsreborn.blocks.plasmidinfuser;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
-import com.theundertaker11.geneticsreborn.api.capability.genes.Genes;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
@@ -22,6 +21,12 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 
 	public GRTileEntityPlasmidInfuser() {
 		super();
+		NUMBER_OF_FIELDS = 5;
+	}
+	
+	public GRTileEntityPlasmidInfuser(String name) {
+		super(name);
+		NUMBER_OF_FIELDS = 5;
 	}
 
 	@Override
@@ -41,7 +46,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 				this.numNeeded = 0;
 			}
 		}
-		int rfpertick = (GeneticsReborn.baseRfPerTickPlasmidInfuser + (this.overclockers * 85));
+		int rfpertick = (GeneticsReborn.baseRfPerTickPlasmidInfuser + (this.overclockers * GeneticsReborn.OVERCLOCK_RF_COST));
 		if (canSmelt()) {
 			if (this.storage.getEnergyStored() > rfpertick) {
 				this.storage.extractEnergy(rfpertick, false);
@@ -50,7 +55,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 			}
 			if (ticksCooking < 0) ticksCooking = 0;
 
-			if (ticksCooking >= (GeneticsReborn.baseTickPlasmidInfuser - (this.overclockers * 39))) {
+			if (ticksCooking >= getTotalTicks()) {
 				smeltItem();
 				ticksCooking = 0;
 			}
@@ -92,7 +97,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 					String gene = ModUtils.getTagCompound(item).getString("gene");
 					resulttag.setString("gene", gene);
 					resulttag.setInteger("num", 0);
-					resulttag.setInteger("numNeeded", numNeededLogic(gene));
+					resulttag.setInteger("numNeeded", EnumGenes.getNumberNeeded(gene));
 				} else {
 					NBTTagCompound resulttag = ModUtils.getTagCompound(result);
 					if (resulttag.getInteger("num") == resulttag.getInteger("numNeeded")) return false;
@@ -120,61 +125,8 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 		return false;
 	}
 
-	private static int numNeededLogic(String gene) {
-		EnumGenes enumGene = Genes.getGeneFromString(gene);
-		if (!GeneticsReborn.hardMode)
-			return 24;
-		else 
-			switch (enumGene) {
-			case STEP_ASSIST:
-			case JUMP_BOOST:
-				return 10;
-			case MILKY:
-			case WOOLY:
-			case SLIMY:
-				return 12;
-			case EAT_GRASS:
-			case NIGHT_VISION:
-			case WATER_BREATHING:
-			case BIOLUMIN:
-				return 16;
-			case DRAGONS_BREATH:
-			case SCARE_CREEPERS:
-			case WITHER_HIT:
-			case SPEED: 
-			case STRENGTH:
-			case EXPLOSIVE_EXIT:
-				return 20;
-			case FIRE_PROOF:
-			case POISON_PROOF:
-			case SHOOT_FIREBALLS:
-			case TELEPORTER:
-				return 24;
-			case EMERALD_HEART:
-			case NO_FALL_DAMAGE:
-			case RESISTANCE:
-			case XP_MAGNET:
-			case ITEM_MAGNET:
-			case INFINITY:
-			case CYBERNETIC:
-				return 30;
-			case WITHER_PROOF:
-			case MORE_HEARTS:
-			case SAVE_INVENTORY:
-			case PHOTOSYNTHESIS:
-				return 40;
-			case RESPAWN:
-			case FLY:
-				return 50;
-			case ENDER_DRAGON_HEALTH:
-				return 60;
-			default: 
-				return 20;			
-			}
-	}
-
-	public double percComplete() {
-		return (double) ((double) this.ticksCooking / (double) (GeneticsReborn.baseTickPlasmidInfuser - (this.overclockers * 39)));
+	public double getTotalTicks() {
+		return (double) (GeneticsReborn.baseTickPlasmidInfuser - (this.overclockers * GeneticsReborn.OVERCLOCK_BONUS));
 	}
 
 	@Override
@@ -189,41 +141,22 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 		super.readFromNBT(compound);
 	}
 
-	private static final byte TICKS_COOKING_FIELD_ID = 0;
-	private static final byte ENERGY_STORED_FIELD_ID = 1;
-	private static final byte OVERCLOCKERS_FIELD_ID = 2;
 	private static final byte NUM_FIELD_ID = 3;
 	private static final byte NUMNEEDED_FIELD_ID = 4;
 
-	private static final byte NUMBER_OF_FIELDS = 5;
-
 	public int getField(int id) {
-		if (id == TICKS_COOKING_FIELD_ID) return ticksCooking;
-		if (id == ENERGY_STORED_FIELD_ID) return this.storage.getEnergyStored();
-		if (id == OVERCLOCKERS_FIELD_ID) return this.overclockers;
 		if (id == NUM_FIELD_ID) return this.num;
 		if (id == NUMNEEDED_FIELD_ID) return this.numNeeded;
-		System.err.println("Invalid field ID in GRTileEntity.getField:" + id);
-		return 0;
+		return super.getField(id);
 	}
 
 	public void setField(int id, int value) {
-		if (id == TICKS_COOKING_FIELD_ID) {
-			ticksCooking = (short) value;
-		} else if (id == ENERGY_STORED_FIELD_ID) {
-			this.storage.setEnergyStored((short) value);
-		} else if (id == OVERCLOCKERS_FIELD_ID) {
-			this.overclockers = (short) value;
-		} else if (id == NUM_FIELD_ID) {
+		if (id == NUM_FIELD_ID) {
 			this.num = (short) value;
 		} else if (id == NUMNEEDED_FIELD_ID) {
 			this.numNeeded = (short) value;
-		} else {
-			System.err.println("Invalid field ID in GRTileEntity.setField:" + id);
-		}
+		} else super.setField(id, value);		
+
 	}
 
-	public int getFieldCount() {
-		return NUMBER_OF_FIELDS;
-	}
 }

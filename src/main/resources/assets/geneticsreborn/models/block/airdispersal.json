@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "geneticsreborn:blocks/airdispersal_front",
+    "down": "geneticsreborn:blocks/machine_bottom",
+    "up": "geneticsreborn:blocks/airdispersal_top",
+    "east": "geneticsreborn:blocks/machine_side",
+    "west": "geneticsreborn:blocks/machine_side",
+    "north": "geneticsreborn:blocks/airdispersal_front",
+    "south": "geneticsreborn:blocks/machine_side"
+  }
+}

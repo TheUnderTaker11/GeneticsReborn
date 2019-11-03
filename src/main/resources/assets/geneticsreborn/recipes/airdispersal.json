@@ -1,0 +1,28 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zxz",
+        "zaz",
+        "zyz"
+    ],
+    "key": {
+        "z": {
+    		"type": "forge:ore_dict",
+		    "ore": "gemDiamond"
+		},
+        "x": {
+    		"item": "minecraft:dispenser"
+		},
+        "a": {
+    		"item": "minecraft:clock"
+		},
+        "y": {
+    		"type": "forge:ore_dict",
+		    "ore": "dustRedstone"
+		}	
+    },
+    "result": {
+        "item": "geneticsreborn:airdispersal",
+        "count": 1
+    }
+}

@@ -1,10 +1,15 @@
 package com.theundertaker11.geneticsreborn.blocks;
 
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class BaseContainer extends Container {
 	protected final int HOTBAR_SLOT_COUNT = 9;
@@ -13,7 +18,14 @@ public class BaseContainer extends Container {
 	protected final int PLAYER_INVENTORY_SLOT_COUNT = PLAYER_INVENTORY_COLUMN_COUNT * PLAYER_INVENTORY_ROW_COUNT;
 	protected final int VANILLA_SLOT_COUNT = HOTBAR_SLOT_COUNT + PLAYER_INVENTORY_SLOT_COUNT;
 	protected final int VANILLA_FIRST_SLOT_INDEX = 0;
+	protected int INPUT_SLOTS = 1;
 
+	protected GRTileEntityBasicEnergyReceiver tileInventory;
+
+	protected int cachedEnergyUsed;
+	protected int cachedEnergyStored;
+	protected int cachedOverclockers;	
+	
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
@@ -45,8 +57,8 @@ public class BaseContainer extends Container {
 			itemstack = itemstack1.copy();
 			if(index < VANILLA_SLOT_COUNT){
 				if(canAcceptItem(slot)){
-					if (!this.mergeItemStack(slot.getStack(), 36, 37, false)) {
-						this.mergeItemStack(slot.getStack(), 36, 37,false);
+					if (!this.mergeItemStack(slot.getStack(), VANILLA_SLOT_COUNT, VANILLA_SLOT_COUNT + INPUT_SLOTS, false)) {
+						this.mergeItemStack(slot.getStack(), VANILLA_SLOT_COUNT, VANILLA_SLOT_COUNT + INPUT_SLOTS, false);
 						return ItemStack.EMPTY;
 					}
 					else{
@@ -67,4 +79,44 @@ public class BaseContainer extends Container {
 		return itemstack;
 	}
 	
+	public class SlotOutput extends SlotItemHandler {
+		public SlotOutput(IItemHandler inventoryIn, int index, int xPosition, int yPosition) {
+			super(inventoryIn, index, xPosition, yPosition);
+		}
+
+		@Override
+		public boolean isItemValid(ItemStack stack) {
+			return false;
+		}
+	}	
+	
+	@Override
+	public void detectAndSendChanges() {
+		super.detectAndSendChanges();
+
+		if (tileInventory == null) return;
+		
+		boolean fieldHasChanged = false;
+		boolean overclockersChanged = false;
+		if (cachedEnergyUsed != tileInventory.getField(0) || cachedEnergyStored != tileInventory.getField(1)) {
+			this.cachedEnergyUsed = tileInventory.getField(0);
+			this.cachedEnergyStored = tileInventory.getField(1);
+			fieldHasChanged = true;
+		}
+		if (cachedOverclockers != tileInventory.getField(2)) {
+			this.cachedOverclockers = tileInventory.getField(2);
+			overclockersChanged = true;
+		}
+
+		for (IContainerListener listener : this.listeners) {
+			if (fieldHasChanged) {
+				listener.sendWindowProperty(this, 0, this.cachedEnergyUsed);
+				listener.sendWindowProperty(this, 1, this.cachedEnergyStored);
+			}
+			if (overclockersChanged) {
+				listener.sendWindowProperty(this, 2, this.cachedOverclockers);
+			}
+
+		}
+	}	
 }

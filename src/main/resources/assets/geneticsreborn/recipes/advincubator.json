@@ -1,0 +1,23 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zzz",
+        "zxz",
+        "yyy"
+    ],
+    "key": {
+        "z": {
+    		"item": "minecraft:obsidian"
+		},
+        "x": {
+    		"item": "geneticsreborn:incubator"
+		},
+        "y": {
+    		"item": "minecraft:end_stone"
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:advincubator",
+        "count": 1
+    }
+}

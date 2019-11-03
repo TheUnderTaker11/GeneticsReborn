@@ -1,0 +1,32 @@
+{
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "zaz",
+        "zxz",
+        "byb"
+    ],
+    "key": {
+        "z": {
+    		"type": "forge:ore_dict",
+		    "ore": "ingotIron"
+		},
+        "x": {
+    		"item": "minecraft:blaze_rod"
+		},
+        "y": {
+    		"type": "forge:ore_dict",
+		    "ore": "dustRedstone"
+		},		
+        "a": {
+    		"item": "minecraft:glass"
+		},		
+        "b": {
+    		"item": "minecraft:stone",
+    		"data": 0
+		}		
+    },
+    "result": {
+        "item": "geneticsreborn:incubator",
+        "count": 1
+    }
+}

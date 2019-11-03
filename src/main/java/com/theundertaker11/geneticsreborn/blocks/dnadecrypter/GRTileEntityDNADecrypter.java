@@ -14,14 +14,17 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver implements ITickable {
-
 	public GRTileEntityDNADecrypter() {
 		super();
+	}
+	
+	public GRTileEntityDNADecrypter(String name) {
+		super(name);
 	}
 
 	@Override
 	public void update() {
-		int rfpertick = (GeneticsReborn.baseRfPerTickDNADecrypter + (this.overclockers * 85));
+		int rfpertick = (GeneticsReborn.baseRfPerTickDNADecrypter + (this.overclockers * GeneticsReborn.OVERCLOCK_RF_COST));
 		if (canSmelt()) {
 			if (this.storage.getEnergyStored() > rfpertick) {
 				this.storage.extractEnergy(rfpertick, false);
@@ -30,23 +33,25 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 			}
 			if (ticksCooking < 0) ticksCooking = 0;
 
-			if (ticksCooking >= (GeneticsReborn.baseTickDNADecrypter - (this.overclockers * 39))) {
+			if (ticksCooking >= getTotalTicks()) {
 				smeltItem();
 				ticksCooking = 0;
 			}
 		} else ticksCooking = 0;
 	}
 
-	public static ItemStack getSmeltingResultForItem(ItemStack stack) {
+	public static ItemStack getSmeltingResultForItem(ItemStack stack, boolean simulate) {
 		if (stack.getItem() == GRItems.DNAHelix && stack.getTagCompound() != null) {
 			if (!ModUtils.getTagCompound(stack).hasKey("gene")) {
 				ItemStack result = new ItemStack(GRItems.DNAHelix);
+				if (simulate) return result;
+
 				String entityName = ModUtils.getTagCompound(stack).getString("entityName");
 				String entityCodeName = ModUtils.getTagCompound(stack).getString("entityCodeName");
 
 				ModUtils.getTagCompound(result).setString("entityName", entityName);
 				ModUtils.getTagCompound(result).setString("entityCodeName", entityCodeName);
-				ModUtils.getTagCompound(result).setString("gene", MobToGeneRegistry.getGene(entityCodeName));
+				ModUtils.getTagCompound(result).setString("gene", MobToGeneRegistry.getGene(stack, entityCodeName));
 				return result;
 			}
 		}
@@ -77,7 +82,7 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 		IItemHandler inventoryoutput = this.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN);
 
 		if (inventory != null && !inventory.getStackInSlot(0).isEmpty()) {
-			result = getSmeltingResultForItem(inventory.getStackInSlot(0));
+			result = getSmeltingResultForItem(inventory.getStackInSlot(0), !performSmelt);
 			if (!result.isEmpty()) {
 				ItemStack outputSlotStack = inventoryoutput.getStackInSlot(0);
 				if (outputSlotStack.isEmpty()) {
@@ -101,8 +106,8 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 		return false;
 	}
 
-	public double percComplete() {
-		return (double) ((double) this.ticksCooking / (double) (GeneticsReborn.baseTickDNADecrypter - (this.overclockers * 39)));
+	public double getTotalTicks() {
+		return (GeneticsReborn.baseTickDNADecrypter - (this.overclockers * GeneticsReborn.OVERCLOCK_BONUS));
 	}
 
 	@Override
@@ -117,34 +122,5 @@ public class GRTileEntityDNADecrypter extends GRTileEntityBasicEnergyReceiver im
 		super.readFromNBT(compound);
 	}
 
-	private static final byte TICKS_COOKING_FIELD_ID = 0;
-	private static final byte ENERGY_STORED_FIELD_ID = 1;
-	private static final byte OVERCLOCKERS_FIELD_ID = 2;
-
-	private static final byte NUMBER_OF_FIELDS = 3;
-
-	public int getField(int id) {
-		if (id == TICKS_COOKING_FIELD_ID) return ticksCooking;
-		if (id == ENERGY_STORED_FIELD_ID) return this.storage.getEnergyStored();
-		if (id == OVERCLOCKERS_FIELD_ID) return this.overclockers;
-		System.err.println("Invalid field ID in GRTileEntity.getField:" + id);
-		return 0;
-	}
-
-	public void setField(int id, int value) {
-		if (id == TICKS_COOKING_FIELD_ID) {
-			ticksCooking = (short) value;
-		} else if (id == ENERGY_STORED_FIELD_ID) {
-			this.storage.setEnergyStored((short) value);
-		} else if (id == OVERCLOCKERS_FIELD_ID) {
-			this.overclockers = (short) value;
-		} else {
-			System.err.println("Invalid field ID in GRTileEntity.setField:" + id);
-		}
-	}
-
-	public int getFieldCount() {
-		return NUMBER_OF_FIELDS;
-	}
 
 }

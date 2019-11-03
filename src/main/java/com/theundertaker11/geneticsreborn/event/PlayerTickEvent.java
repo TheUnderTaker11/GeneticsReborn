@@ -2,16 +2,20 @@ package com.theundertaker11.geneticsreborn.event;
 
 import java.util.Iterator;
 
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
+import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
-import com.theundertaker11.geneticsreborn.packets.StepHeightChange;
+import com.theundertaker11.geneticsreborn.packets.ClientGeneChange;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,12 +35,15 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 
-public class PlayerTickEvent {  
+public class PlayerTickEvent {
+ 
     @SubscribeEvent
     public void infinityFix(ArrowNockEvent event) {
 		EntityPlayer player = event.getEntityPlayer();
@@ -101,20 +108,50 @@ public class PlayerTickEvent {
             world.spawnEntity(entityarrow);    	
     }
     
+    @SubscribeEvent 
+    public void onDigSpeed(PlayerEvent.BreakSpeed event) {
+		EntityPlayer player = event.getEntityPlayer();
+		IGenes genes = ModUtils.getIGenes(player);
+		if (EnumGenes.EFFICIENCY.isActive()) {
+			if (genes.hasGene(EnumGenes.EFFICIENCY_4))
+				event.setNewSpeed(event.getOriginalSpeed() + (float) 5 * 0.05F);
+			else if (genes.hasGene(EnumGenes.EFFICIENCY))
+				event.setNewSpeed(event.getOriginalSpeed() + (float) 3 * 0.05F);
+		}    	
+    }
    
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+		if (event.phase != Phase.START) return;
+		
 		EntityPlayer player = event.player;
 		IGenes genes = ModUtils.getIGenes(player);
 		World world = event.player.getEntityWorld();
 		if (player == null || genes == null) return;
 
 		if (world.isRemote) {
+			checkClimbing(player, world, genes);
 		} else {
-			checkStepAssist(player, world, genes);					
+			checkHunger(player, world, genes);					
 			tryItemMagnet(player, world, genes);
 			tryXPMagnet(player, world, genes);
-			tryPhotosynthesis(player, world, genes);
+			tryPhotosynthesis(player, world, genes);			
+		}
+	}
+	
+	private static void changeCybernetic(EntityLivingBase elb, World world, boolean add) {
+		if (!EnumGenes.CYBERNETIC.isActive()) return;
+		
+		IAttributeInstance attr = elb.getAttributeMap().getAttributeInstanceByName("cyberware.tolerance");
+		if (attr == null) return;
+		
+		if (add) attr.setBaseValue(attr.getBaseValue() + GeneticsReborn.cyberToleranceBonus);
+		if (!add) attr.setBaseValue(attr.getBaseValue() - GeneticsReborn.cyberToleranceBonus);
+	}
+
+	private static void checkClimbing(EntityPlayer player, World world, IGenes genes) {
+		if (EnumGenes.CLIMB_WALLS.isActive() && ClientGeneChange.climbingPlayers.contains(player.getUniqueID())) {
+			if (player.collidedHorizontally) player.motionY = 0.2D;
 		}
 	}
 
@@ -125,17 +162,27 @@ public class PlayerTickEvent {
 	 * @param world
 	 * @param genes
 	 */
-	public static void checkStepAssist(EntityPlayer player, World world, IGenes genes) {
-		float step_height = 1.1f;
-		float old_step_height = 0.6f;
-		
-		if (EnumGenes.STEP_ASSIST.isActive() && genes.hasGene(EnumGenes.STEP_ASSIST) && (player.stepHeight != step_height)) {
+	private static void changeStepAssist(EntityPlayer player, World world, boolean add) {
+		if (!EnumGenes.STEP_ASSIST.isActive()) return;
+		float step_height = (add) ? 1.1f : 0.6f;
+		if (player.stepHeight != step_height) {
 			player.stepHeight = step_height;
-			GeneticsRebornPacketHandler.INSTANCE.sendTo(new StepHeightChange(step_height), (EntityPlayerMP) player);			
-		} else if (!EnumGenes.STEP_ASSIST.isActive() || !genes.hasGene(EnumGenes.STEP_ASSIST) && (player.stepHeight != old_step_height)) {
-			player.stepHeight = old_step_height;
-			GeneticsRebornPacketHandler.INSTANCE.sendTo(new StepHeightChange(old_step_height), (EntityPlayerMP) player);			
+			GeneticsRebornPacketHandler.INSTANCE.sendTo(new ClientGeneChange(1, step_height), (EntityPlayerMP) player);						
 		}
+	}
+	
+	private static void checkHunger(EntityPlayer player, World world, IGenes genes) {
+		if (EnumGenes.NO_HUNGER.isActive() && genes.hasGene(EnumGenes.NO_HUNGER))
+			if (player.getFoodStats().getFoodLevel() < 5) player.getFoodStats().setFoodLevel(5);
+	}
+	
+	private static void changeMoreHearts(EntityLivingBase player, World world, boolean add, int amt) {
+		if (!EnumGenes.MORE_HEARTS.isActive()) return;
+		IMaxHealth hearts = ModUtils.getIMaxHealth(player);
+		if (hearts == null) return;
+
+		if (add) hearts.setBonusMaxHealth(hearts.getBonusMaxHealth() + amt);
+		if (!add) hearts.setBonusMaxHealth(hearts.getBonusMaxHealth() - amt);
 	}
 	
 	
@@ -146,7 +193,7 @@ public class PlayerTickEvent {
 	 * @param world
 	 * @param genes
 	 */
-	public static void tryItemMagnet(EntityPlayer player, World world, IGenes genes) {
+	private static void tryItemMagnet(EntityPlayer player, World world, IGenes genes) {
 		if (EnumGenes.ITEM_MAGNET.isActive() && genes.hasGene(EnumGenes.ITEM_MAGNET) && !player.inventory.hasItemStack(new ItemStack(GRItems.AntiField))
 				&& !player.isSneaking()) {
 			Iterator<Entity> iterator = ModUtils.getEntitiesInRange(EntityItem.class, world, player.posX, player.posY,
@@ -177,7 +224,7 @@ public class PlayerTickEvent {
 	 * @param world
 	 * @param genes
 	 */
-	public static void tryXPMagnet(EntityPlayer player, World world, IGenes genes) {
+	private static void tryXPMagnet(EntityPlayer player, World world, IGenes genes) {
 		if (EnumGenes.XP_MAGNET.isActive() && genes.hasGene(EnumGenes.XP_MAGNET) && !player.inventory.hasItemStack(new ItemStack(GRItems.AntiField))
 				&& !player.isSneaking()) {
 			Iterator<Entity> iterator = ModUtils.getEntitiesInRange(EntityXPOrb.class, world, player.posX, player.posY, player.posZ,
@@ -208,7 +255,7 @@ public class PlayerTickEvent {
 	 * @param world
 	 * @param genes
 	 */
-	public static void tryPhotosynthesis(EntityPlayer player, World world, IGenes genes) {
+	private static void tryPhotosynthesis(EntityPlayer player, World world, IGenes genes) {
 		if (EnumGenes.PHOTOSYNTHESIS.isActive() && genes.hasGene(EnumGenes.PHOTOSYNTHESIS)) {
 			if (world.isDaytime() && world.getHeight(player.getPosition()).getY() < (player.getPosition().getY() + 1)) {
 				double rand = Math.random();
@@ -230,5 +277,22 @@ public class PlayerTickEvent {
 			}
 		}
 		return true;
+	}
+
+	
+	public static void geneChanged(EntityLivingBase entity, EnumGenes gene, boolean added) {
+		World w = entity.world;
+		
+		if (gene == EnumGenes.CYBERNETIC) changeCybernetic(entity, w, added);
+		if (gene == EnumGenes.MORE_HEARTS) changeMoreHearts(entity, w, added, 20);
+		if (gene == EnumGenes.MORE_HEARTS_2) changeMoreHearts(entity, w, added, 20 * GeneticsReborn.mutationAmp);
+		if (entity instanceof EntityPlayer) {
+			if (gene == EnumGenes.STEP_ASSIST) changeStepAssist((EntityPlayer)entity, w, added);
+			if (gene == EnumGenes.CLIMB_WALLS) changeClimbWalls((EntityPlayer)entity, w, added);
+		}
+	}
+
+	private static void changeClimbWalls(EntityPlayer entity, World w, boolean added) {
+		GeneticsRebornPacketHandler.INSTANCE.sendTo(new ClientGeneChange(2, (added) ? 1 : 0), (EntityPlayerMP) entity);								
 	}
 }

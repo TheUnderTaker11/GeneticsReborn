@@ -1,11 +1,16 @@
 package com.theundertaker11.geneticsreborn.items;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.Genes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
-import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
+import com.theundertaker11.geneticsreborn.event.PlayerTickEvent;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,9 +22,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-
-import javax.annotation.Nullable;
-import java.util.List;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class MetalSyringe extends ItemBase {
 
@@ -30,6 +34,7 @@ public class MetalSyringe extends ItemBase {
 	}
 
 	@Override
+    @SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("Left click an entity to draw their blood");
 		tooltip.add("Shift left click to insert the blood back");
@@ -51,7 +56,6 @@ public class MetalSyringe extends ItemBase {
 		if (entity instanceof EntityLivingBase && !(entity instanceof EntityPlayer)) {
 			EntityLivingBase entityLiving = (EntityLivingBase) entity;
 			if (ModUtils.getIGenes(entityLiving) != null && ModUtils.getIMaxHealth(entityLiving) != null) {
-				IGenes entitygenes = ModUtils.getIGenes(entityLiving);
 				if (!player.isSneaking() && stack.getItemDamage() == 0) {
 					stack.setItemDamage(1);
 					entityLiving.attackEntityFrom(DamageSource.GENERIC, 2);
@@ -66,37 +70,25 @@ public class MetalSyringe extends ItemBase {
 							!stack.getTagCompound().getString("entCodeName").equals(entityLiving.getClass().getSimpleName()))
 						return false;
 
-					IMaxHealth hearts = ModUtils.getIMaxHealth(entityLiving);
 					stack.setItemDamage(0);
 					stack.getTagCompound().removeTag("pure");
 					entityLiving.attackEntityFrom(DamageSource.GENERIC, 2);
+					IGenes genes = ModUtils.getIGenes(entityLiving);
 					for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
 						String nbtname = "Null";
 						if (tag.hasKey(Integer.toString(i))) {
 							nbtname = tag.getString(Integer.toString(i));
 							tag.removeTag(Integer.toString(i));
+							EnumGenes gene = Genes.getGeneFromString(nbtname);
+							if (gene != null && gene.canAddMutation(genes)) genes.addGene(gene);
+							PlayerTickEvent.geneChanged(entityLiving, gene, true);
 						}
-						EnumGenes gene = Genes.getGeneFromString(nbtname);
-						if (gene != null) {
-							if (gene.equals(EnumGenes.MORE_HEARTS) && !entitygenes.hasGene(EnumGenes.MORE_HEARTS)) {
-								hearts.setBonusMaxHealth(20);
-							}
-							entitygenes.addGene(gene);
-						}
-					}
-
-					for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
-						String nbtname = "Null";
 						if (tag.hasKey(i + "anti")) {
 							nbtname = tag.getString(i + "anti");
 							tag.removeTag(i + "anti");
-						}
-						EnumGenes gene = Genes.getGeneFromString(nbtname);
-						if (gene != null) {
-							entitygenes.removeGene(gene);
-							if (gene.equals(EnumGenes.MORE_HEARTS)) {
-								hearts.setBonusMaxHealth(0);
-							}
+							EnumGenes gene = Genes.getGeneFromString(nbtname);
+							genes.removeGene(gene);
+							PlayerTickEvent.geneChanged(entityLiving, gene, false);
 						}
 					}
 					return true;

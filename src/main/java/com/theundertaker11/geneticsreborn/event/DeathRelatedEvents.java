@@ -2,23 +2,25 @@ package com.theundertaker11.geneticsreborn.event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
-import com.theundertaker11.geneticsreborn.util.PlayerCooldowns;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 public class DeathRelatedEvents {
 
@@ -30,7 +32,7 @@ public class DeathRelatedEvents {
 	 * @param event
 	 */
 	@SubscribeEvent
-	public void onPlayerDrops(PlayerDropsEvent event) {
+	public static void onPlayerDrops(PlayerDropsEvent event) {
 		if (EnumGenes.EXPLOSIVE_EXIT.isActive() && ModUtils.getIGenes(event.getEntityPlayer()) != null) {
 			IGenes genes = ModUtils.getIGenes(event.getEntityPlayer());
 			if (genes.hasGene(EnumGenes.EXPLOSIVE_EXIT)) {
@@ -51,12 +53,19 @@ public class DeathRelatedEvents {
 			}
 		}
 	}
+	
+    @SubscribeEvent
+    public static void onPlayerLoggedIn (PlayerLoggedInEvent event) {
+    	IGenes genes = ModUtils.getIGenes(event.player);
+    	for (EnumGenes g : genes.getGeneList()) 
+    		PlayerTickEvent.geneChanged(event.player, g, true);
+    }
 
 	/**
 	 * This makes players keep genes, health, and inventory on death(If enabled in config)
 	 */
 	@SubscribeEvent
-	public void onPlayerClone(PlayerEvent.Clone event) {
+	public static void onPlayerClone(PlayerEvent.Clone event) {
 		if (EnumGenes.SAVE_INVENTORY.isActive() && event.isWasDeath()) {
 			event.getEntityPlayer().inventory.copyInventory(event.getOriginal().inventory);
 		}
@@ -64,6 +73,11 @@ public class DeathRelatedEvents {
 			IGenes oldgenes = ModUtils.getIGenes(event.getOriginal());
 			IGenes newgenes = ModUtils.getIGenes(event.getEntityPlayer());
 			newgenes.setGeneList(oldgenes.getGeneList());
+			newgenes.removeGene(EnumGenes.DEAD_ALL);
+			newgenes.removeGene(EnumGenes.DEAD_CREEPERS);
+			newgenes.removeGene(EnumGenes.DEAD_UNDEAD);
+			newgenes.removeGene(EnumGenes.DEAD_OLD_AGE);
+			
 			if (ModUtils.getIMaxHealth(event.getEntityPlayer()) != null) {
 				final IMaxHealth oldMaxHealth = ModUtils.getIMaxHealth(event.getOriginal());
 				final IMaxHealth newMaxHealth = ModUtils.getIMaxHealth(event.getEntityPlayer());
@@ -73,16 +87,17 @@ public class DeathRelatedEvents {
 				}
 			}
 		}
+		
+		
 	}
 
 	/**
-	 * This makes players drop slimeballs and emeralds on death.
 	 * Also makes all entitylivingbases explode if they have needed gene.
 	 *
 	 * @param event
 	 */
 	@SubscribeEvent
-	public void onDeath(LivingDeathEvent event) {
+	public static void onDeath(LivingDeathEvent event) {
 		EntityLivingBase entityliving = event.getEntityLiving();
 
 		if (!GeneticsReborn.allowGivingEntityGenes && !(entityliving instanceof EntityPlayer)) return;
@@ -91,23 +106,18 @@ public class DeathRelatedEvents {
 			EntityPlayer player = (EntityPlayer) entityliving;
 			if (ModUtils.getIGenes(player) != null) {
 				IGenes playergenes = ModUtils.getIGenes(player);
+				long now =  player.getEntityWorld().getWorldTime();
 				if (EnumGenes.EMERALD_HEART.isActive() && playergenes.hasGene(EnumGenes.EMERALD_HEART)) {
-					boolean allow = true;
-					for (int i = 0; i < GREventHandler.cooldownList.size(); i++) {
-						if ("emerald".equals(GREventHandler.cooldownList.get(i).getName()) && player.getName().equals(GREventHandler.cooldownList.get(i).getPlayerName())) {
-							allow = false;
-							break;
-						}
-					}
-					if (allow) {
-						GREventHandler.cooldownList.add(new PlayerCooldowns(player, "emerald", 6000));
-						EntityItem entity = new EntityItem(player.getEntityWorld(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), new ItemStack(Items.EMERALD));
+					boolean allow = !GREventHandler.isInCooldown(player,  "emerald", now);
+					if (allow) {						
+						GREventHandler.addCooldown(player, "emerald", now, 6000);
+						Item item = Items.EMERALD;
+						int i = ThreadLocalRandom.current().nextInt(1000);
+						if (i < 30) item = Items.NETHER_STAR;
+						else if (i < 5) item = Items.END_CRYSTAL;								
+						EntityItem entity = new EntityItem(player.getEntityWorld(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), new ItemStack(item));						
 						player.getEntityWorld().spawnEntity(entity);
 					}
-				}
-				if (EnumGenes.SLIMY.isActive() && playergenes.hasGene(EnumGenes.SLIMY)) {
-					EntityItem entity = new EntityItem(player.getEntityWorld(), player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ(), new ItemStack(Items.SLIME_BALL, 3));
-					player.getEntityWorld().spawnEntity(entity);
 				}
 			}
 		}
