@@ -104,7 +104,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 					if ("GeneticsRebornBasicGene".equals(itemtag.getString("gene"))) {
 						if (performSmelt) {
 							resulttag.setInteger("num", resulttag.getInteger("num") + 1);
-							inventory.extractItem(0, item.getCount(), false);
+							inventory.extractItem(0, 1, false);
 							this.markDirty();
 						}
 						return true;
@@ -114,7 +114,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 							if (resulttag.getInteger("num") > resulttag.getInteger("numNeeded")) {
 								resulttag.setInteger("num", resulttag.getInteger("numNeeded"));
 							}
-							inventory.extractItem(0, item.getCount(), false);
+							inventory.extractItem(0, 1, false);
 							this.markDirty();
 						}
 						return true;
