@@ -45,9 +45,9 @@ public class MobToGeneRegistry {
 			//Overworld Hostiles
 			registerMob(new MobToGeneObject("EntityZombie", EnumGenes.RESISTANCE));
 			registerMob(new MobToGeneObject("EntityCreeper", new EnumGenes[] {EnumGenes.EXPLOSIVE_EXIT}));
-			registerMob(new MobToGeneObject("EntitySpider", EnumGenes.NIGHT_VISION));
-			registerMob(new MobToGeneObject("EntityCaveSpider", new EnumGenes[] {EnumGenes.NIGHT_VISION, EnumGenes.POISON_PROOF}));
-			registerMob(new MobToGeneObject("EntitySlime", EnumGenes.NO_FALL_DAMAGE));
+			registerMob(new MobToGeneObject("EntitySpider", new EnumGenes[] {EnumGenes.NIGHT_VISION, EnumGenes.CLIMB_WALLS}));
+			registerMob(new MobToGeneObject("EntityCaveSpider", new EnumGenes[] {EnumGenes.NIGHT_VISION, EnumGenes.CLIMB_WALLS, EnumGenes.POISON_PROOF}));
+			registerMob(new MobToGeneObject("EntitySlime", new EnumGenes[] {EnumGenes.NO_FALL_DAMAGE, EnumGenes.SLIMY}));
 			registerMob(new MobToGeneObject("EntityGuardian", new EnumGenes[] {EnumGenes.MOB_SIGHT, EnumGenes.WATER_BREATHING}));
 			registerMob(new MobToGeneObject("EntitySkeleton", EnumGenes.INFINITY));
 			registerMob(new MobToGeneObject("EntitySilverfish", new EnumGenes[] {EnumGenes.HASTE, EnumGenes.EFFICIENCY}));
