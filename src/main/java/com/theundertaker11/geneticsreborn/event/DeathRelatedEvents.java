@@ -72,11 +72,8 @@ public class DeathRelatedEvents {
 		if (GeneticsReborn.keepGenesOnDeath || !event.isWasDeath()) {
 			IGenes oldgenes = ModUtils.getIGenes(event.getOriginal());
 			IGenes newgenes = ModUtils.getIGenes(event.getEntityPlayer());
-			newgenes.setGeneList(oldgenes.getGeneList());
-			newgenes.removeGene(EnumGenes.DEAD_ALL);
-			newgenes.removeGene(EnumGenes.DEAD_CREEPERS);
-			newgenes.removeGene(EnumGenes.DEAD_UNDEAD);
-			newgenes.removeGene(EnumGenes.DEAD_OLD_AGE);
+			for (EnumGenes g : oldgenes.getGeneList())
+				if (!g.isNegative()) newgenes.addGene(g);
 			
 			if (ModUtils.getIMaxHealth(event.getEntityPlayer()) != null) {
 				final IMaxHealth oldMaxHealth = ModUtils.getIMaxHealth(event.getOriginal());
