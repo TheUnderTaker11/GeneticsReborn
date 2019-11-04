@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.google.common.collect.ImmutableList;
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
@@ -47,7 +48,7 @@ public class OnWorldTickEvent {
 		if (event.phase != Phase.START || event.world.isRemote) return;
 		checkFlight(event);
 		
-		for (Entity ent : event.world.loadedEntityList) {
+		for (Entity ent : ImmutableList.copyOf(event.world.loadedEntityList)) {
 			if (ent instanceof EntityLivingBase) {
 				EntityLivingBase e = (EntityLivingBase)ent;
 				IGenes genes = ModUtils.getIGenes(e);

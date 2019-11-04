@@ -56,7 +56,8 @@ public class GREventHandler {
 	public static boolean isCooldownExpired(EntityLivingBase elb, String type, long now, boolean remove) {
 		if (cooldownList.isEmpty()) return false;
 		final String key = getCooldownString(elb, type);
-		long time = cooldownList.get(key);
+		Long time = cooldownList.get(key);
+		if (time == null) time = 0L;
 		if (time < now) {
 			if (remove) cooldownList.remove(key);
 			return true;
