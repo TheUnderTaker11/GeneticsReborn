@@ -34,8 +34,10 @@ public class GuiIncubator extends GuiBase {
 	@Override
 	public void initGui() {
 		super.initGui();
-		this.buttonList.add(new InvisibleButton(1, guiLeft+44, guiTop+14, 14, 33));
-		this.buttonList.add(new InvisibleButton(2, guiLeft+64, guiTop+42, 18, 4));
+		if (tileEntity.isAdvanced()) {
+			this.buttonList.add(new InvisibleButton(1, guiLeft+44, guiTop+14, 14, 33));
+			this.buttonList.add(new InvisibleButton(2, guiLeft+64, guiTop+42, 18, 4));
+		}
 	}
 	
 	@Override

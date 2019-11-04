@@ -22,6 +22,7 @@ public class Incubator extends StorageBlockBase {
 	
 	public Incubator(String name, boolean advanced) {
 		super(name);
+		this.advanced = advanced;
 	}
 
 	@Override
