@@ -9,6 +9,7 @@ import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.MobToGeneRegistry;
 import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
 import com.theundertaker11.geneticsreborn.commands.CommandTree;
+import com.theundertaker11.geneticsreborn.crafting.AntiPlasmidCrafting;
 import com.theundertaker11.geneticsreborn.event.GREventHandler;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.keybinds.KeybindHandler;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = Reference.MODID, version = Reference.VERSION, name = Reference.NAME, acceptedMinecraftVersions = Reference.ACCEPTED_MINECRAFT)
@@ -82,6 +84,7 @@ public class GeneticsReborn {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
 		CapabilityHandler.init();
 		GREventHandler.init();
+		ForgeRegistries.RECIPES.register(new AntiPlasmidCrafting());
 		proxy.initPotionRender();
 	}
 
