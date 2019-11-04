@@ -10,8 +10,7 @@
     		"item": "minecraft:piston"
 		},
         "x": {
-    		"type": "forge:ore_dict",
-		    "ore": "glass"
+    		"item": "minecraft:glass"
 		},
         "y": {
     		"item": "minecraft:arrow"
