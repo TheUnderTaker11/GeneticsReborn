@@ -24,7 +24,6 @@ public class ViralSplashPotion extends ItemSplashPotion {
 		setRegistryName(name);
 		setUnlocalizedName(name);
 		setMaxStackSize(64);
-		setCreativeTab(GeneticsReborn.GRtab);
 	}
 	
 	public static EnumGenes getGene(ItemStack stack) {

@@ -33,10 +33,12 @@ public class GRItemPotion extends ItemPotion {
 	
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-		items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.GROWTH_POTION));
-		items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.SUBSTRATE));
-		items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.MUTATION_POTION));
-		items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.VIRAL_POTION));
+		if (tab == GeneticsReborn.GRtab) {
+			items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.GROWTH_POTION));
+			items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.SUBSTRATE));
+			items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.MUTATION_POTION));
+			items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.VIRAL_POTION));
+		}
 	}
 	
 	@Override

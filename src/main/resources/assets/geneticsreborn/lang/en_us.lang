@@ -40,3 +40,7 @@ potion.viral.name=Virus:
 effect.cure=Virus Protection
 potion.effect.cure=The Cure
 splash_potion.effect.cure=The Cure
+splash_potion.effect.substrate=Organic Substrate
+splash_potion.effect.growth=Potion of Cell Growth
+splash_potion.effect.mutation=Potion of Mutation
+splash_potion.effect.viral=Bottle of Viral Agent
