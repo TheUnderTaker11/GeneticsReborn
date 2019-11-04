@@ -6,7 +6,6 @@ import com.theundertaker11.geneticsreborn.Reference;
 import com.theundertaker11.geneticsreborn.blocks.GuiBase;
 import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
 import com.theundertaker11.geneticsreborn.packets.GuiMessage;
-import com.theundertaker11.geneticsreborn.render.InvisibleButton;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

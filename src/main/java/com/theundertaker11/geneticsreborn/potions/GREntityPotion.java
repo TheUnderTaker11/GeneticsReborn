@@ -6,7 +6,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
-import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.block.Block;
@@ -16,7 +15,6 @@ import net.minecraft.entity.EntityAreaEffectCloud;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;

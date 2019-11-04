@@ -1,6 +1,5 @@
 package com.theundertaker11.geneticsreborn.potions;
 
-import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 

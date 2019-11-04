@@ -1,11 +1,9 @@
 package com.theundertaker11.geneticsreborn.potions;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
-import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;

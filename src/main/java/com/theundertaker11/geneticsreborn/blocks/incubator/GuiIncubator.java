@@ -2,7 +2,6 @@ package com.theundertaker11.geneticsreborn.blocks.incubator;
 
 import java.io.IOException;
 
-import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.Reference;
 import com.theundertaker11.geneticsreborn.blocks.GuiBase;
 import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;

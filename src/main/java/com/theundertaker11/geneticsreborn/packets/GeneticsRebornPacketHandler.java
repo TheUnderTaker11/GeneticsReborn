@@ -1,9 +1,9 @@
 package com.theundertaker11.geneticsreborn.packets;
 
+import com.theundertaker11.geneticsreborn.packets.ClientGeneChange.Handler3;
 import com.theundertaker11.geneticsreborn.packets.GuiMessage.GuiMessageHandler;
 import com.theundertaker11.geneticsreborn.packets.SendShootDragonBreath.Handler2;
 import com.theundertaker11.geneticsreborn.packets.SendTeleportPlayer.Handler;
-import com.theundertaker11.geneticsreborn.packets.ClientGeneChange.Handler3;
 
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;

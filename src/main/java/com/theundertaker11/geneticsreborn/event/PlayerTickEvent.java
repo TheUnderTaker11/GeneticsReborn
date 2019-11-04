@@ -8,8 +8,8 @@ import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
 import com.theundertaker11.geneticsreborn.items.GRItems;
-import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
 import com.theundertaker11.geneticsreborn.packets.ClientGeneChange;
+import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.enchantment.EnchantmentHelper;
