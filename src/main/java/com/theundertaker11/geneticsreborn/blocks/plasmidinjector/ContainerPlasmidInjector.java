@@ -40,12 +40,6 @@ public class ContainerPlasmidInjector extends BaseContainer {
 	public boolean canInteractWith(EntityPlayer player) {
 		return tileInventory.isUseableByPlayer(player);
 	}
-	
-	@Override
-	protected boolean canAcceptItem(Slot slot) {
-		// TODO Auto-generated method stub
-		return super.canAcceptItem(slot);
-	}
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index){
@@ -67,7 +61,7 @@ public class ContainerPlasmidInjector extends BaseContainer {
 					}
 					else return ItemStack.EMPTY;
 				}
-				if(slot.getStack().getItem() == GRItems.GlassSyringe ) {
+				if(slot.getStack().getItem() == GRItems.GlassSyringe) {
 					if (itemstack1.getTagCompound().getInteger("pure") == 1) {
 						if (!this.mergeItemStack(slot.getStack(), 37, 38, false)) {
 							this.mergeItemStack(slot.getStack(), 37, 38, false);
@@ -76,9 +70,8 @@ public class ContainerPlasmidInjector extends BaseContainer {
 							return itemstack;
 						}
 					}
+					else return ItemStack.EMPTY;
 				}
-				else return ItemStack.EMPTY;
-
 			} else if (!this.mergeItemStack(itemstack1, 0, VANILLA_SLOT_COUNT, false)) {
 				return ItemStack.EMPTY;
 			}
@@ -114,4 +107,15 @@ public class ContainerPlasmidInjector extends BaseContainer {
 			return false;
 		}
 	}
+	
+	public class SlotOutput extends SlotItemHandler {
+		public SlotOutput(IItemHandler inventoryIn, int index, int xPosition, int yPosition) {
+			super(inventoryIn, index, xPosition, yPosition);
+		}
+
+		@Override
+		public boolean isItemValid(ItemStack stack) {
+			return (stack.getItem() == GRItems.GlassSyringe) && (stack.getTagCompound().getInteger("pure") == 1);
+		}
+	}	
 }
