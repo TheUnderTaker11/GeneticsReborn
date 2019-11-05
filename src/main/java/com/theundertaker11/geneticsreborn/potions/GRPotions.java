@@ -213,6 +213,7 @@ public class GRPotions {
 	public void handleTooltipEvent(ItemTooltipEvent event) {
 		if (event.getItemStack().getItem() == Items.POTIONITEM || event.getItemStack().getItem() == GRItems.GRPotion) {
 			NBTTagCompound tag = event.getItemStack().getTagCompound();
+			if (tag == null || tag.getString("Potion") == null) return;
 			if (tag.getString("Potion").equals(GROWTH_POTION.getRegistryName().toString())) {
 				if (tag.hasKey("entityName"))
 					event.getToolTip().add("("+tag.getString("entityName")+ ")");
