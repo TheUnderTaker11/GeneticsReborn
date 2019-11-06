@@ -73,7 +73,7 @@ public class GRPotions {
 		
 		//create more cells
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(SUBSTRATE, GRItems.Cell, null,  
-				new ItemStack(GRItems.Cell, 6)));
+				new ItemStack(GRItems.Cell, 1)));
 		
 		//any cell + growth = growth potion of that cell
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(GROWTH_POTION, GRItems.Cell, null,  

@@ -3,10 +3,13 @@ package com.theundertaker11.geneticsreborn.blocks.incubator;
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.ItemStackHandlerControl;
 import com.theundertaker11.geneticsreborn.items.GRItems;
+import com.theundertaker11.geneticsreborn.potions.GRPotions;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionType;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
@@ -78,13 +81,15 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
 	private void finishBrew() {
 		brewComplete = true;
 		ItemStack ingredient = ingredientStackHandler.getStackInSlot(0);	
+		ItemStack input = inputStackHandler.getStackInSlot(0);	
+		PotionType pot = PotionUtils.getPotionFromItem(input);
 		ItemStack fuel = fuelStackHandler.getStackInSlot(0);
 		
 		for (int i =0; i < guiStackHandler.getSlots(); i++) {
             ItemStack output = BrewingRecipeRegistry.getOutput(guiStackHandler.getStackInSlot(i), ingredient);
             if (!output.isEmpty()) {
             	//cell production for substrate
-            	if (output.getCount() > 1 && !lowTemp && output.getItem() == GRItems.Cell) output.setCount(0);
+            	if (lowTemp && (pot == GRPotions.SUBSTRATE) && (output.getItem() == GRItems.Cell)) output.setCount(6);
             	
             	//flag lowtemp and overclockers for forced genes
             	if (lowTemp && output.hasTagCompound() && output.getTagCompound().hasKey("forcedGene")) { 
