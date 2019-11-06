@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
@@ -64,16 +66,14 @@ public class JsonHandler {
                 String name = reader.nextName();
 
                 if (!name.toLowerCase().contains("entitytest")) {
-                	EnumGenes[] genes = new EnumGenes[]{};
-                    int i = 0;
+                	List<EnumGenes> genes = new ArrayList<EnumGenes>();
                     reader.beginArray();
                     while (reader.hasNext()) {
                         EnumGenes g = EnumGenes.valueOf(reader.nextString().toUpperCase());
-                        if (g != null) genes[i] = g;
-                        i++;
+                        if (g != null) genes.add(g);
                     }
                     
-                    MobToGeneRegistry.registerMob(new MobToGeneObject(name, genes));
+                    MobToGeneRegistry.registerMob(new MobToGeneObject(name, (EnumGenes[])genes.toArray()));
                     reader.endArray();
                 } else {
                     reader.skipValue();

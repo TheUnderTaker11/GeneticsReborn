@@ -76,6 +76,7 @@ public class MobToGeneRegistry {
 				if (Loader.isModLoaded("mocreatures")) registerMoCreatures();
 				if (Loader.isModLoaded("netherex")) registerNEXMobs();
 				if (Loader.isModLoaded("botania")) registerBotaniaMobs();
+				if (Loader.isModLoaded("cyberware")) registerCyberMobs();
 			} catch (NoSuchMethodError e) {
 				e.printStackTrace();
 			}
@@ -157,6 +158,10 @@ public class MobToGeneRegistry {
 
 	public static void registerGrimoireOfGaia() {
 		registerMob(new MobToGeneObject("EntityGaiaDryad", EnumGenes.PHOTOSYNTHESIS));
+	}
+	
+	public static void registerCyberMobs() {
+		registerMob(new MobToGeneObject("EntityCyberZombie", EnumGenes.CYBERNETIC));
 	}
 	
 	public static void registerBotaniaMobs() {
