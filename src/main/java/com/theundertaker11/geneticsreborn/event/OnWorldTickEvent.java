@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -128,12 +129,13 @@ public class OnWorldTickEvent {
 		}
 	}
 	
-	/**
-	 * This handles a few genes just so I don't have to copy paste them.
-	 *
-	 * @param genes  IGenes of the entity
-	 * @param entity An EntityLivingBase
-	 */
+	
+	private static void kill(EntityLivingBase e) {
+		e.attackEntityFrom(DamageSource.WITHER, Float.MAX_VALUE);
+		e.setHealth(0);
+		e.setDead();
+	}	
+	
 	private static void worldTickGeneLogic(IGenes genes, EntityLivingBase entity, World world) {
 		if ((world.getWorldTime() % 40 != 0) || genes == null) return;
 		
@@ -161,19 +163,19 @@ public class OnWorldTickEvent {
 					if (potionReset) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.badLuck), 2400, 1, false, false)));
 					break;
 				case DEAD_ALL:
-					entity.setDead();
+					kill(entity);
 					break;
 				case DEAD_CREEPERS:
-					if (entity instanceof EntityCreeper) entity.setDead();
+					if (entity instanceof EntityCreeper) kill(entity);
 					break;
 				case DEAD_HOSTILE:
-					if (entity instanceof EntityMob) entity.setDead();
+					if (entity instanceof EntityMob) kill(entity);
 					break;
 				case DEAD_OLD_AGE:
-					if (entity instanceof EntityAgeable) entity.setDead();
+					if (entity instanceof EntityAgeable) kill(entity);
 					break;
 				case DEAD_UNDEAD:
-					if (entity.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) entity.setDead();
+					if (entity.getCreatureAttribute() == EnumCreatureAttribute.UNDEAD) kill(entity);
 					break;
 				case FLAME:
 					entity.setFire(120);

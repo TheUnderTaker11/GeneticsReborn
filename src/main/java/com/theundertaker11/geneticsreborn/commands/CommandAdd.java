@@ -35,9 +35,11 @@ public class CommandAdd extends CommandBase {
 
         	if ("all".equals(args[1])) {
     			genes = ModUtils.getIGenes(entity);
-    			genes.addAllGenes();
-            	for (EnumGenes g : genes.getGeneList()) 
-            		PlayerTickEvent.geneChanged(entity, g, true);
+    			for (EnumGenes g : EnumGenes.values()) 
+    				if (!g.isNegative()) {
+    					PlayerTickEvent.geneChanged(entity, g, true);
+    					genes.addGene(g);
+    				}
     			sender.sendMessage(new TextComponentString("Added all genes to " + sender.getName()));
         	} else {
       			genes = ModUtils.getIGenes(entity);
