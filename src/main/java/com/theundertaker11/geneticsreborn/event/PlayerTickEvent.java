@@ -1,7 +1,10 @@
 package com.theundertaker11.geneticsreborn.event;
 
 import java.util.Iterator;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
+import com.google.common.collect.HashMultimap;
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
@@ -15,7 +18,7 @@ import com.theundertaker11.geneticsreborn.util.ModUtils;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -132,21 +135,36 @@ public class PlayerTickEvent {
 		if (world.isRemote) {
 			checkClimbing(player, world, genes);
 		} else {
-			checkHunger(player, world, genes);					
+			if (player.ticksExisted % 100 == 1) {
+				checkCybernetic(player, world, genes);
+				checkHunger(player, world, genes);					
+				tryPhotosynthesis(player, world, genes);							
+			}
 			tryItemMagnet(player, world, genes);
 			tryXPMagnet(player, world, genes);
-			tryPhotosynthesis(player, world, genes);			
 		}
 	}
 	
-	private static void changeCybernetic(EntityLivingBase elb, World world, boolean add) {
+	private static final UUID uuidCybernetic = UUID.fromString("1HashMultimap<K, V>-40e6-a0c6-227ea0d77547");
+	private static final HashMultimap<String, AttributeModifier> cyberneticModifierMap;
+	
+	public static void setCyberToleranceUpgrade(float f) {
+		cyberneticModifierMap.clear();
+		cyberneticModifierMap.put("cyberware.tolerance", new AttributeModifier(uuidCybernetic, "Cybernetic gene", f, 0));
+	}
+	    
+	static {
+		cyberneticModifierMap = HashMultimap.create();
+	}
+	
+	private static void checkCybernetic(EntityPlayer player, World world, IGenes genes) {
 		if (!EnumGenes.CYBERNETIC.isActive()) return;
 		
-		IAttributeInstance attr = elb.getAttributeMap().getAttributeInstanceByName("cyberware.tolerance");
-		if (attr == null) return;
-		
-		if (add) attr.setBaseValue(attr.getBaseValue() + GeneticsReborn.cyberToleranceBonus);
-		if (!add) attr.setBaseValue(attr.getBaseValue() - GeneticsReborn.cyberToleranceBonus);
+		if (genes.hasGene(EnumGenes.CYBERNETIC)) 
+		    player.getAttributeMap().applyAttributeModifiers(cyberneticModifierMap);
+		else
+		    player.getAttributeMap().removeAttributeModifiers(cyberneticModifierMap);
+			
 	}
 
 	private static void checkClimbing(EntityPlayer player, World world, IGenes genes) {
@@ -258,10 +276,8 @@ public class PlayerTickEvent {
 	private static void tryPhotosynthesis(EntityPlayer player, World world, IGenes genes) {
 		if (EnumGenes.PHOTOSYNTHESIS.isActive() && genes.hasGene(EnumGenes.PHOTOSYNTHESIS)) {
 			if (world.isDaytime() && world.getHeight(player.getPosition()).getY() < (player.getPosition().getY() + 1)) {
-				double rand = Math.random();
-				if (rand < 0.01) {
+				if (ThreadLocalRandom.current().nextInt(100) < 5) 
 					player.getFoodStats().addStats(1, 0.5F);
-				}
 			}
 		}
 	}
@@ -283,7 +299,6 @@ public class PlayerTickEvent {
 	public static void geneChanged(EntityLivingBase entity, EnumGenes gene, boolean added) {
 		World w = entity.world;
 		
-		if (gene == EnumGenes.CYBERNETIC) changeCybernetic(entity, w, added);
 		if (gene == EnumGenes.MORE_HEARTS) changeMoreHearts(entity, w, added, 20);
 		if (gene == EnumGenes.MORE_HEARTS_2) changeMoreHearts(entity, w, added, 20 * GeneticsReborn.mutationAmp);
 		if (entity instanceof EntityPlayer) {

@@ -72,11 +72,14 @@ public class ComplexBrew implements IBrewingRecipe {
 			if (match.isEmpty()) match = input.getTagCompound().getString("entityCodeName");
 		}
 		
+		//this is for imprinting potions with cell/helix info
 		if (type == pot) {
-			if (item == GRItems.Cell || item == GRItems.DNAHelix) return true;
-			else if (this.cellType == null) return true;
-			else return input.hasTagCompound() && input.getTagCompound().hasKey("entityCodeName");
+			if ((type == GRPotions.GROWTH_POTION) && (this.cellType == null) && (input.hasTagCompound() && !input.getTagCompound().hasKey("entityCodeName")))
+				return true;
+			if ((type == GRPotions.MUTATION_POTION) && (this.cellType == null) && (input.hasTagCompound() && !input.getTagCompound().hasKey("entityCodeName")))
+				return true;
 		}
+		
 		if (this.cellType != null && this.cellType.equals(match)) return true;
 		if (this.cellType != null && this.cellType.equals("*") && match != null && !match.isEmpty()) return true;
 		

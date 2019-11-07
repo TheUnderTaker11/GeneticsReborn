@@ -53,7 +53,7 @@ public class OnWorldTickEvent {
 			if (ent instanceof EntityLivingBase) {
 				EntityLivingBase e = (EntityLivingBase)ent;
 				IGenes genes = ModUtils.getIGenes(e);
-				if (genes.getGeneNumber() > 0) worldTickGeneLogic(genes, e, event.world);
+				if (genes.getGeneNumber() > 0  && !e.isDead) worldTickGeneLogic(genes, e, event.world);
 			}
 		}			
 		

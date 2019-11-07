@@ -11,6 +11,7 @@ import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
 import com.theundertaker11.geneticsreborn.commands.CommandTree;
 import com.theundertaker11.geneticsreborn.crafting.AntiPlasmidCrafting;
 import com.theundertaker11.geneticsreborn.event.GREventHandler;
+import com.theundertaker11.geneticsreborn.event.PlayerTickEvent;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.keybinds.KeybindHandler;
 import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
@@ -65,6 +66,7 @@ public class GeneticsReborn {
 		GRItems.init();
 		GRBlocks.init();
 		GRPotions.init();
+		PlayerTickEvent.setCyberToleranceUpgrade(cyberToleranceBonus);
 		GRTileEntity.regTileEntitys();
 		GeneticsRebornPacketHandler.init(event.getSide());
 

@@ -42,8 +42,7 @@ public class GRTileEntityDNAExtractor extends GRTileEntityBasicEnergyReceiver im
 	public static ItemStack getSmeltingResultForItem(ItemStack stack) {
 		if (stack.getItem() == GRItems.Cell && stack.getTagCompound() != null) {
 			ItemStack result = new ItemStack(GRItems.DNAHelix);
-			ModUtils.getTagCompound(result).setString("entityName", ModUtils.getTagCompound(stack).getString("entityName"));
-			ModUtils.getTagCompound(result).setString("entityCodeName", ModUtils.getTagCompound(stack).getString("entityCodeName"));
+			result.setTagCompound(stack.getTagCompound());
 			return result;
 		}
 		return ItemStack.EMPTY;
