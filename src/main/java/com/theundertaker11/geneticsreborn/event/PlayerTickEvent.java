@@ -145,7 +145,7 @@ public class PlayerTickEvent {
 		}
 	}
 	
-	private static final UUID uuidCybernetic = UUID.fromString("1HashMultimap<K, V>-40e6-a0c6-227ea0d77547");
+	private static final UUID uuidCybernetic = UUID.fromString("14b60de8-825e-45e1-99c0-51685676f69b");
 	private static final HashMultimap<String, AttributeModifier> cyberneticModifierMap;
 	
 	public static void setCyberToleranceUpgrade(float f) {
