@@ -1,7 +1,12 @@
 package com.theundertaker11.geneticsreborn.commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.theundertaker11.geneticsreborn.Reference;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.Genes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.event.PlayerTickEvent;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
@@ -11,7 +16,9 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 
 public class CommandAdd extends CommandBase {
@@ -64,5 +71,9 @@ public class CommandAdd extends CommandBase {
 	public int getRequiredPermissionLevel() {
 		return 2;
 	}
-
+	
+	@Override
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args,	BlockPos targetPos) {
+		return CommandTree.getTabCompletions(server, args);
+	}
 }

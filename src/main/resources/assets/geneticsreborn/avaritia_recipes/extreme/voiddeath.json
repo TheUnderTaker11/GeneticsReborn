@@ -1,0 +1,39 @@
+{
+  "type": "avaritia:shaped",
+  "result": {
+    "item": "geneticsreborn:viralpotion",
+    "data": 0,
+    "count": 1,
+	  "nbt": {
+	      "Potion" : "geneticsreborn:viral",
+          "gene": "GeneticsRebornREALLY_DEAD_ALL"
+      }
+    
+  },
+  "pattern": [
+    "IIIIIIIII",
+    "I       I",
+    "I       I",
+    "I  I I  I",
+    "I   X   I",
+    "I  I I  I",
+    "I       I",
+    "I       I",
+    "IIIIIIIII"
+  ],
+  "key": {
+    "I": {
+      "type": "minecraft:item",
+      "item": "avaritia:block_resource",
+      "data": 2
+    },
+    "X": {
+      "type": "minecraft:item_nbt",
+      "item": "geneticsreborn:viralpotion",
+	  "nbt": {
+	  	  "Potion" : "geneticsreborn:viral",
+          "gene": "GeneticsRebornDEAD_ALL"
+      }
+    }
+  }
+}

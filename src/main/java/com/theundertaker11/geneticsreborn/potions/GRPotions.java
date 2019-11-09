@@ -3,6 +3,7 @@ package com.theundertaker11.geneticsreborn.potions;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.items.GRItems;
@@ -147,7 +148,6 @@ public class GRPotions {
 		
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.POISON_PROOF,  EnumGenes.POISON, 100));
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.WITHER_HIT,  EnumGenes.POISON_4, 100));
-		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.RESISTANCE,  EnumGenes.POISON_4, 100));
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.WITHER_PROOF,  EnumGenes.WITHER, 100));
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.STRENGTH,  EnumGenes.WEAKNESS, 100));
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.NIGHT_VISION,  EnumGenes.BLINDNESS, 100));
@@ -165,8 +165,11 @@ public class GRPotions {
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.SCARE_ZOMBIES,  EnumGenes.DEAD_UNDEAD, 100));
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.SCARE_SKELETONS,  EnumGenes.DEAD_UNDEAD, 100));
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.RESISTANCE,  EnumGenes.DEAD_OLD_AGE, 100));
-		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.RESISTANCE_2,  EnumGenes.DEAD_HOSTILE, 100));
-		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.DRAGONS_BREATH,  EnumGenes.DEAD_ALL, 100));
+		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.DRAGONS_BREATH,  EnumGenes.DEAD_HOSTILE, 100));
+
+		if (GeneticsReborn.enableBlackDeath) {
+			BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.GlassSyringe, EnumGenes.DEAD_ALL,  EnumGenes.DEAD_ALL, 100));
+		}
 		
 }
 	

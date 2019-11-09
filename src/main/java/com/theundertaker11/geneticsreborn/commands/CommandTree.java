@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import com.theundertaker11.geneticsreborn.Reference;
+import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.server.command.CommandTreeBase;
 
@@ -54,4 +57,23 @@ public class CommandTree extends CommandTreeBase {
     public List<String> getAliases() {
         return aliases;
     }	
+    
+	public static List<String> getTabCompletions(MinecraftServer server, String[] args) {
+		List<String> result = new ArrayList<String>();
+		
+		if (args.length == 1) {
+			String match = args[0].toLowerCase();
+			if ("".equals(match)) result.add("@p");
+			for (EntityPlayer p : server.getPlayerList().getPlayers()) 
+				if ("".equals(match) || p.getName().toLowerCase().startsWith(match)) result.add(p.getName());										
+		} else if (args.length == 2) {
+			String match = args[1].toLowerCase();
+			if ("".equals(match) ||"all".startsWith(match)) result.add("all");
+			for (EnumGenes g : EnumGenes.values())
+				if ("".equals(match) || g.name().toLowerCase().startsWith(match)) result.add(g.name());
+		}
+		
+		return result;
+	}
+    
 }

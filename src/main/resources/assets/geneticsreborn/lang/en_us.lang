@@ -44,3 +44,5 @@ splash_potion.effect.substrate=Organic Substrate
 splash_potion.effect.growth=Potion of Cell Growth
 splash_potion.effect.mutation=Potion of Mutation
 splash_potion.effect.viral=Bottle of Viral Agent
+death.attack.virus=%s died of infection
+death.attack.virus.player=%1$s was killed by %2$s using viral agents

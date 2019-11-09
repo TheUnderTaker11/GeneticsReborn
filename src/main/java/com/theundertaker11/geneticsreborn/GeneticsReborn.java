@@ -22,6 +22,7 @@ import com.theundertaker11.geneticsreborn.tile.GRTileEntity;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -49,6 +50,7 @@ public class GeneticsReborn {
 	
 	public static final int OVERCLOCK_BONUS = 39;
 	public static final int OVERCLOCK_RF_COST = 85;
+	public static final DamageSource VIRUS_DAMAGE = new DamageSource("virus").setDamageAllowedInCreativeMode().setDamageBypassesArmor().setDamageIsAbsolute();
 	
     @EventHandler
     public void serverStarting (FMLServerStartingEvent event) {
@@ -149,6 +151,7 @@ public class GeneticsReborn {
 	public static float virusRange;
 	public static boolean enableVirus;
 	public static boolean stackPotions;
+	public static boolean enableBlackDeath;
 	
 	
 
@@ -182,6 +185,7 @@ public class GeneticsReborn {
 		cyberToleranceBonus = config.getInt("Cybernetic Tolerance", general, 20, 0, 100, "Increase the tolerance for cyberware");
 		virusRange = config.getFloat("Virus Range", general, 4.0F, 0.5f, 100.0f, "Range that viral potion is effective");
 		stackPotions = config.getBoolean("Stack Potions", general, true, "All potions will stack to 64");
+		enableBlackDeath = config.getBoolean("Black Death", general, true, "Enabled the black-death potion");
 
 		EnumGenes.DRAGONS_BREATH.setActive(config.getBoolean("Dragon's Breath", genes, true, ""));
 		EnumGenes.EAT_GRASS.setActive(config.getBoolean("Eat Grass", genes, true, ""));

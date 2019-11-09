@@ -28,7 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -131,7 +130,7 @@ public class OnWorldTickEvent {
 	
 	
 	private static void kill(EntityLivingBase e) {
-		e.attackEntityFrom(DamageSource.WITHER, Float.MAX_VALUE);
+		e.attackEntityFrom(GeneticsReborn.VIRUS_DAMAGE, Float.MAX_VALUE);
 		e.setHealth(0);
 		e.setDead();
 	}	
@@ -163,6 +162,10 @@ public class OnWorldTickEvent {
 					if (potionReset) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.badLuck), 2400, 1, false, false)));
 					break;
 				case DEAD_ALL:
+					entity.attackEntityFrom(GeneticsReborn.VIRUS_DAMAGE, entity.getHealth() / 2);
+					if (entity.getHealth() < 1.1) kill(entity);
+					break;
+				case REALLY_DEAD_ALL:
 					kill(entity);
 					break;
 				case DEAD_CREEPERS:

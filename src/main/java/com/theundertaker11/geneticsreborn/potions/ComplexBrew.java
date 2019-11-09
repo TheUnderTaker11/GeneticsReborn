@@ -1,6 +1,9 @@
 package com.theundertaker11.geneticsreborn.potions;
 
+import java.util.List;
+
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.api.capability.genes.Genes;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 
@@ -11,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
+import scala.actors.threadpool.Arrays;
 
 public class ComplexBrew implements IBrewingRecipe {
 	private PotionType pot;
@@ -88,9 +92,29 @@ public class ComplexBrew implements IBrewingRecipe {
 		return false;
 	}
 
+	private static final EnumGenes[] REQUIRED_GENES = {
+			EnumGenes.CURSED, EnumGenes.POISON_4, EnumGenes.WITHER, EnumGenes.WEAKNESS, 
+			EnumGenes.BLINDNESS, EnumGenes.SLOWNESS_6, EnumGenes.NAUSEA, EnumGenes.HUNGER, EnumGenes.FLAME, 
+			EnumGenes.MINING_WEAKNESS, EnumGenes.LEVITATION, EnumGenes.DEAD_CREEPERS, 
+			EnumGenes.DEAD_UNDEAD, EnumGenes.DEAD_HOSTILE, EnumGenes.DEAD_OLD_AGE};
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean isIngredient(ItemStack ingredient) {
-		return ingredient.getItem() == item;
+		if (ingredient.getItem() == GRItems.GlassSyringe) {
+			//special case - Black Death
+			List<EnumGenes> required = Arrays.asList(REQUIRED_GENES);
+			int found = 0;
+			NBTTagCompound tag = ingredient.getTagCompound();
+			for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
+				String nbtname = "";
+				if (tag.hasKey(Integer.toString(i))) 
+					nbtname = tag.getString(Integer.toString(i));
+				EnumGenes gene = EnumGenes.fromGeneName(nbtname);
+				if (required.contains(gene)) found++;
+			}
+			return found == required.size();
+		} else 
+		  return ingredient.getItem() == item;
 	}
 
 	@Override

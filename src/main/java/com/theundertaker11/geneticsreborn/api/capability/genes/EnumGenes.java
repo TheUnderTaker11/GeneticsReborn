@@ -83,7 +83,8 @@ public enum EnumGenes {
 	DEAD_UNDEAD("Un-Death"),
 	DEAD_OLD_AGE("Gray Death"),
 	DEAD_HOSTILE("White Death"),
-	DEAD_ALL("Black Death")
+	DEAD_ALL("Black Death"),
+	REALLY_DEAD_ALL("Void Death")
 	; 
 	
 	static {
@@ -127,6 +128,7 @@ public enum EnumGenes {
 		case DEAD_HOSTILE:
 		case DEAD_OLD_AGE:
 		case DEAD_ALL:
+		case REALLY_DEAD_ALL:
 			return true;
 		default:
 			return false;
