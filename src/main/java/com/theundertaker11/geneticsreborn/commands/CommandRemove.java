@@ -39,7 +39,7 @@ public class CommandRemove extends CommandBase {
         	if ("all".equals(args[1])) {
     			genes = ModUtils.getIGenes(entity);
             	for (EnumGenes g : genes.getGeneList()) 
-            		PlayerTickEvent.geneChanged(entity, g, false);
+            		if (genes.hasGene(g)) PlayerTickEvent.geneChanged(entity, g, false);
     			genes.removeAllGenes();
     			sender.sendMessage(new TextComponentString("Removed all genes from " + sender.getName()));
         	} else {
@@ -47,8 +47,10 @@ public class CommandRemove extends CommandBase {
             	for (int i=1; i< args.length;i++) {
             		EnumGenes gene = EnumGenes.fromGeneName(args[i]);
             		if (gene == null) throw new CommandException("No gene found named: "+args[i]);
-               		PlayerTickEvent.geneChanged(entity, gene, false);
-            		genes.removeGene(gene);
+            		if (genes.hasGene(gene)) {
+            			PlayerTickEvent.geneChanged(entity, gene, false);
+                		genes.removeGene(gene);
+            		}
         			sender.sendMessage(new TextComponentString(String.format("Removed %d genes from %s",  args.length-1, sender.getName())));
             	}
         	}

@@ -43,7 +43,7 @@ public class CommandAdd extends CommandBase {
         	if ("all".equals(args[1])) {
     			genes = ModUtils.getIGenes(entity);
     			for (EnumGenes g : EnumGenes.values()) 
-    				if (!g.isNegative()) {
+    				if (!g.isNegative() && !genes.hasGene(g)) {
     					PlayerTickEvent.geneChanged(entity, g, true);
     					genes.addGene(g);
     				}
@@ -53,8 +53,10 @@ public class CommandAdd extends CommandBase {
             	for (int i=1; i< args.length;i++) {
             		EnumGenes gene = EnumGenes.fromGeneName(args[i]);
             		if (gene == null) throw new CommandException("No gene found named: "+args[i]);
-           			genes.addGene(gene);
-               		PlayerTickEvent.geneChanged(entity, gene, true);
+           			if (!genes.hasGene(gene)) {
+           				genes.addGene(gene);
+                   		PlayerTickEvent.geneChanged(entity, gene, true);
+           			}
         			sender.sendMessage(new TextComponentString(String.format("Added %d genes to %s",  args.length-1, sender.getName())));
             	}
         	}

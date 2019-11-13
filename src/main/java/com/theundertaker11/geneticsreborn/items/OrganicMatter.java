@@ -30,6 +30,7 @@ public class OrganicMatter extends ItemBase {
 				if (tag.hasKey("mutation")) { 
 					EnumGenes gene = EnumGenes.fromGeneName(tag.getString("forceGene"));
 					if (gene != null) tooltip.add(TextFormatting.DARK_RED +  "Mutation: " + gene.getDescription() + TextFormatting.RESET);
+					else if (tag.getString("forceGene").equals("GeneticsRebornMutatedGene")) tooltip.add(TextFormatting.DARK_RED +  "Mutation: Basic Gene" + TextFormatting.RESET);
 				} else
 					tooltip.add("Gene Focus: " + EnumGenes.fromGeneName(tag.getString("forceGene")).getDescription());				
 			}

@@ -90,14 +90,14 @@ public class GlassSyringe extends ItemBase {
 						nbtname = tag.getString(Integer.toString(i));
 						tag.removeTag(Integer.toString(i));
 						EnumGenes gene = Genes.getGeneFromString(nbtname);
-						if (gene != null && gene.canAddMutation(genes)) genes.addGene(gene);
+						if (gene != null && gene.canAddMutation(genes) && !genes.hasGene(gene)) genes.addGene(gene);
 						PlayerTickEvent.geneChanged(playerIn, gene, true);
 					}
 					if (tag.hasKey(i + "anti")) {
 						nbtname = tag.getString(i + "anti");
 						tag.removeTag(i + "anti");
 						EnumGenes gene = Genes.getGeneFromString(nbtname);
-						genes.removeGene(gene);
+						if (gene != null && genes.hasGene(gene)) genes.removeGene(gene);
 						PlayerTickEvent.geneChanged(playerIn, gene, false);
 					}
 				}

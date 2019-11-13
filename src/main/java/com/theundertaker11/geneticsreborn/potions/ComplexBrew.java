@@ -66,29 +66,35 @@ public class ComplexBrew implements IBrewingRecipe {
 	public boolean isInput(ItemStack input) {
 		PotionType type = PotionUtils.getPotionFromItem(input);		
 		
-		String match = null;
-		if (input.getItem() == GRItems.Cell && input.hasTagCompound()) {
-			match = input.getTagCompound().getString("entityName");
-		} else if (input.getItem() == GRItems.DNAHelix && input.hasTagCompound()) {
-			match = input.getTagCompound().getString("gene");
-		} else if (type != PotionTypes.EMPTY && input.hasTagCompound()) {
-			match = input.getTagCompound().getString("gene");
-			if (match.isEmpty()) match = input.getTagCompound().getString("entityCodeName");
-		}
-		
-		//this is for imprinting potions with cell/helix info
-		if (type == pot) {
-			if ((type == GRPotions.GROWTH_POTION) && (this.cellType == null) && (input.hasTagCompound() && !input.getTagCompound().hasKey("entityCodeName")))
+		if (pot != null && pot != PotionTypes.EMPTY && type == pot) {
+			String match = null;
+			if (input.getItem() == GRItems.Cell && input.hasTagCompound()) {
+				match = input.getTagCompound().getString("entityName");
+			} else if (input.getItem() == GRItems.DNAHelix && input.hasTagCompound()) {
+				match = input.getTagCompound().getString("gene");
+			} else if (type != PotionTypes.EMPTY && input.hasTagCompound()) {
+				match = input.getTagCompound().getString("gene");
+				if (match.isEmpty()) match = input.getTagCompound().getString("entityCodeName");
+			}
+
+			if (type == GRPotions.SUBSTRATE) 
 				return true;
-			if ((type == GRPotions.MUTATION_POTION) && (this.cellType == null) && (input.hasTagCompound() && !input.getTagCompound().hasKey("entityCodeName")))
-				return true;
+
+			//this is for imprinting potions with cell/helix info
+			if (this.cellType == null) {
+				if ((type == GRPotions.GROWTH_POTION) && (input.hasTagCompound() && !input.getTagCompound().hasKey("entityCodeName")))
+					return true;
+				if ((type == GRPotions.MUTATION_POTION) && (input.hasTagCompound() && !input.getTagCompound().hasKey("entityCodeName")))
+					return true;
+				if (type == PotionTypes.MUNDANE) 
+					return true;
+			} else {
+				if (this.cellType.equals(match)) return true;
+				if (this.cellType.equals("*") && match != null && !match.isEmpty()) return true;				
+			}
+			
+			if (this.inputGene != null && this.inputGene.toGeneName().equals(match)) return true;
 		}
-		
-		if (this.cellType != null && this.cellType.equals(match)) return true;
-		if (this.cellType != null && this.cellType.equals("*") && match != null && !match.isEmpty()) return true;
-		
-		if (this.inputGene != null && this.inputGene.toGeneName().equals(match)) return true;
-		
 		return false;
 	}
 
@@ -131,6 +137,7 @@ public class ComplexBrew implements IBrewingRecipe {
 			return result;
 		}
 		
+
 		PotionType type = PotionUtils.getPotionFromItem(input);
 
 		//this handles cell focus/mutation		
