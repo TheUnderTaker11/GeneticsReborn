@@ -115,7 +115,7 @@ public class ContainerPlasmidInjector extends BaseContainer {
 
 		@Override
 		public boolean isItemValid(ItemStack stack) {
-			return (stack.getItem() == GRItems.GlassSyringe) && (stack.getTagCompound().getInteger("pure") == 1);
+			return (stack.getItem() == GRItems.GlassSyringe) && (stack.getTagCompound() != null) && (stack.getTagCompound().getInteger("pure") == 1);
 		}
 	}	
 }
