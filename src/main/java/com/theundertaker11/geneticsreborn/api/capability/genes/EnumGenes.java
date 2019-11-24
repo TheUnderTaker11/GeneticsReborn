@@ -89,7 +89,7 @@ public enum EnumGenes {
 	
 	static {
 		FLY.mutateTo = FLY;
-		INVISIBLE.mutateTo = FLY;
+		INVISIBLE.mutateTo = INVISIBLE;
 		LUCK.mutateTo = LUCK;
 	}
 	
