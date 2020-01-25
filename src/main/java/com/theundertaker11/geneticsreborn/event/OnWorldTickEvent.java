@@ -233,10 +233,10 @@ public class OnWorldTickEvent {
 					if (potionReset) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.poison), 2400, 1+GeneticsReborn.mutationAmp, false, false)));
 					break;
 				case REGENERATION:
-					if (!genes.hasGene(EnumGenes.REGENERATION_4)) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.regeneration), 110, 0, false, false)));
+					if (!genes.hasGene(EnumGenes.REGENERATION_4)) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.regeneration), 110, 1, false, false)));
 					break;
 				case REGENERATION_4:
-					entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.regeneration), 110, 1+GeneticsReborn.mutationAmp, false, false)));
+					entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.regeneration), 110, 3+GeneticsReborn.mutationAmp, false, false)));
 					break;
 				case RESISTANCE:
 					if (!genes.hasGene(EnumGenes.RESISTANCE_2)) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.resistance), 110, 0, false, false)));
