@@ -195,7 +195,7 @@ public class OnWorldTickEvent {
 				case HUNGER:
 					if (potionReset) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.hunger), 2400, 1, false, false)));
 					break;
-				case INFINITY:
+				case INVISIBLE:
 					entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.invisibility), 110, 0, false, false)));
 					break;
 				case LAY_EGG:
