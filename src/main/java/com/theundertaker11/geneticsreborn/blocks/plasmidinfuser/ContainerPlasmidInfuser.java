@@ -68,7 +68,7 @@ public class ContainerPlasmidInfuser extends BaseContainer {
 					} else 
 						return ItemStack.EMPTY;
 				}
-				if(slot.getStack().getItem() == GRItems.Plasmid){
+				else if(slot.getStack().getItem() == GRItems.Plasmid){
 					if (!this.mergeItemStack(slot.getStack(), 37, 38, false)) {
 						this.mergeItemStack(slot.getStack(), 37, 38,false);
 						return ItemStack.EMPTY;
@@ -76,7 +76,8 @@ public class ContainerPlasmidInfuser extends BaseContainer {
 					else{
 						return itemstack;
 					}
-				}
+				} else
+					return ItemStack.EMPTY;
 			} else if (!this.mergeItemStack(itemstack1, 0, VANILLA_SLOT_COUNT, false)) {
 				return ItemStack.EMPTY;
 			}

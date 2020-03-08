@@ -61,7 +61,7 @@ public class ContainerPlasmidInjector extends BaseContainer {
 					}
 					else return ItemStack.EMPTY;
 				}
-				if(slot.getStack().getItem() == GRItems.GlassSyringe) {
+				else if(slot.getStack().getItem() == GRItems.GlassSyringe) {
 					if (itemstack1.getTagCompound().getInteger("pure") == 1) {
 						if (!this.mergeItemStack(slot.getStack(), 37, 38, false)) {
 							this.mergeItemStack(slot.getStack(), 37, 38, false);
@@ -72,6 +72,7 @@ public class ContainerPlasmidInjector extends BaseContainer {
 					}
 					else return ItemStack.EMPTY;
 				}
+				else return ItemStack.EMPTY;
 			} else if (!this.mergeItemStack(itemstack1, 0, VANILLA_SLOT_COUNT, false)) {
 				return ItemStack.EMPTY;
 			}
