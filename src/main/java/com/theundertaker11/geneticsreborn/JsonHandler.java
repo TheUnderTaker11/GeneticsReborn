@@ -73,7 +73,7 @@ public class JsonHandler {
                         if (g != null) genes.add(g);
                     }
                     
-                    MobToGeneRegistry.registerMob(new MobToGeneObject(name, (EnumGenes[])genes.toArray()));
+                    MobToGeneRegistry.registerMob(new MobToGeneObject(name, genes));
                     reader.endArray();
                 } else {
                     reader.skipValue();

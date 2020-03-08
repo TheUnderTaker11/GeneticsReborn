@@ -1,5 +1,6 @@
 package com.theundertaker11.geneticsreborn.util;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
@@ -19,6 +20,14 @@ public class MobToGeneObject {
 	public MobToGeneObject(String mobCodeName, EnumGenes[] gene) {
 		MobCodeName = mobCodeName;
 		this.genes = gene;
+	}
+
+	public MobToGeneObject(String mobCodeName, List<EnumGenes> genes) {
+		MobCodeName = mobCodeName;
+		this.genes = new EnumGenes[genes.size()];
+		for (int i=0; i<genes.size(); i++) {
+			this.genes[i] = genes.get(i);
+		}			
 	}
 
 	public MobToGeneObject(String mobCodeName, EnumGenes gene) {
