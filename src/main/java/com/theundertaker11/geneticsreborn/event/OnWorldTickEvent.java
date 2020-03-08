@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
@@ -184,7 +185,9 @@ public class OnWorldTickEvent {
 					entity.setFire(120);
 					break;
 				case MOB_SIGHT:
-					entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.glowing), 110, 0, false, false)));
+					List<Entity> entities = world.getEntitiesInAABBexcluding(entity, entity.getEntityBoundingBox().expand(128, 128, 128), Predicates.instanceOf(EntityLivingBase.class));
+					for (Entity e : entities)
+						((EntityLivingBase) e).addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.glowing), 110, 0, false, false)));
 					break;
 				case HASTE:
 					if (!genes.hasGene(EnumGenes.HASTE_2)) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.haste), 110, 0, false, false)));
