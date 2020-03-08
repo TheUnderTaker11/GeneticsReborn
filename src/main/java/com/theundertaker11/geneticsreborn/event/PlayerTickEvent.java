@@ -194,13 +194,17 @@ public class PlayerTickEvent {
 			if (player.getFoodStats().getFoodLevel() < 5) player.getFoodStats().setFoodLevel(5);
 	}
 	
-	private static void changeMoreHearts(EntityLivingBase player, World world, boolean add, int amt) {
+	private static void checkMoreHearts(EntityLivingBase player, World world) {
 		if (!EnumGenes.MORE_HEARTS.isActive()) return;
+		IGenes genes = ModUtils.getIGenes(player);
 		IMaxHealth hearts = ModUtils.getIMaxHealth(player);
 		if (hearts == null) return;
-
-		if (add) hearts.setBonusMaxHealth(hearts.getBonusMaxHealth() + amt);
-		if (!add) hearts.setBonusMaxHealth(hearts.getBonusMaxHealth() - amt);
+		
+		int newHearts = 0;
+		if (genes.hasGene(EnumGenes.MORE_HEARTS)) newHearts += 20;
+		if (genes.hasGene(EnumGenes.MORE_HEARTS_2)) newHearts += 20 * GeneticsReborn.mutationAmp;
+		
+		hearts.setBonusMaxHealth(newHearts);
 	}
 	
 	
@@ -299,8 +303,8 @@ public class PlayerTickEvent {
 	public static void geneChanged(EntityLivingBase entity, EnumGenes gene, boolean added) {
 		World w = entity.world;
 		
-		if (gene == EnumGenes.MORE_HEARTS) changeMoreHearts(entity, w, added, 20);
-		if (gene == EnumGenes.MORE_HEARTS_2) changeMoreHearts(entity, w, added, 20 * GeneticsReborn.mutationAmp);
+		if (gene == EnumGenes.MORE_HEARTS) checkMoreHearts(entity, w);
+		if (gene == EnumGenes.MORE_HEARTS_2) checkMoreHearts(entity, w);
 		if (entity instanceof EntityPlayer) {
 			if (gene == EnumGenes.STEP_ASSIST) changeStepAssist((EntityPlayer)entity, w, added);
 			if (gene == EnumGenes.CLIMB_WALLS) changeClimbWalls((EntityPlayer)entity, w, added);
