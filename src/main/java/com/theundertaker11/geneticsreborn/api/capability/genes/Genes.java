@@ -17,7 +17,7 @@ public class Genes implements IGenes {
 
 	@Override
 	public void addGene(EnumGenes gene) {
-		if (!EnumGenesList.contains(gene))
+		if (!EnumGenesList.contains(gene) && gene != null)
 			EnumGenesList.add(gene);
 	}
 

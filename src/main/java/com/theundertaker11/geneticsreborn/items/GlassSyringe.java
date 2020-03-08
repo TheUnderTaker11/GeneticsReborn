@@ -84,13 +84,24 @@ public class GlassSyringe extends ItemBase {
 				IGenes genes = ModUtils.getIGenes(playerIn);
 				tag.removeTag("pure");
 				tag.removeTag("owner");
+				
+				//need to make a list of genes in syringe
+				IGenes syGenes = new Genes();
+				for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
+					String nbtname = "Null";
+					if (tag.hasKey(Integer.toString(i))) {
+						nbtname = tag.getString(Integer.toString(i));
+						syGenes.addGene(Genes.getGeneFromString(nbtname));
+					}
+				}
+				
 				for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
 					String nbtname = "Null";
 					if (tag.hasKey(Integer.toString(i))) {
 						nbtname = tag.getString(Integer.toString(i));
 						tag.removeTag(Integer.toString(i));
 						EnumGenes gene = Genes.getGeneFromString(nbtname);
-						if (gene != null && gene.canAddMutation(genes) && !genes.hasGene(gene)) genes.addGene(gene);
+						if (gene != null && gene.canAddMutation(genes, syGenes) && !genes.hasGene(gene)) genes.addGene(gene);
 						PlayerTickEvent.geneChanged(playerIn, gene, true);
 					}
 					if (tag.hasKey(i + "anti")) {

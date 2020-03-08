@@ -173,24 +173,24 @@ public enum EnumGenes {
 		return this.active;
 	}
 	
-	public final boolean canAddMutation(IGenes genes) {
+	public final boolean canAddMutation(IGenes genes, IGenes syringeGenes) {
 		switch (this) {
-		case HASTE_2: return genes.hasGene(HASTE);
-		case EFFICIENCY_4: return genes.hasGene(EFFICIENCY);
-		case REGENERATION_4: return genes.hasGene(REGENERATION);
-		case SPEED_4 : return genes.hasGene(SPEED_2);
-		case SPEED_2 : return genes.hasGene(SPEED);
-		case RESISTANCE_2: return genes.hasGene(RESISTANCE);
-		case STRENGTH_2 : return genes.hasGene(STRENGTH);
-		case MEATY_2 : return genes.hasGene(MEATY);
-		case MORE_HEARTS_2: return genes.hasGene(MORE_HEARTS);
+		case HASTE_2: return genes.hasGene(HASTE) || syringeGenes.hasGene(HASTE);
+		case EFFICIENCY_4: return genes.hasGene(EFFICIENCY) || syringeGenes.hasGene(EFFICIENCY);
+		case REGENERATION_4: return genes.hasGene(REGENERATION) || syringeGenes.hasGene(REGENERATION);
+		case SPEED_4 : return genes.hasGene(SPEED_2) || syringeGenes.hasGene(SPEED_2);
+		case SPEED_2 : return genes.hasGene(SPEED) || syringeGenes.hasGene(SPEED);
+		case RESISTANCE_2: return genes.hasGene(RESISTANCE) || syringeGenes.hasGene(RESISTANCE);
+		case STRENGTH_2 : return genes.hasGene(STRENGTH) || syringeGenes.hasGene(STRENGTH);
+		case MEATY_2 : return genes.hasGene(MEATY) || syringeGenes.hasGene(MEATY);
+		case MORE_HEARTS_2: return genes.hasGene(MORE_HEARTS) || syringeGenes.hasGene(MORE_HEARTS);
 		case INVISIBLE : return true;
-		case FLY : return genes.hasGene(JUMP_BOOST) || genes.hasGene(TELEPORTER);
+		case FLY : return genes.hasGene(JUMP_BOOST) || genes.hasGene(TELEPORTER) || syringeGenes.hasGene(JUMP_BOOST) || syringeGenes.hasGene(TELEPORTER);
 		case LUCK : return true;
-		case SCARE_ZOMBIES: return genes.hasGene(SCARE_CREEPERS);
-		case SCARE_SPIDERS: return genes.hasGene(SCARE_SKELETONS);
-		case THORNS: genes.hasGene(PHOTOSYNTHESIS);
-		case CLAWS_2: genes.hasGene(CLAWS);
+		case SCARE_ZOMBIES: return genes.hasGene(SCARE_CREEPERS) || syringeGenes.hasGene(SCARE_CREEPERS);
+		case SCARE_SPIDERS: return genes.hasGene(SCARE_SKELETONS) || syringeGenes.hasGene(SCARE_SKELETONS);
+		case THORNS: return genes.hasGene(PHOTOSYNTHESIS) || syringeGenes.hasGene(PHOTOSYNTHESIS);
+		case CLAWS_2: return genes.hasGene(CLAWS) || syringeGenes.hasGene(CLAWS);
 		default: return true;
 		}
 	}
