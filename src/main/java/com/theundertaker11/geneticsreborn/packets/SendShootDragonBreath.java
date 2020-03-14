@@ -52,7 +52,7 @@ public class SendShootDragonBreath implements IMessage {
 							float z = MathHelper.cos(serverPlayer.rotationYaw * 0.017453292F) * MathHelper.cos(serverPlayer.rotationPitch * 0.017453292F);
 							EntityDragonFireball dragonfireball = new EntityDragonFireball(serverPlayer.getEntityWorld());
 							dragonfireball.shootingEntity = serverPlayer;
-							dragonfireball.setPosition(serverPlayer.posX, serverPlayer.posY, serverPlayer.posZ);
+							dragonfireball.setPosition(serverPlayer.posX, serverPlayer.posY+1.5, serverPlayer.posZ);
 							dragonfireball.accelerationX = x * 0.1D;
 							dragonfireball.accelerationY = y * 0.1D;
 							dragonfireball.accelerationZ = z * 0.1D;

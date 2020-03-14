@@ -48,7 +48,7 @@ public class GREventHandler {
 	//these two functions do different things...
 	//use this one usually
 	public static boolean isInCooldown(EntityLivingBase elb, String type, long now) {
-		return !cooldownList.isEmpty() && !cooldownList.containsKey(getCooldownString(elb, type)) || 
+		return cooldownList.isEmpty() || !cooldownList.containsKey(getCooldownString(elb, type)) || 
 		isCooldownExpired(elb, type, now, true);	
 	}
 	
