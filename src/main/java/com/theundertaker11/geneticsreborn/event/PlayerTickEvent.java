@@ -204,7 +204,7 @@ public class PlayerTickEvent {
 		
 		int newHearts = 0;
 		if (genes.hasGene(EnumGenes.MORE_HEARTS)) newHearts += 20;
-		if (genes.hasGene(EnumGenes.MORE_HEARTS_2)) newHearts += 20 * GeneticsReborn.mutationAmp;
+		if (genes.hasGene(EnumGenes.MORE_HEARTS_2)) newHearts += 20 * (1 + GeneticsReborn.mutationAmp);
 		
 		hearts.setBonusMaxHealth(newHearts);
 	}

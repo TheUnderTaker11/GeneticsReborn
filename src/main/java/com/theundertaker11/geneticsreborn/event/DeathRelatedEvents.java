@@ -73,16 +73,10 @@ public class DeathRelatedEvents {
 			IGenes oldgenes = ModUtils.getIGenes(event.getOriginal());
 			IGenes newgenes = ModUtils.getIGenes(event.getEntityPlayer());
 			for (EnumGenes g : oldgenes.getGeneList())
-				if (!g.isNegative()) newgenes.addGene(g);
-			
-			if (ModUtils.getIMaxHealth(event.getEntityPlayer()) != null) {
-				final IMaxHealth oldMaxHealth = ModUtils.getIMaxHealth(event.getOriginal());
-				final IMaxHealth newMaxHealth = ModUtils.getIMaxHealth(event.getEntityPlayer());
-
-				if (newMaxHealth != null && oldMaxHealth != null) {
-					newMaxHealth.setBonusMaxHealth(oldMaxHealth.getBonusMaxHealth());
-				}
-			}
+				if (!g.isNegative()) {
+					newgenes.addGene(g);
+					PlayerTickEvent.geneChanged(event.getEntityPlayer(), g, true);
+				}			
 		}
 		
 		

@@ -48,8 +48,8 @@ public class CommandRemove extends CommandBase {
             		EnumGenes gene = EnumGenes.fromGeneName(args[i]);
             		if (gene == null) throw new CommandException("No gene found named: "+args[i]);
             		if (genes.hasGene(gene)) {
-            			PlayerTickEvent.geneChanged(entity, gene, false);
                 		genes.removeGene(gene);
+            			PlayerTickEvent.geneChanged(entity, gene, false);
             		}
         			sender.sendMessage(new TextComponentString(String.format("Removed %d genes from %s",  args.length-1, sender.getName())));
             	}
