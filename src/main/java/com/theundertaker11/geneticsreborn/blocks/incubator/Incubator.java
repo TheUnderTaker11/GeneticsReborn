@@ -35,6 +35,12 @@ public class Incubator extends StorageBlockBase {
 		return overclockerOrGUI(worldIn, pos, playerIn, hand, GeneticsReborn.ocIncubator, GuiProxy.IncubatorGuiID);
 	}
 	
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		// TODO Drop all items...
+		super.breakBlock(worldIn, pos, state);
+	}
+	
     @SideOnly(Side.CLIENT)
 	@Override
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)

@@ -2,10 +2,12 @@ package com.theundertaker11.geneticsreborn.blocks.incubator;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.ItemStackHandlerControl;
+import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.potions.GRPotions;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
@@ -231,8 +233,15 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
             if (facing == null) return (T) guiStackHandler;
             if (facing == EnumFacing.UP) return (T) ingredientStackHandler;
             if (facing == EnumFacing.DOWN) return (T) outputStackHandler;
-            if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) return (T) inputStackHandler;
-            if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) return (T) fuelStackHandler;    	
+            
+            EnumFacing blockFacing = world.getBlockState(getPos()).getValue(StorageBlockBase.FACING);
+            if (blockFacing == EnumFacing.NORTH || blockFacing == EnumFacing.SOUTH) {
+            	if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) return (T) inputStackHandler;
+            	if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) return (T) fuelStackHandler;
+            } else {
+            	if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) return (T) fuelStackHandler;
+            	if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) return (T) inputStackHandler;            	
+            }
         }
 
         return super.getCapability(capability, facing);
