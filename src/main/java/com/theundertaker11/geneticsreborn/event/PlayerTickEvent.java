@@ -10,6 +10,7 @@ import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
+import com.theundertaker11.geneticsreborn.items.AntiField;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.packets.ClientGeneChange;
 import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
@@ -168,7 +169,8 @@ public class PlayerTickEvent {
 	}
 
 	private static void checkClimbing(EntityPlayer player, World world, IGenes genes) {
-		if (EnumGenes.CLIMB_WALLS.isActive() && ClientGeneChange.climbingPlayers.contains(player.getUniqueID())) {
+		if (EnumGenes.CLIMB_WALLS.isActive() && ClientGeneChange.climbingPlayers.contains(player.getUniqueID()) &&
+			!player.isSneaking() && !AntiField.isActiveForPlayer(player)) {
 			if (player.collidedHorizontally) player.motionY = 0.2D;
 		}
 	}

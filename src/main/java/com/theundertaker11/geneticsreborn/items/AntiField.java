@@ -30,4 +30,14 @@ public class AntiField extends ItemBase {
 	public boolean hasEffect(ItemStack stack) {
 		return this.getDamage(stack) == 1;
 	}
+	
+	public static boolean isActiveForPlayer(EntityPlayer player) {
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+			ItemStack stack = player.inventory.getStackInSlot(i);
+			if (stack.getItem() instanceof AntiField && stack.getItemDamage() == 1)
+				return true;
+		}
+		return false;
+	}
+	
 }
