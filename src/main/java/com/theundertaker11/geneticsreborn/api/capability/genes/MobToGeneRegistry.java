@@ -134,10 +134,14 @@ public class MobToGeneRegistry {
 			if (!tag.getBoolean("lowTemp")) chance = 3;
 			
 			EnumGenes gene = EnumGenes.fromGeneName(tag.getString("forceGene"));
+			if (gene == null) {
+				GeneticsReborn.log.error("Invalid forced-gene: "+ tag.getString("forceGene"));
+				return "GeneticsRebornMutatedGene";			
+			}
 			if (ThreadLocalRandom.current().nextInt(1, 101) <= chance) 
 				return gene.getMutation().toGeneName();
 			if (gene != gene.getMutation()) return gene.toGeneName();
-			return "GeneticsRebornMutatedGene";			
+				return "GeneticsRebornMutatedGene";			
 		} else {
 			if (ThreadLocalRandom.current().nextInt(1, 101) < tag.getInteger("chance")) 
 				return EnumGenes.fromGeneName(tag.getString("forceGene")).toGeneName();

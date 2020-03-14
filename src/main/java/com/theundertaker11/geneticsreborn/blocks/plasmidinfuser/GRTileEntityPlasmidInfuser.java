@@ -91,17 +91,19 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 			if (item.getTagCompound() != null) {
 				NBTTagCompound itemtag = ModUtils.getTagCompound(item);
 				if (result.getTagCompound() == null) {
-					if ("GeneticsRebornBasicGene".equals(item.getTagCompound().getString("gene"))) return false;
-
+					String geneName = itemtag.getString("gene");
+					if ("GeneticsRebornBasicGene".equals(geneName) || "GeneticsRebornMutatedGene".equals(geneName)) return false;
+					EnumGenes gene = EnumGenes.fromGeneName(geneName);
 					NBTTagCompound resulttag = ModUtils.getTagCompound(result);
-					String gene = ModUtils.getTagCompound(item).getString("gene");
-					resulttag.setString("gene", gene);
-					resulttag.setInteger("num", 0);
+					resulttag.setString("gene", geneName);
+					resulttag.setInteger("num", 0);					
 					resulttag.setInteger("numNeeded", EnumGenes.getNumberNeeded(gene));
+					if (gene.isMutation()) resulttag.setBoolean("mutation", true);	 
 				} else {
 					NBTTagCompound resulttag = ModUtils.getTagCompound(result);
 					if (resulttag.getInteger("num") == resulttag.getInteger("numNeeded")) return false;
-					if ("GeneticsRebornBasicGene".equals(itemtag.getString("gene"))) {
+					if (("GeneticsRebornBasicGene".equals(itemtag.getString("gene")) && !resulttag.hasKey("mutation")) ||
+						"GeneticsRebornMutatedGene".equals(itemtag.getString("gene"))) {
 						if (performSmelt) {
 							resulttag.setInteger("num", resulttag.getInteger("num") + 1);
 							inventory.extractItem(0, 1, false);

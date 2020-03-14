@@ -66,7 +66,7 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
 
 			if (this.storage.getEnergyStored() > rfpertick) {
 				this.storage.extractEnergy(rfpertick, false);
-				ticksCooking++;
+				ticksCooking += 1000;
 				markDirty();
 			}
 			if (ticksCooking < 0) ticksCooking = 0;
@@ -92,7 +92,7 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
             	if (lowTemp && (pot == GRPotions.SUBSTRATE) && (output.getItem() == GRItems.Cell)) output.setCount(6);
             	
             	//flag lowtemp and overclockers for forced genes
-            	if (lowTemp && output.hasTagCompound() && output.getTagCompound().hasKey("forcedGene")) { 
+            	if (lowTemp && output.hasTagCompound() && output.getTagCompound().hasKey("forceGene")) { 
             		output.getTagCompound().setBoolean("lowTemp", true); 
             		if ((overclockers > 0) && fuel.isEmpty()) 
             			output.getTagCompound().setInteger("overclocked", overclockers);
@@ -177,6 +177,11 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
         	if (brewComplete) return stack;
         	return super.insertItem(slot, stack, simulate);
         }
+                
+        @Override
+        public int getSlotLimit(int slot) {
+        	return 1;
+        }
     };
     
     //these are the output slots, you cannot insert, but can only extract when the brew is complete.
@@ -227,7 +232,7 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
             if (facing == EnumFacing.UP) return (T) ingredientStackHandler;
             if (facing == EnumFacing.DOWN) return (T) outputStackHandler;
             if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) return (T) inputStackHandler;
-            if (facing == EnumFacing.NORTH) return (T) fuelStackHandler;    	
+            if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) return (T) fuelStackHandler;    	
         }
 
         return super.getCapability(capability, facing);

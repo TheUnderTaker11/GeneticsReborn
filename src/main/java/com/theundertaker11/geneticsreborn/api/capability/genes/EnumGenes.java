@@ -195,8 +195,7 @@ public enum EnumGenes {
 		}
 	}
 
-	public static final int getNumberNeeded(String name) {
-		EnumGenes gene = Genes.getGeneFromString(name);
+	public static final int getNumberNeeded(EnumGenes gene) {
 		if (gene.isMutation()) return 50;
 		
 		if (!GeneticsReborn.hardMode) 
