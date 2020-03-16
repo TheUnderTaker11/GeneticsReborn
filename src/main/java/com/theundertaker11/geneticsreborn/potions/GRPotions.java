@@ -112,7 +112,7 @@ public class GRPotions {
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.FEATHER, "EntityBat",  EnumGenes.FLY, 75));
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.FEATHER, "EntityParrot",  EnumGenes.FLY, 75));
 
-		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.EMERALD, "EntityPolarBear",  EnumGenes.RESISTANCE, 50));
+		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.EMERALD, "EntityPolarBear",  EnumGenes.STRENGTH, 50));
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.EMERALD, "EntityLlama",  EnumGenes.STRENGTH, 50));
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.EMERALD, "EntityRabbit",  EnumGenes.LUCK, 50));
 
@@ -122,8 +122,8 @@ public class GRPotions {
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.DIAMOND, "EntityLlama",  EnumGenes.CLAWS, 50));
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.DIAMOND, "EntityWolf",  EnumGenes.CLAWS, 50));
 		
-		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.REDSTONE, "EntityRabbit",  EnumGenes.SPEED, 50));
-		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.REDSTONE, "EntityOcelot",  EnumGenes.SPEED_2, 50));
+		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.REDSTONE, "EntityRabbit",  EnumGenes.SPEED_2, 50));
+		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.REDSTONE, "EntityOcelot",  EnumGenes.SPEED_4, 50));
 		
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(MUTATION_POTION, Items.IRON_INGOT, "EntityRabbit",  EnumGenes.HASTE, 50));
 

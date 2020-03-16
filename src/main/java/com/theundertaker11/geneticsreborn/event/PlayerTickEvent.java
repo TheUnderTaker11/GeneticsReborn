@@ -218,7 +218,7 @@ public class PlayerTickEvent {
 	 * @param genes
 	 */
 	private static void tryItemMagnet(EntityPlayer player, World world, IGenes genes) {
-		if (EnumGenes.ITEM_MAGNET.isActive() && genes.hasGene(EnumGenes.ITEM_MAGNET) && !player.inventory.hasItemStack(new ItemStack(GRItems.AntiField))
+		if (EnumGenes.ITEM_MAGNET.isActive() && genes.hasGene(EnumGenes.ITEM_MAGNET) && !AntiField.isActiveForPlayer(player)
 				&& !player.isSneaking()) {
 			Iterator<Entity> iterator = ModUtils.getEntitiesInRange(EntityItem.class, world, player.posX, player.posY,
 					player.posZ, 6.5).iterator();
@@ -249,7 +249,7 @@ public class PlayerTickEvent {
 	 * @param genes
 	 */
 	private static void tryXPMagnet(EntityPlayer player, World world, IGenes genes) {
-		if (EnumGenes.XP_MAGNET.isActive() && genes.hasGene(EnumGenes.XP_MAGNET) && !player.inventory.hasItemStack(new ItemStack(GRItems.AntiField))
+		if (EnumGenes.XP_MAGNET.isActive() && genes.hasGene(EnumGenes.XP_MAGNET) && !AntiField.isActiveForPlayer(player)
 				&& !player.isSneaking()) {
 			Iterator<Entity> iterator = ModUtils.getEntitiesInRange(EntityXPOrb.class, world, player.posX, player.posY, player.posZ,
 					6.5).iterator();
