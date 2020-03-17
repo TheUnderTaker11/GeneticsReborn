@@ -3,6 +3,7 @@ package com.theundertaker11.geneticsreborn.event;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
+import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 
@@ -23,8 +24,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class AIChangeEvents {
 
 	@SubscribeEvent
-	public void onEntitySpawn(EntityJoinWorldEvent event) {
+	public void onEntitySpawn(EntityJoinWorldEvent event) {		
 		Entity e = event.getEntity();
+		if (e instanceof EntityPlayer)
+	    	((EntityPlayer)e).getAttributeMap().registerAttribute(GeneticsReborn.CLIMBING_ATT);
+
 		if (e instanceof EntityCreeper) attachScareTask(event, (EntityCreature) event.getEntity(), this::hasCreeperGene);
 		if (e instanceof EntityZombie) attachScareTask(event, (EntityCreature) event.getEntity(), this::hasZombieGene);
 		if (e instanceof EntitySkeleton) attachScareTask(event, (EntityCreature) event.getEntity(), this::hasSkeletonGene);
@@ -57,7 +61,7 @@ public class AIChangeEvents {
 
 		for (Object a : entity.targetTasks.taskEntries.toArray()) {
 			EntityAIBase ai = ((EntityAITaskEntry) a).action;
-			if (entity instanceof EntityCreeper && ai instanceof EntityAINearestAttackableTarget) {
+			if (ai instanceof EntityAINearestAttackableTarget) {
 				entity.targetTasks.removeTask(ai);
 				entity.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(entity, EntityPlayer.class, 10, false, false, player -> !predicate.test(player)));
 			}

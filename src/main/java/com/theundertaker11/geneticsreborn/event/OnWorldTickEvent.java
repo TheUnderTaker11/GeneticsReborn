@@ -143,7 +143,7 @@ public class OnWorldTickEvent {
 		PotionEffect pe= null;
 		int luck = 0;
 		boolean potionReset = world.getWorldTime() % 1800 == 1;
-		
+		 
 		for (EnumGenes gene : genes.getGeneList()) {
 			if (!gene.isActive()) continue;
 			switch (gene) {

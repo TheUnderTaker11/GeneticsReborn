@@ -32,7 +32,7 @@ public class DeathRelatedEvents {
 	 * @param event
 	 */
 	@SubscribeEvent
-	public static void onPlayerDrops(PlayerDropsEvent event) {
+	public void onPlayerDrops(PlayerDropsEvent event) {
 		if (EnumGenes.EXPLOSIVE_EXIT.isActive() && ModUtils.getIGenes(event.getEntityPlayer()) != null) {
 			IGenes genes = ModUtils.getIGenes(event.getEntityPlayer());
 			if (genes.hasGene(EnumGenes.EXPLOSIVE_EXIT)) {
@@ -55,8 +55,8 @@ public class DeathRelatedEvents {
 	}
 	
     @SubscribeEvent
-    public static void onPlayerLoggedIn (PlayerLoggedInEvent event) {
-    	IGenes genes = ModUtils.getIGenes(event.player);
+    public void onPlayerLoggedIn (PlayerLoggedInEvent event) {
+    	IGenes genes = ModUtils.getIGenes(event.player);    	
     	for (EnumGenes g : genes.getGeneList()) 
     		PlayerTickEvent.geneChanged(event.player, g, true);
     }
@@ -65,7 +65,7 @@ public class DeathRelatedEvents {
 	 * This makes players keep genes, health, and inventory on death(If enabled in config)
 	 */
 	@SubscribeEvent
-	public static void onPlayerClone(PlayerEvent.Clone event) {
+	public void onPlayerClone(PlayerEvent.Clone event) {
 		if (EnumGenes.SAVE_INVENTORY.isActive() && event.isWasDeath()) {
 			event.getEntityPlayer().inventory.copyInventory(event.getOriginal().inventory);
 		}
@@ -88,7 +88,7 @@ public class DeathRelatedEvents {
 	 * @param event
 	 */
 	@SubscribeEvent
-	public static void onDeath(LivingDeathEvent event) {
+	public void onDeath(LivingDeathEvent event) {
 		EntityLivingBase entityliving = event.getEntityLiving();
 
 		if (!GeneticsReborn.allowGivingEntityGenes && !(entityliving instanceof EntityPlayer)) return;

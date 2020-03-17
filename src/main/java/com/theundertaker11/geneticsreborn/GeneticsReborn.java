@@ -21,6 +21,8 @@ import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntity;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.init.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.config.Configuration;
@@ -51,6 +53,9 @@ public class GeneticsReborn {
 	public static final int OVERCLOCK_BONUS = 39;
 	public static final int OVERCLOCK_RF_COST = 85;
 	public static final DamageSource VIRUS_DAMAGE = new DamageSource("virus").setDamageAllowedInCreativeMode().setDamageBypassesArmor().setDamageIsAbsolute();
+	
+	public static final String CLIMBING_ATT_NAME = "geneticsreborn.climbing";
+	public static final IAttribute CLIMBING_ATT = (new RangedAttribute((IAttribute)null, CLIMBING_ATT_NAME, 0.0d,0.0d,1.0d)).setDescription("Wall Climbing").setShouldWatch(true);
 	
     @EventHandler
     public void serverStarting (FMLServerStartingEvent event) {
@@ -178,8 +183,8 @@ public class GeneticsReborn {
 
 		hardMode = config.getBoolean("Hard Mode", general, false, "Make earning traits harder, better balance when playing with Mods, see Wiki");
 		BioluminLightLevel = config.getFloat("Bioluminescence light level", general, 12.0F, 1.0f, 15.0f, "How much light does the Bioluminescence gene produce");
-		thornsDamage = config.getFloat("Thorns damage", general, 0.0F, 6.0f, 10000.0f, "How much damage does an entity take when hitting an entity with thorns");
-		clawsDamage = config.getFloat("Claws damage", general, 0.0F, 1.0f, 100.0f, "How much damage does the claws bleed effect do (per second)");
+		thornsDamage = config.getFloat("Thorns damage", general, 6.0F, 0.0f, 10000.0f, "How much damage does an entity take when hitting an entity with thorns");
+		clawsDamage = config.getFloat("Claws damage", general, 1.0F, 0.0f, 100.0f, "How much damage does the claws bleed effect do (per second)");
 		clawsChance = config.getInt("Claws chance", general, 33, 1, 100, "Chance that claws applies bleed effect");
 		mutationAmp = config.getInt("Mutation Amplifier", general, 0, 0, 100, "Increase the effect of all status effect caused by mutations");
 		cyberToleranceBonus = config.getInt("Cybernetic Tolerance", general, 20, 0, 100, "Increase the tolerance for cyberware");

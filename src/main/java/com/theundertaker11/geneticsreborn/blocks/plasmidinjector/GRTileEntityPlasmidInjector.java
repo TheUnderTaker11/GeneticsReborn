@@ -52,6 +52,18 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 		smeltItem(true);
 	}
 
+	private void cancelGene(NBTTagCompound tag, String gene) {
+		for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
+			String key = Integer.toString(i);
+			if (tag.hasKey(key)) {
+				if (tag.getString(key).equals(gene)) { 
+					tag.removeTag(key);
+					return;
+				}
+			}
+		}		
+	}
+	
 	/**
 	 * checks that there is an item to be smelted in one of the input slots and that there is room for the result in the output slots
 	 * If desired, performs the smelt
@@ -76,18 +88,20 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 					return false;
 				} else {
 					NBTTagCompound resulttag = ModUtils.getTagCompound(result);
+					String gene = itemtag.getString("gene");
 					if (itemtag.getInteger("num") == itemtag.getInteger("numNeeded")) {
 						if (item.getItem() == GRItems.AntiPlasmid) {
 							for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
 								if (resulttag.hasKey(i + "anti")) {
-									if (resulttag.getString(i + "anti").equals(itemtag.getString("gene"))) {
+									if (resulttag.getString(i + "anti").equals(gene)) {
 										return false;
 									}
 								} else {
 									if (performSmelt) {
-										resulttag.setString(i + "anti", itemtag.getString("gene"));
+										resulttag.setString(i + "anti", gene);
+										cancelGene(resulttag, gene);
 										resulttag.setBoolean("pure", false);
-										inventory.extractItem(0, item.getCount(), false);
+										inventory.extractItem(0, item.getCount(), false);																				
 										this.markDirty();
 									}
 									return true;
@@ -96,12 +110,12 @@ public class GRTileEntityPlasmidInjector extends GRTileEntityBasicEnergyReceiver
 						} else if (item.getItem() == GRItems.Plasmid) {
 							for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
 								if (resulttag.hasKey(Integer.toString(i))) {
-									if (resulttag.getString(Integer.toString(i)).equals(itemtag.getString("gene"))) {
+									if (resulttag.getString(Integer.toString(i)).equals(gene)) {
 										return false;
 									}
 								} else {
 									if (performSmelt) {
-										resulttag.setString(Integer.toString(i), itemtag.getString("gene"));
+										resulttag.setString(Integer.toString(i), gene);										
 										resulttag.setBoolean("pure", false);
 										inventory.extractItem(0, item.getCount(), false);
 										this.markDirty();

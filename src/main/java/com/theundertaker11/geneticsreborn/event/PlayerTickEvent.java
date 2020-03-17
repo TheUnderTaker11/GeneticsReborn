@@ -11,7 +11,6 @@ import com.theundertaker11.geneticsreborn.api.capability.genes.IGenes;
 import com.theundertaker11.geneticsreborn.api.capability.maxhealth.IMaxHealth;
 import com.theundertaker11.geneticsreborn.blocks.GRBlocks;
 import com.theundertaker11.geneticsreborn.items.AntiField;
-import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.packets.ClientGeneChange;
 import com.theundertaker11.geneticsreborn.packets.GeneticsRebornPacketHandler;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
@@ -20,6 +19,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -118,11 +118,13 @@ public class PlayerTickEvent {
 		IGenes genes = ModUtils.getIGenes(player);
 		if (EnumGenes.EFFICIENCY.isActive()) {
 			if (genes.hasGene(EnumGenes.EFFICIENCY_4))
-				event.setNewSpeed(event.getOriginalSpeed() + (float) 5 * 0.05F);
+				event.setNewSpeed(event.getNewSpeed() * (5 + GeneticsReborn.mutationAmp));
 			else if (genes.hasGene(EnumGenes.EFFICIENCY))
-				event.setNewSpeed(event.getOriginalSpeed() + (float) 3 * 0.05F);
+				event.setNewSpeed(event.getNewSpeed() * 2);
 		}    	
     }
+    
+    
    
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -147,29 +149,34 @@ public class PlayerTickEvent {
 	}
 	
 	private static final UUID uuidCybernetic = UUID.fromString("14b60de8-825e-45e1-99c0-51685676f69b");
-	private static final HashMultimap<String, AttributeModifier> cyberneticModifierMap;
+	private static final HashMultimap<String, AttributeModifier> cyberModifierMap;
 	
 	public static void setCyberToleranceUpgrade(float f) {
-		cyberneticModifierMap.clear();
-		cyberneticModifierMap.put("cyberware.tolerance", new AttributeModifier(uuidCybernetic, "Cybernetic gene", f, 0));
+		cyberModifierMap.put("cyberware.tolerance", new AttributeModifier(uuidCybernetic, "Cybernetic gene", f, 0));
+	}
+	    
+	public static void setWallClimbing(EntityPlayer player, boolean on) {
+		IAttributeInstance attr = player.getAttributeMap().getAttributeInstance(GeneticsReborn.CLIMBING_ATT);
+		if (attr != null) attr.setBaseValue(on ? 1.0 : 0.0);
 	}
 	    
 	static {
-		cyberneticModifierMap = HashMultimap.create();
+		cyberModifierMap = HashMultimap.create();
 	}
 	
 	private static void checkCybernetic(EntityPlayer player, World world, IGenes genes) {
 		if (!EnumGenes.CYBERNETIC.isActive()) return;
 		
 		if (genes.hasGene(EnumGenes.CYBERNETIC)) 
-		    player.getAttributeMap().applyAttributeModifiers(cyberneticModifierMap);
+		    player.getAttributeMap().applyAttributeModifiers(cyberModifierMap);
 		else
-		    player.getAttributeMap().removeAttributeModifiers(cyberneticModifierMap);
+		    player.getAttributeMap().removeAttributeModifiers(cyberModifierMap);
 			
 	}
 
 	private static void checkClimbing(EntityPlayer player, World world, IGenes genes) {
-		if (EnumGenes.CLIMB_WALLS.isActive() && ClientGeneChange.climbingPlayers.contains(player.getUniqueID()) &&
+		IAttributeInstance attr = player.getAttributeMap().getAttributeInstance(GeneticsReborn.CLIMBING_ATT);
+		if (EnumGenes.CLIMB_WALLS.isActive() && attr != null && attr.getBaseValue() > 0.0 &&
 			!player.isSneaking() && !AntiField.isActiveForPlayer(player)) {
 			if (player.collidedHorizontally) player.motionY = 0.2D;
 		}
@@ -193,7 +200,7 @@ public class PlayerTickEvent {
 	
 	private static void checkHunger(EntityPlayer player, World world, IGenes genes) {
 		if (EnumGenes.NO_HUNGER.isActive() && genes.hasGene(EnumGenes.NO_HUNGER))
-			if (player.getFoodStats().getFoodLevel() < 5) player.getFoodStats().setFoodLevel(5);
+			if (player.getFoodStats().getFoodLevel() < 10) player.getFoodStats().setFoodLevel(10);
 	}
 	
 	private static void checkMoreHearts(EntityLivingBase player, World world) {
@@ -218,7 +225,7 @@ public class PlayerTickEvent {
 	 * @param genes
 	 */
 	private static void tryItemMagnet(EntityPlayer player, World world, IGenes genes) {
-		if (EnumGenes.ITEM_MAGNET.isActive() && genes.hasGene(EnumGenes.ITEM_MAGNET) && !AntiField.isActiveForPlayer(player)
+		if (EnumGenes.ITEM_MAGNET.isActive() && !player.isDead && genes.hasGene(EnumGenes.ITEM_MAGNET) && !AntiField.isActiveForPlayer(player)
 				&& !player.isSneaking()) {
 			Iterator<Entity> iterator = ModUtils.getEntitiesInRange(EntityItem.class, world, player.posX, player.posY,
 					player.posZ, 6.5).iterator();
@@ -249,7 +256,7 @@ public class PlayerTickEvent {
 	 * @param genes
 	 */
 	private static void tryXPMagnet(EntityPlayer player, World world, IGenes genes) {
-		if (EnumGenes.XP_MAGNET.isActive() && genes.hasGene(EnumGenes.XP_MAGNET) && !AntiField.isActiveForPlayer(player)
+		if (EnumGenes.XP_MAGNET.isActive() && !player.isDead && genes.hasGene(EnumGenes.XP_MAGNET) && !AntiField.isActiveForPlayer(player)
 				&& !player.isSneaking()) {
 			Iterator<Entity> iterator = ModUtils.getEntitiesInRange(EntityXPOrb.class, world, player.posX, player.posY, player.posZ,
 					6.5).iterator();
@@ -314,6 +321,7 @@ public class PlayerTickEvent {
 	}
 
 	private static void changeClimbWalls(EntityPlayer entity, World w, boolean added) {
-		GeneticsRebornPacketHandler.INSTANCE.sendTo(new ClientGeneChange(2, (added) ? 1 : 0), (EntityPlayerMP) entity);								
+		//GeneticsRebornPacketHandler.INSTANCE.sendTo(new ClientGeneChange(2, (added) ? 1 : 0), (EntityPlayerMP) entity);
+		setWallClimbing(entity, added);
 	}
 }
