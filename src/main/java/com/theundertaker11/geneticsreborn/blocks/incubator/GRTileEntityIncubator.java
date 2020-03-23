@@ -68,7 +68,8 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
 
 			if (this.storage.getEnergyStored() > rfpertick) {
 				this.storage.extractEnergy(rfpertick, false);
-				ticksCooking += 1000;
+				//this is only for testing, if you add it DO NOT forget to remove it.
+				//ticksCooking += 1000;
 				markDirty();
 			}
 			if (ticksCooking < 0) ticksCooking = 0;
