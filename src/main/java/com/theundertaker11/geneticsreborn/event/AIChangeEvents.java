@@ -13,6 +13,7 @@ import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
+import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
@@ -26,8 +27,11 @@ public class AIChangeEvents {
 	@SubscribeEvent
 	public void onEntitySpawn(EntityJoinWorldEvent event) {		
 		Entity e = event.getEntity();
-		if (e instanceof EntityPlayer)
-	    	((EntityPlayer)e).getAttributeMap().registerAttribute(GeneticsReborn.CLIMBING_ATT);
+		if (e instanceof EntityPlayer) {
+			AbstractAttributeMap map = ((EntityPlayer)e).getAttributeMap();
+			if (map.getAttributeInstance(GeneticsReborn.CLIMBING_ATT) == null)
+				map.registerAttribute(GeneticsReborn.CLIMBING_ATT);
+		}
 
 		if (e instanceof EntityCreeper) attachScareTask(event, (EntityCreature) event.getEntity(), this::hasCreeperGene);
 		if (e instanceof EntityZombie) attachScareTask(event, (EntityCreature) event.getEntity(), this::hasZombieGene);
