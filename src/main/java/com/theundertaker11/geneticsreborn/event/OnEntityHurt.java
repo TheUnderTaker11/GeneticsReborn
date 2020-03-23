@@ -54,7 +54,9 @@ public class OnEntityHurt {
 				IGenes genes = ModUtils.getIGenes(entityliving);
 
 				if (EnumGenes.FIRE_PROOF.isActive() && genes.hasGene(EnumGenes.FIRE_PROOF)) {
-					if (event.getSource().equals(DamageSource.LAVA) || event.getSource().equals(DamageSource.IN_FIRE)
+					if (event.getSource().equals(DamageSource.LAVA) 
+							|| event.getSource().equals(DamageSource.IN_FIRE)
+							|| event.getSource().equals(DamageSource.HOT_FLOOR)
 							|| event.getSource().equals(DamageSource.ON_FIRE)) {
 						entityliving.extinguish();
 						event.setCanceled(true);
