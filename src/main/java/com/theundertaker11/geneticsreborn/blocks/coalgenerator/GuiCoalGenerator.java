@@ -1,5 +1,6 @@
 package com.theundertaker11.geneticsreborn.blocks.coalgenerator;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public class GuiCoalGenerator extends GuiContainer {
             energy.add(tile.storage.getEnergyStored() + " / " + tile.storage.getMaxEnergyStored() + "  FE");
             GuiUtils.drawHoveringText(energy, mouseX, mouseY, mc.displayWidth, mc.displayHeight, -1, mc.fontRenderer);
         }
+        
+		fontRenderer.drawString("Overclockers: " + (tile.hasOverclocker ? "1" : "0"), guiLeft+8, guiTop+74, Color.darkGray.getRGB());        
 
         if (tile.burnTime > 0) {
             if (this.isPointInRegion(52, 52, 14, 14, mouseX, mouseY)) {

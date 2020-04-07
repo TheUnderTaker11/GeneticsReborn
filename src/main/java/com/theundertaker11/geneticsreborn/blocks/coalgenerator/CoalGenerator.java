@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -39,16 +40,16 @@ public class CoalGenerator extends StorageBlockBase {
 				if (heldItem.getItem() == GRItems.Overclocker) {
 					if (!tile.hasOverclocker) {
 						tile.addOverclocker();
-						playerIn.setHeldItem(hand, ItemStack.EMPTY);
+						heldItem.shrink(1);
 					} else {
-						playerIn.openGui(GeneticsReborn.instance, GuiProxy.CoalGeneratorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
+						playerIn.sendMessage(new TextComponentString("Max Overclockers is 1"));
 					}
 				} else {
 					playerIn.openGui(GeneticsReborn.instance, GuiProxy.CoalGeneratorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
 				}
 			} else if (playerIn.isSneaking()) {
 				if (tile.hasOverclocker) {
-					playerIn.setHeldItem(hand, new ItemStack(GRItems.Overclocker, 1));
+					playerIn.addItemStackToInventory(new ItemStack(GRItems.Overclocker, 1));
 					tile.removeOverclocker();
 				} else {
 					playerIn.openGui(GeneticsReborn.instance, GuiProxy.CoalGeneratorGuiID, worldIn, pos.getX(), pos.getY(), pos.getZ());
