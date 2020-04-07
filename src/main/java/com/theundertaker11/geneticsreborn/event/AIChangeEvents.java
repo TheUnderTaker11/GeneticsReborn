@@ -9,12 +9,14 @@ import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.ai.attributes.AbstractAttributeMap;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityZombie;
@@ -63,12 +65,31 @@ public class AIChangeEvents {
 		if (entity instanceof EntityCreeper)
 			entity.tasks.addTask(3, new EntityAIAvoidEntity<>(entity, EntityPlayer.class, predicate, 6.0F, 1.0D, 1.2D));
 
-		for (Object a : entity.targetTasks.taskEntries.toArray()) {
-			EntityAIBase ai = ((EntityAITaskEntry) a).action;
-			if (ai instanceof EntityAINearestAttackableTarget) {
-				entity.targetTasks.removeTask(ai);
-				entity.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(entity, EntityPlayer.class, 10, false, false, player -> !predicate.test(player)));
-			}
+		if (entity instanceof EntityPigZombie) 
+			for (Object a : entity.targetTasks.taskEntries.toArray()) {
+				EntityAIBase ai = ((EntityAITaskEntry) a).action;
+				if (ai instanceof EntityAINearestAttackableTarget) { 
+					entity.targetTasks.removeTask(ai);
+					entity.targetTasks.addTask(0, new AIChangeEvents.AITargetAggressor<>(entity, EntityPlayer.class, 10, false, false, predicate));
+				}			
+		} else 
+			for (Object a : entity.targetTasks.taskEntries.toArray()) {
+				EntityAIBase ai = ((EntityAITaskEntry) a).action;
+				if (ai instanceof EntityAINearestAttackableTarget) { 
+					entity.targetTasks.removeTask(ai);
+					entity.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(entity, EntityPlayer.class, 10, false, false, player -> !predicate.test(player)));
+				}
 		}
 	}
+	
+	static class AITargetAggressor<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
+        
+        public AITargetAggressor(EntityCreature creature, Class<T> classTarget, int chance, boolean checkSight,	boolean onlyNearby, Predicate<? super T> targetSelector) {
+			super(creature, classTarget, chance, checkSight, onlyNearby, targetSelector);
+		}
+
+		public boolean shouldExecute() {
+            return ((EntityPigZombie)this.taskOwner).isAngry() && super.shouldExecute();
+        }
+    }	
 }
