@@ -92,7 +92,7 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 				NBTTagCompound itemtag = ModUtils.getTagCompound(item);
 				if (result.getTagCompound() == null) {
 					String geneName = itemtag.getString("gene");
-					if ("GeneticsRebornBasicGene".equals(geneName) || "GeneticsRebornMutatedGene".equals(geneName)) return false;
+					if ("".equals(geneName) || "GeneticsRebornBasicGene".equals(geneName) || "GeneticsRebornMutatedGene".equals(geneName)) return false;
 					EnumGenes gene = EnumGenes.fromGeneName(geneName);
 					NBTTagCompound resulttag = ModUtils.getTagCompound(result);
 					resulttag.setString("gene", geneName);
