@@ -42,9 +42,8 @@ public class SendShootDragonBreath implements IMessage {
 				public void run() {
 					net.minecraft.entity.player.EntityPlayerMP serverPlayer = ctx.getServerHandler().player;
 					long now = serverPlayer.world.getWorldTime();
-					boolean allow = GREventHandler.isInCooldown(serverPlayer, "dragonsbreath", now);
 
-					if (EnumGenes.DRAGONS_BREATH.isActive() && allow && ModUtils.getIGenes(serverPlayer) != null) {
+					if (EnumGenes.DRAGONS_BREATH.isActive() && !GREventHandler.isInCooldown(serverPlayer, "dragonsbreath", now) && ModUtils.getIGenes(serverPlayer) != null) {
 						IGenes genes = ModUtils.getIGenes(serverPlayer);
 						if (genes.hasGene(EnumGenes.DRAGONS_BREATH)) {
 							float x = -MathHelper.sin(serverPlayer.rotationYaw * 0.017453292F) * MathHelper.cos(serverPlayer.rotationPitch * 0.017453292F);
@@ -58,7 +57,7 @@ public class SendShootDragonBreath implements IMessage {
 							dragonfireball.accelerationZ = z * 0.1D;
 
 							serverPlayer.getEntityWorld().spawnEntity(dragonfireball);
-							GREventHandler.addCooldown(serverPlayer, "dragonsbreath", now, 1);							
+							GREventHandler.addCooldown(serverPlayer, "dragonsbreath", now, 100);							
 						}
 					}
 				}
