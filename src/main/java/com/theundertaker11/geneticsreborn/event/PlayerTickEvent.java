@@ -114,13 +114,9 @@ public class PlayerTickEvent {
     
     @SubscribeEvent 
     public void onDigSpeed(PlayerEvent.BreakSpeed event) {
-		EntityPlayer player = event.getEntityPlayer();
-		IGenes genes = ModUtils.getIGenes(player);
-		if (EnumGenes.EFFICIENCY.isActive()) {
-			if (genes.hasGene(EnumGenes.EFFICIENCY_4))
-				event.setNewSpeed(event.getNewSpeed() * (5 + GeneticsReborn.mutationAmp));
-			else if (genes.hasGene(EnumGenes.EFFICIENCY))
-				event.setNewSpeed(event.getNewSpeed() * 2);
+		IAttributeInstance attr = event.getEntityPlayer().getAttributeMap().getAttributeInstance(GeneticsReborn.EFFICIENCY_ATT);
+		if (EnumGenes.EFFICIENCY.isActive() && attr != null && attr.getBaseValue() > 0.0) {
+			event.setNewSpeed((float)(event.getNewSpeed() * attr.getBaseValue()));
 		}    	
     }
     
@@ -159,6 +155,13 @@ public class PlayerTickEvent {
 		IAttributeInstance attr = player.getAttributeMap().getAttributeInstance(GeneticsReborn.CLIMBING_ATT);
 		if (attr != null) attr.setBaseValue(on ? 1.0 : 0.0);
 	}
+	    
+	    
+	public static void setEfficiency(EntityPlayer player, double value) {
+		IAttributeInstance attr = player.getAttributeMap().getAttributeInstance(GeneticsReborn.EFFICIENCY_ATT);
+		if (attr != null) attr.setBaseValue(value);
+	}
+	    
 	    
 	static {
 		cyberModifierMap = HashMultimap.create();
@@ -316,12 +319,10 @@ public class PlayerTickEvent {
 		if (gene == EnumGenes.MORE_HEARTS_2) checkMoreHearts(entity, w);
 		if (entity instanceof EntityPlayer) {
 			if (gene == EnumGenes.STEP_ASSIST) changeStepAssist((EntityPlayer)entity, w, added);
-			if (gene == EnumGenes.CLIMB_WALLS) changeClimbWalls((EntityPlayer)entity, w, added);
+			if (gene == EnumGenes.CLIMB_WALLS) setWallClimbing((EntityPlayer)entity, added);
+			if (gene == EnumGenes.EFFICIENCY) setEfficiency((EntityPlayer)entity, added ? 2 : 0);
+			if (gene == EnumGenes.EFFICIENCY_4) setEfficiency((EntityPlayer)entity, added ? 5 * GeneticsReborn.mutationAmp : 0);
 		}
 	}
 
-	private static void changeClimbWalls(EntityPlayer entity, World w, boolean added) {
-		//GeneticsRebornPacketHandler.INSTANCE.sendTo(new ClientGeneChange(2, (added) ? 1 : 0), (EntityPlayerMP) entity);
-		setWallClimbing(entity, added);
-	}
 }

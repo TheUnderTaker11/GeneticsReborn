@@ -80,6 +80,14 @@ public class ComplexBrew implements IBrewingRecipe {
 			if (type == GRPotions.SUBSTRATE) 
 				return true;
 
+			if (this.inputGene != null) {
+				if ((type == GRPotions.VIRAL_POTION) && (!input.hasTagCompound() || (input.hasTagCompound() && !input.getTagCompound().hasKey("gene"))))
+					return true;
+
+				if (this.inputGene.toGeneName().equals(match)) return true;
+				else return false;
+			}
+			
 			//this is for imprinting potions with cell/helix info
 			if (this.cellType == null) {
 				if ((type == GRPotions.GROWTH_POTION) && (input.hasTagCompound() && !input.getTagCompound().hasKey("entityCodeName")))
@@ -93,7 +101,6 @@ public class ComplexBrew implements IBrewingRecipe {
 				if (this.cellType.equals("*") && match != null && !match.isEmpty()) return true;				
 			}
 			
-			if (this.inputGene != null && this.inputGene.toGeneName().equals(match)) return true;
 		}
 		return false;
 	}
@@ -119,7 +126,10 @@ public class ComplexBrew implements IBrewingRecipe {
 				if (required.contains(gene)) found++;
 			}
 			return found == required.size();
-		} else 
+		} else if (inputGene != null) {
+			NBTTagCompound tag = ingredient.getTagCompound();
+			return (tag != null && inputGene.toGeneName().equals(tag.getString("gene")));
+		}
 		  return ingredient.getItem() == item;
 	}
 

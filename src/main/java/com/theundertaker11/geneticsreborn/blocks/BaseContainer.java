@@ -58,7 +58,7 @@ public class BaseContainer extends Container {
 			if(index < VANILLA_SLOT_COUNT){
 				if(canAcceptItem(slot)){
 					if (!this.mergeItemStack(slot.getStack(), VANILLA_SLOT_COUNT, VANILLA_SLOT_COUNT + INPUT_SLOTS, false)) {
-						this.mergeItemStack(slot.getStack(), VANILLA_SLOT_COUNT, VANILLA_SLOT_COUNT + INPUT_SLOTS, false);
+						//this.mergeItemStack(slot.getStack(), VANILLA_SLOT_COUNT, VANILLA_SLOT_COUNT + INPUT_SLOTS, false);
 						return ItemStack.EMPTY;
 					}
 					else{

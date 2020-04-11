@@ -14,6 +14,7 @@ import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.brewing.IBrewingRecipe;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -54,7 +55,8 @@ public class ContainerIncubator extends BaseContainer  {
 
 	@Override
 	protected boolean canAcceptItem(Slot slot) {
-		return slot.isItemValid(slot.getStack());
+		//shouldn't be using this...
+		return false;
 	}
 	
 	@Override
@@ -63,27 +65,40 @@ public class ContainerIncubator extends BaseContainer  {
 		Slot slot = this.inventorySlots.get(index);
 
 		if(slot != null && slot.getHasStack()){
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+			itemstack = slot.getStack();
 			if(index < VANILLA_SLOT_COUNT) {
-				if(canAcceptItem(slot)){
-					if (!this.mergeItemStack(slot.getStack(), 36, 41, false)) {
-						this.mergeItemStack(slot.getStack(), 36, 41, false);
-						return ItemStack.EMPTY;
+				//first loop tries the whole stack...
+				for (int i=0; i<INPUT_SLOTS; i++) {
+					Slot inputSlot = getSlot(i);
+					if(inputSlot.isItemValid(itemstack)) {
+						if (this.mergeItemStack(itemstack, 36+i, 37+i, false)) {
+							inputSlot.onSlotChanged();
+							return itemstack;
+						}					
 					}
-					else{
-						return itemstack;
+				}
+				//second loop tries a single item
+				for (int i=0; i<INPUT_SLOTS; i++) {
+					Slot inputSlot = getSlot(i);
+					ItemStack newStack = itemstack.copy();
+					newStack.setCount(1);
+					if(inputSlot.isItemValid(newStack)) {
+						if (this.mergeItemStack(newStack, 36+i, 37+i, false)) {
+							inputSlot.onSlotChanged();
+							itemstack.shrink(1);
+							return itemstack;
+						}					
 					}
-				} else
-					return ItemStack.EMPTY;
-			} else if (!this.mergeItemStack(itemstack1, 0, VANILLA_SLOT_COUNT, false)) {
+				}
+				return ItemStack.EMPTY;
+			} else if (!this.mergeItemStack(itemstack, 0, VANILLA_SLOT_COUNT, false)) {
 				return ItemStack.EMPTY;
 			}
 
-			if (itemstack1.isEmpty()) {
+			if (itemstack.isEmpty()) {
 				slot.putStack(ItemStack.EMPTY);
 			} else {
-				slot.onSlotChanged();
+				
 			}
 		}
 		return itemstack;
@@ -123,14 +138,27 @@ public class ContainerIncubator extends BaseContainer  {
             super(inv, index, x, y);
         }
 
+    	@Override
         public boolean isItemValid(ItemStack stack) {
-            return BrewingRecipeRegistry.isValidInput(stack);
+        	//copied from registry to bypass the count == 1 check
+            for (IBrewingRecipe recipe : BrewingRecipeRegistry.getRecipes()) {
+                if (recipe.isInput(stack))
+                    return true;
+            }
+            return false;
         }
 
+    	@Override
         public int getSlotStackLimit() {
             return 1;
         }
+    	
+    	@Override
+    	public int getItemStackLimit(ItemStack stack) {
+            return 1;
+    	}
 
+    	@Override
         public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
             PotionType potiontype = PotionUtils.getPotionFromItem(stack);
 

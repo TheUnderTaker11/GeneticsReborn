@@ -32,18 +32,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GRPotions {
 
-	public static final Potion SUBSTRATE_EFFECT = new BasePotion("substrate", false, 0x17661e);
-	public static final Potion GROWTH_EFFECT = new BasePotion("growth", false, 0x95eb34);
-	public static final Potion MUTATION_EFFECT = new BasePotion("mutation", false, 0x5c0d30);
-	public static final Potion VIRAL_EFFECT = new BasePotion("viral", false, 0xd18e1b);
-	public static final Potion BLEED_EFFECT = new EffectPotion("bleed", true, 0x5c0d30, 0, 0);
-	public static final Potion CURE_EFFECT = new EffectPotion("gr_cure", true, 0xa83283, 1, 0);
+	public static final Potion SUBSTRATE_EFFECT = new BasePotion("geneticsreborn:substrate", false, 0x17661e);
+	public static final Potion GROWTH_EFFECT = new BasePotion("geneticsreborn:growth", false, 0x95eb34);
+	public static final Potion MUTATION_EFFECT = new BasePotion("geneticsreborn:mutation", false, 0x5c0d30);
+	public static final Potion VIRAL_EFFECT = new BasePotion("geneticsreborn:viral", false, 0xd18e1b);
+	public static final Potion BLEED_EFFECT = new EffectPotion("geneticsreborn:bleed", true, 0x5c0d30, 0, 0);
+	public static final Potion CURE_EFFECT = new EffectPotion("geneticsreborn:cure", true, 0xa83283, 1, 0);
 	
-	public static final PotionType SUBSTRATE = new PotionType("substrate", new PotionEffect[] {new PotionEffect(SUBSTRATE_EFFECT, 0)}).setRegistryName("substrate");
-	public static final PotionType GROWTH_POTION = new PotionType("growth", new PotionEffect[] {new PotionEffect(GROWTH_EFFECT, 0)}).setRegistryName("growth");
-	public static final PotionType MUTATION_POTION = new PotionType("mutation", new PotionEffect[] {new PotionEffect(MUTATION_EFFECT, 0)}).setRegistryName("mutation");
-	public static final PotionType VIRAL_POTION = new PotionType("viral", new PotionEffect[] {new PotionEffect(VIRAL_EFFECT, 0)}).setRegistryName("viral");
-	public static final PotionType CURE_POTION = new PotionType("gr_cure", new PotionEffect[] {new PotionEffect(CURE_EFFECT, 1200)}).setRegistryName("gr_cure");
+	public static final PotionType SUBSTRATE = new PotionType("geneticsreborn:substrate", new PotionEffect[] {new PotionEffect(SUBSTRATE_EFFECT, 0)}).setRegistryName("geneticsreborn:substrate");
+	public static final PotionType GROWTH_POTION = new PotionType("geneticsreborn:growth", new PotionEffect[] {new PotionEffect(GROWTH_EFFECT, 0)}).setRegistryName("geneticsreborn:growth");
+	public static final PotionType MUTATION_POTION = new PotionType("geneticsreborn:mutation", new PotionEffect[] {new PotionEffect(MUTATION_EFFECT, 0)}).setRegistryName("geneticsreborn:mutation");
+	public static final PotionType VIRAL_POTION = new PotionType("geneticsreborn:viral", new PotionEffect[] {new PotionEffect(VIRAL_EFFECT, 0)}).setRegistryName("geneticsreborn:viral");
+	public static final PotionType CURE_POTION = new PotionType("geneticsreborn:cure", new PotionEffect[] {new PotionEffect(CURE_EFFECT, 1200)}).setRegistryName("geneticsreborn:cure");
 
 	public static void init() {
 		ForgeRegistries.POTIONS.register(SUBSTRATE_EFFECT);

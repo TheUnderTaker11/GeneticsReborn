@@ -12,8 +12,8 @@ public class ContainerCoalGenerator extends BaseContainer {
 
     public ContainerCoalGenerator(InventoryPlayer player, GRTileEntityCoalGenerator te) {
         super();
-        addSlotToContainer(new SlotItemHandler(te.inventory, 0, 52, 34));
         attachPlayerInventory(player);
+        addSlotToContainer(new SlotItemHandler(te.inventory, 0, 52, 34));
     }
 
     @Override

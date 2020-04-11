@@ -4,18 +4,25 @@ import java.util.Random;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
+import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.proxy.GuiProxy;
+import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class Incubator extends StorageBlockBase {
 	private boolean advanced;
@@ -36,8 +43,50 @@ public class Incubator extends StorageBlockBase {
 	}
 	
 	@Override
+	public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return getStrongPower(blockState, blockAccess, pos, side);
+	}
+	
+	@Override
+	public int getStrongPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		//side is the side of the block facing me...so a hopper under me reports "up"
+		if (side == EnumFacing.UP) return 0;
+		TileEntity te = blockAccess.getTileEntity(pos);
+		if (te instanceof GRTileEntityIncubator) {
+			return ((GRTileEntityIncubator) te).isBrewComplete() ? 15 : 0;
+		}
+		return 0;
+	}
+	
+	@Override
+	public boolean canProvidePower(IBlockState state) {
+		return true;
+	}
+	
+	private void dropItem(TileEntity te, ItemStack stack) {
+		if (stack.isEmpty()) return;
+		EntityItem entityinput = new EntityItem(te.getWorld(), te.getPos().getX(), te.getPos().getY(), te.getPos().getZ(), stack);
+		te.getWorld().spawnEntity(entityinput);		
+	}
+	
+	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		// TODO Drop all items...
+		TileEntity tile = worldIn.getTileEntity(pos);
+		if (tile != null && tile instanceof GRTileEntityIncubator) {
+			GRTileEntityIncubator tileInventory = (GRTileEntityIncubator)tile;
+			IItemHandler itemhandlerfuel = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
+			IItemHandler itemhandlerinput = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			IItemHandler itemhandleringredient = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+			
+			dropItem(tileInventory, itemhandlerfuel.getStackInSlot(0));
+			dropItem(tileInventory, itemhandlerinput.getStackInSlot(0));
+			dropItem(tileInventory, itemhandlerinput.getStackInSlot(1));
+			dropItem(tileInventory, itemhandlerinput.getStackInSlot(2));
+			dropItem(tileInventory, itemhandleringredient.getStackInSlot(0));
+		}
+		for (EnumFacing enumfacing : EnumFacing.values())
+            worldIn.neighborChanged(pos.offset(enumfacing), this, pos);
+        
 		super.breakBlock(worldIn, pos, state);
 	}
 	

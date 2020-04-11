@@ -8,6 +8,7 @@ import com.theundertaker11.geneticsreborn.potions.GRPotions;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
@@ -49,6 +50,15 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
 		return brewComplete;
 	}
 
+	private void setBrewComplete(boolean v) {
+		this.brewComplete = v;
+		
+		if (!world.isRemote) 
+			for (EnumFacing enumfacing : EnumFacing.values())
+				world.neighborChanged(pos.offset(enumfacing), world.getBlockState(pos).getBlock(), pos);
+		
+	}
+	
 	public boolean isLowTemp() {
 		return lowTemp;
 	}
@@ -83,7 +93,7 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
 	}
 	
 	private void finishBrew() {
-		brewComplete = true;
+		setBrewComplete(true);		
 		ItemStack ingredient = ingredientStackHandler.getStackInSlot(0);	
 		ItemStack input = inputStackHandler.getStackInSlot(0);	
 		PotionType pot = PotionUtils.getPotionFromItem(input);
@@ -146,7 +156,7 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
 		super.readFromNBT(compound);
 		advanced = compound.getBoolean("advanced");
 		lowTemp = compound.getBoolean("lowTemp");
-		brewComplete = compound.getBoolean("complete");
+		setBrewComplete(compound.getBoolean("complete"));
 		ingredientStackHandler.deserializeNBT(compound.getCompoundTag("ingredients"));
 		fuelStackHandler.deserializeNBT(compound.getCompoundTag("fuel"));
 		guiStackHandler.deserializeNBT(compound.getCompoundTag("potions"));
@@ -162,7 +172,7 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
             	for (int i = 0; i < stacks.size(); i++) {
                     if (!stacks.get(i).isEmpty()) empty = false;
                 }
-            	if (empty) brewComplete = false;
+            	if (empty) setBrewComplete(false);
             }
         }
 
@@ -189,7 +199,7 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
     };
     
     //these are the output slots, you cannot insert, but can only extract when the brew is complete.
-    private ItemStackHandler outputStackHandler = new ItemStackHandler(3) {
+    private ItemStackHandler outputStackHandler =  new ItemStackHandlerControl(guiStackHandler) {
 
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -208,7 +218,7 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
         @Override
         protected void onContentsChanged(int slot) {
             markDirty();
-            brewComplete = false;
+            setBrewComplete(false);
         }
     };
     
@@ -236,7 +246,13 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
             if (facing == EnumFacing.UP) return (T) ingredientStackHandler;
             if (facing == EnumFacing.DOWN) return (T) outputStackHandler;
             
-            EnumFacing blockFacing = world.getBlockState(getPos()).getValue(StorageBlockBase.FACING);
+            //if the block is being destroyed, the block is already air, 
+            //so we cannot get the facing, so N, S, E, W all return the fuelSlot,
+            //use "null" to get the input slots
+            IBlockState bs = world.getBlockState(getPos());
+            if (bs.getBlock() == Blocks.AIR) return (T) fuelStackHandler;
+            
+            EnumFacing blockFacing = bs.getValue(StorageBlockBase.FACING);
             if (blockFacing == EnumFacing.NORTH || blockFacing == EnumFacing.SOUTH) {
             	if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) return (T) inputStackHandler;
             	if (facing == EnumFacing.NORTH || facing == EnumFacing.SOUTH) return (T) fuelStackHandler;
@@ -260,7 +276,7 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
 
 	public void setField(int id, int value) {
 		if (id == TEMP_FIELD_ID) setTemp(value == 1);
-		else if (id == BREW_FIELD_ID) this.brewComplete = value == 1;
+		else if (id == BREW_FIELD_ID) setBrewComplete(value == 1);
 		else super.setField(id, value);		
 	}    
 }

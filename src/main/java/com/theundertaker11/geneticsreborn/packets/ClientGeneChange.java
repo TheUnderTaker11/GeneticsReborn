@@ -17,7 +17,7 @@ public class ClientGeneChange implements IMessage {
 	public static final List<UUID> climbingPlayers = new ArrayList<UUID>();  
 	
 	private float new_value;
-	private int gene;  //1 = step height, 2 = climb walls
+	private int gene;  //1 = step height
 	
 	public ClientGeneChange() {
 	}
@@ -44,17 +44,17 @@ public class ClientGeneChange implements IMessage {
 		@Override
 		public IMessage onMessage(final ClientGeneChange message, final MessageContext ctx) {
 		    if (ctx.side != Side.CLIENT) {
-		        GeneticsReborn.log.error("StepHeightChange received on wrong side:" + ctx.side);
+		        GeneticsReborn.log.error("GeneChange received on wrong side:" + ctx.side);
 		        return null;
 		    }		    
 
 		    EntityPlayer player = GeneticsReborn.proxy.getClientPlayer();
-		    if (message.gene == 1) {
+		    switch (message.gene) {
+		    case 1: 
 			    player.stepHeight = message.new_value;
-		    } else if (message.gene == 2){
-		    	if (message.new_value == 0.0) climbingPlayers.remove(player.getUniqueID());
-		    	else climbingPlayers.add(player.getUniqueID());
+			    break;
 		    }
+		    
 		    return null;
 		}
 	}

@@ -55,7 +55,9 @@ public class GeneticsReborn {
 	public static final DamageSource VIRUS_DAMAGE = new DamageSource("virus").setDamageAllowedInCreativeMode().setDamageBypassesArmor().setDamageIsAbsolute();
 	
 	public static final String CLIMBING_ATT_NAME = "geneticsreborn.climbing";
+	public static final String EFFICIENCY_ATT_NAME = "geneticsreborn.efficiency";
 	public static final IAttribute CLIMBING_ATT = (new RangedAttribute((IAttribute)null, CLIMBING_ATT_NAME, 0.0d,0.0d,1.0d)).setDescription("Wall Climbing").setShouldWatch(true);
+	public static final IAttribute EFFICIENCY_ATT = (new RangedAttribute((IAttribute)null, EFFICIENCY_ATT_NAME, 0.0d,0.0d,100000.0d)).setDescription("Efficiency").setShouldWatch(true);
 	
     @EventHandler
     public void serverStarting (FMLServerStartingEvent event) {

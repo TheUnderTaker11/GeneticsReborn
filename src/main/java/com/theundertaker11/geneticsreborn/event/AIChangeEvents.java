@@ -33,6 +33,8 @@ public class AIChangeEvents {
 			AbstractAttributeMap map = ((EntityPlayer)e).getAttributeMap();
 			if (map.getAttributeInstance(GeneticsReborn.CLIMBING_ATT) == null)
 				map.registerAttribute(GeneticsReborn.CLIMBING_ATT);
+			if (map.getAttributeInstance(GeneticsReborn.EFFICIENCY_ATT) == null)
+				map.registerAttribute(GeneticsReborn.EFFICIENCY_ATT);
 		}
 
 		if (e instanceof EntityCreeper) attachScareTask(event, (EntityCreature) event.getEntity(), this::hasCreeperGene);
