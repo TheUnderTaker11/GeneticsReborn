@@ -97,6 +97,7 @@ public class ComplexBrew implements IBrewingRecipe {
 				if (type == PotionTypes.MUNDANE) 
 					return true;
 			} else {
+				if (type == GRPotions.VIRAL_POTION) return true;
 				if (this.cellType.equals(match)) return true;
 				if (this.cellType.equals("*") && match != null && !match.isEmpty()) return true;				
 			}
@@ -129,8 +130,12 @@ public class ComplexBrew implements IBrewingRecipe {
 		} else if (inputGene != null) {
 			NBTTagCompound tag = ingredient.getTagCompound();
 			return (tag != null && inputGene.toGeneName().equals(tag.getString("gene")));
-		}
-		  return ingredient.getItem() == item;
+		} else if (cellType != null) {
+			if (ingredient.getItem() == GRItems.DNAHelix) {
+				return ingredient.getTagCompound().getString("gene").equals(cellType);
+			}
+		} 
+		return ingredient.getItem() == item;
 	}
 
 	@Override

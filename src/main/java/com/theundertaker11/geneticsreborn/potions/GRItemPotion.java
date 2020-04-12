@@ -36,14 +36,17 @@ public class GRItemPotion extends ItemPotion {
 			items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.SUBSTRATE));
 			items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.MUTATION_POTION));
 			items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.VIRAL_POTION));
+			items.add(PotionUtils.addPotionToItemStack(new ItemStack(this), GRPotions.CURE_POTION));
 		}
 	}
 	
 	@Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
     {
-        ItemStack itemstack = playerIn.getHeldItem(handIn);
+		ItemStack itemstack = playerIn.getHeldItem(handIn);
         PotionType potion = PotionUtils.getPotionFromItem(itemstack);
+        
+        if (potion == GRPotions.CURE_POTION) return super.onItemRightClick(worldIn, playerIn, handIn);
         
         if (potion != GRPotions.GROWTH_POTION && potion != GRPotions.MUTATION_POTION) 
         	return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);

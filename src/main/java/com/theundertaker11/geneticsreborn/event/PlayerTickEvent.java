@@ -321,7 +321,7 @@ public class PlayerTickEvent {
 			if (gene == EnumGenes.STEP_ASSIST) changeStepAssist((EntityPlayer)entity, w, added);
 			if (gene == EnumGenes.CLIMB_WALLS) setWallClimbing((EntityPlayer)entity, added);
 			if (gene == EnumGenes.EFFICIENCY) setEfficiency((EntityPlayer)entity, added ? 2 : 0);
-			if (gene == EnumGenes.EFFICIENCY_4) setEfficiency((EntityPlayer)entity, added ? 5 * GeneticsReborn.mutationAmp : 0);
+			if (gene == EnumGenes.EFFICIENCY_4) setEfficiency((EntityPlayer)entity, added ? 5 * (1+GeneticsReborn.mutationAmp) : 0);
 		}
 	}
 

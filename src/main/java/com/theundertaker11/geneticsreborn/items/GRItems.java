@@ -24,7 +24,6 @@ public class GRItems {
 	public static Item Plasmid;
 	public static Item ViralPotion;
 	public static Item GRPotion;
-	public static Item GRSplashPotion;
 	
 	public static void init() {
 		GlassSyringe = register(new GlassSyringe("glasssyringe"));

@@ -66,11 +66,11 @@ public class GRPotions {
 				PotionUtils.addPotionToItemStack(new ItemStack(GRItems.GRPotion), GROWTH_POTION)));
 
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(VIRAL_POTION, GRItems.DNAHelix, EnumGenes.EMERALD_HEART.toGeneName(),  
-				PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), CURE_POTION)));
+				PotionUtils.addPotionToItemStack(new ItemStack(GRItems.GRPotion), CURE_POTION)));
 
-		BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), CURE_POTION), 
+		BrewingRecipeRegistry.addRecipe(PotionUtils.addPotionToItemStack(new ItemStack(GRItems.GRPotion), CURE_POTION), 
 				new ItemStack(Items.GUNPOWDER, 1),
-				PotionUtils.addPotionToItemStack(new ItemStack(Items.SPLASH_POTION), CURE_POTION));
+				PotionUtils.addPotionToItemStack(new ItemStack(GRItems.ViralPotion), CURE_POTION));
 		
 		//create more cells
 		BrewingRecipeRegistry.addRecipe(new ComplexBrew(SUBSTRATE, GRItems.Cell, null,  

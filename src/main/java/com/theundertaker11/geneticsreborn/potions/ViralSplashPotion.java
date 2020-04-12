@@ -1,6 +1,7 @@
 package com.theundertaker11.geneticsreborn.potions;
 
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +43,7 @@ public class ViralSplashPotion extends ItemSplashPotion {
     {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
 		EnumGenes gene = getGene(itemstack);
-		if (gene == null) return super.onItemRightClick(worldIn, playerIn, handIn);
+		if (gene == null && itemstack.getItem() != GRItems.ViralPotion) return super.onItemRightClick(worldIn, playerIn, handIn);
 		
         ItemStack itemstack1 = playerIn.capabilities.isCreativeMode ? itemstack.copy() : itemstack.splitStack(1);
         worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_SPLASH_POTION_THROW, SoundCategory.PLAYERS, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));

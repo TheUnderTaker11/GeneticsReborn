@@ -53,7 +53,7 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
 	private void setBrewComplete(boolean v) {
 		this.brewComplete = v;
 		
-		if (!world.isRemote) 
+		if (world != null && !world.isRemote) 
 			for (EnumFacing enumfacing : EnumFacing.values())
 				world.neighborChanged(pos.offset(enumfacing), world.getBlockState(pos).getBlock(), pos);
 		
