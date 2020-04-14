@@ -92,7 +92,7 @@ public class CommandTree extends CommandTreeBase {
                 break;
             case "@a": //select all players
                 for(EntityLivingBase player : server.getPlayerList().getPlayers()) {targets.add(player);}
-                if(targets.size() == 0) throw new CommandException("No player found"); //CHECK LATER
+                if(targets.size() == 0) throw new CommandException("No player found");
                 break;
             case "@r": //select a random player
                 temp = server.getPlayerList().getPlayers();
