@@ -26,43 +26,44 @@ public class CommandRemove extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-        if (args.length >= 2) {
-        	EntityLivingBase entity;
-        	IGenes genes;
-        	if ("@p".equals(args[0])) {
-        		entity = (EntityLivingBase) sender.getCommandSenderEntity();
-        	} else {
-        		entity = server.getPlayerList().getPlayerByUsername(args[0]);
-        	}
-        	if (entity == null) throw new CommandException("Player not found: "+args[0]);
+		List<EntityLivingBase> entities;
+		IGenes genes;
+		int count = 0;
 
-        	if ("all".equals(args[1])) {
-    			genes = ModUtils.getIGenes(entity);
-            	for (EnumGenes g : genes.getGeneList()) 
-            		if (genes.hasGene(g)) PlayerTickEvent.geneChanged(entity, g, false);
-    			genes.removeAllGenes();
-    			sender.sendMessage(new TextComponentString("Removed all genes from " + sender.getName()));
-        	} else {
-    			genes = ModUtils.getIGenes(entity);
-            	for (int i=1; i< args.length;i++) {
-            		EnumGenes gene = EnumGenes.fromGeneName(args[i]);
-            		if (gene == null) throw new CommandException("No gene found named: "+args[i]);
-            		if (genes.hasGene(gene)) {
-                		genes.removeGene(gene);
-            			PlayerTickEvent.geneChanged(entity, gene, false);
-            		}
-        			sender.sendMessage(new TextComponentString(String.format("Removed %d genes from %s",  args.length-1, sender.getName())));
-            	}
-        	}
-        } else 
-            throw new WrongUsageException(this.getUsage(sender));
+		if (args.length >= 2) {
+			entities = CommandTree.getTargets(server, args[0], sender);
+			for(EntityLivingBase entity : entities) {
+				genes = ModUtils.getIGenes(entity);
+				if ("all".equals(args[1])) {
+					for (EnumGenes g : genes.getGeneList())
+						PlayerTickEvent.geneChanged(entity, g, false);
+					genes.removeAllGenes();
+					sender.sendMessage(new TextComponentString("Removed all genes from " + entity.getName()));
+					if(sender.getName() != entity.getName()) entity.sendMessage(new TextComponentString("Removed all genes from you"));
+				} else {
+					for (int i = 1; i < args.length; i++) {
+						EnumGenes gene = EnumGenes.fromGeneName(args[i]);
+						if (gene == null){
+							sender.sendMessage(new TextComponentString("No gene found named " + args[i] + ", so not removed"));
+						} else if (genes.hasGene(gene)) {
+							genes.removeGene(gene);
+							PlayerTickEvent.geneChanged(entity, gene, false);
+							count++;
+						}
+					}
+					sender.sendMessage(new TextComponentString(String.format("Removed %d genes from %s", count, entity.getName())));
+					if(sender.getName() != entity.getName()) entity.sendMessage(new TextComponentString(String.format("Removed %d genes from you",  count)));
+				}
+			}
+		} else
+			throw new WrongUsageException(this.getUsage(sender));
 	}
 
 	@Override
 	public String getUsage(ICommandSender sender) {
 		return "/" + Reference.MODID + " remove <player> all | <gene_name>...";
 	}
-	
+
 	@Override
 	public int getRequiredPermissionLevel() {
 		return 2;
@@ -70,7 +71,7 @@ public class CommandRemove extends CommandBase {
 
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args,	BlockPos targetPos) {
-		return CommandTree.getTabCompletions(server, args);
+		return CommandTree.getTabCompletions(server, args, this.getName());
 	}
 
 }
