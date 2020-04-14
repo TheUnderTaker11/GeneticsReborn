@@ -45,13 +45,15 @@ public class CommandAdd extends CommandBase {
 				} else {
 					for (int i = 1; i < args.length; i++) {
 						EnumGenes gene = EnumGenes.fromGeneName(args[i]);
-						if (gene == null) {
-							sender.sendMessage(new TextComponentString("No gene found named " + args[i] + ", so not added"));
-						}else if (!genes.hasGene(gene)) {
+						if (gene == null) //if no gene with name requested
+							sender.sendMessage(new TextComponentString("No gene found called " + args[i] + ", so not added"));
+						else if (!genes.hasGene(gene)) { //add gene
 							PlayerTickEvent.geneChanged(entity, gene, true);
 							genes.addGene(gene);
 							count++;
 						}
+						else //if player already has requested gene
+							sender.sendMessage(new TextComponentString(String.format("%s already has %s, so not added", entity.getName(), args[i])));
 					}
 					sender.sendMessage(new TextComponentString(String.format("Added %d genes to %s",  count, entity.getName())));
 					if(sender.getName() != entity.getName()) entity.sendMessage(new TextComponentString(String.format("Added %d genes to you",  count)));

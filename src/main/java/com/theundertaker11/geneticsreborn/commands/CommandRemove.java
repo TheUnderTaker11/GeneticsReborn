@@ -43,13 +43,15 @@ public class CommandRemove extends CommandBase {
 				} else {
 					for (int i = 1; i < args.length; i++) {
 						EnumGenes gene = EnumGenes.fromGeneName(args[i]);
-						if (gene == null){
-							sender.sendMessage(new TextComponentString("No gene found named " + args[i] + ", so not removed"));
-						} else if (genes.hasGene(gene)) {
+						if (gene == null) //if no gene with name requested
+							sender.sendMessage(new TextComponentString("No gene found called " + args[i] + ", so not removed"));
+						else if (genes.hasGene(gene)) { //remove gene
 							genes.removeGene(gene);
 							PlayerTickEvent.geneChanged(entity, gene, false);
 							count++;
 						}
+						else //if player doesn't have requested gene
+							sender.sendMessage(new TextComponentString(String.format("%s doesn't have %s, so not removed", entity.getName(), args[i])));
 					}
 					sender.sendMessage(new TextComponentString(String.format("Removed %d genes from %s", count, entity.getName())));
 					if(sender.getName() != entity.getName()) entity.sendMessage(new TextComponentString(String.format("Removed %d genes from you",  count)));
