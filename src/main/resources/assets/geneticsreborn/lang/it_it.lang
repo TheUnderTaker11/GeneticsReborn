@@ -1,0 +1,49 @@
+itemGroup.GRtab=Genetics Reborn
+
+item.debugger.name=Strumento di Debug
+item.glasssyringe.name=Siringa di Vetro
+item.glasssyringeFull.name=Siringa di Vetro (Piena)
+item.plasmid.name=Plasmide di DNA
+item.metalscraper.name=Campionatore in Ferro
+item.advancedscraper.name=Campionatore Avanzato
+item.organicmatter.name=Materia Organica
+item.cell.name=Cellula
+item.overclocker.name=Overclocker
+item.dragonhealthcrystal.name=Cristallo di Vita per Draghi
+item.dnahelix.name=Elica di DNA
+item.antiplasmid.name=Anti-Plasminde
+item.metalsyringe.name=Siringa Metallica
+item.antifield.name=Sfera Anti-Campo
+
+tile.cellanalyser.name=Analizzatore Cellulare
+tile.dnaextractor.name=Estrattore di DNA
+tile.dnadecrypter.name=Decrittatore di DNA
+tile.plasmidinfuser.name=Infusore di Plasmidi
+tile.bloodpurifier.name=Purificatore
+tile.plasmidinjector.name=Iniettore di Plasmidi
+tile.cloningmachine.name=Macchina di Clonazione
+tile.antifieldblock.name=Blocco Anti-Campo
+tile.coalgenerator.name=Generatore a Carbone
+
+tile.incubator.name=Incubatore
+tile.advincubator.name=Incubatore Avanzato
+tile.airdispersal.name=Dispositivo di Dispersione Aerea
+
+potion.effect.geneticsreborn:substrate=Substrato Organico
+potion.effect.geneticsreborn:growth=Pozione di Crescita Cellulare
+potion.effect.geneticsreborn:mutation=Pozione di Mutazione
+potion.effect.geneticsreborn:viral=Bottiglia di Agenti Virali
+effect.geneticsreborn:substrate=Nessun Effetto
+effect.geneticsreborn:growth=Farina d'Ossa Potenziata
+effect.geneticsreborn:mutation=Terra Maledetta
+effect.geneticsreborn:viral=Nessun Effetto
+potion.viral.name=Virus:
+effect.geneticsreborn:cure=Protezione dal Virus
+potion.effect.geneticsreborn:cure=La Cura
+splash_potion.effect.geneticsreborn:cure=La Cura
+splash_potion.effect.geneticsreborn:substrate=Substrato Organico
+splash_potion.effect.geneticsreborn:growth=Pozione di Crescita Cellulare
+splash_potion.effect.geneticsreborn:mutation=Pozione di Mutazione
+splash_potion.effect.geneticsreborn:viral=Bottiglia di Agenti Virali
+death.attack.virus=%s è morto di Infezione
+death.attack.virus.player=%1$s è stato ucciso da %2$s con degli agenti virali
