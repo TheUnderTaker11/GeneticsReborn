@@ -16,7 +16,8 @@ Current Mod dev/maintainer (1.12+)- ClubPetey
 Other Dev who ported to 1.12- abused_master
 Block texture artist- NanoHeart    
 Some Ideas/Suggestions- mcpecommander    
-German Translation- ACGaming    
+German Translation- ACGaming  
+Italian Translation - FrancescoZucca
 
 
 ## Disclaimer:    
