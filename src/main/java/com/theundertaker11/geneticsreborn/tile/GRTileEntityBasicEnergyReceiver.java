@@ -122,7 +122,7 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity {
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {//||capability==CapabilityEnergy.ENERGY) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {  //||capability==CapabilityEnergy.ENERGY) {
             return true;
         } else if (capability == CapabilityEnergy.ENERGY) {
             return true;

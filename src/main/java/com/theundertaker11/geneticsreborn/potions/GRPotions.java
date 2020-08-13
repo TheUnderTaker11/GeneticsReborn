@@ -205,8 +205,12 @@ public class GRPotions {
 
 	private void cureEntity(EntityLivingBase e) {
 		IGenes genes = ModUtils.getIGenes(e);
-		for (EnumGenes gene : genes.getGeneList())
+		for (int i = genes.getGeneNumber()-1; i >= 0 ; i--) {
+			EnumGenes gene = genes.getGeneList().get(i);
 			if (gene.isNegative()) genes.removeGene(gene);
+		}
+			
+			
 	}
 
 

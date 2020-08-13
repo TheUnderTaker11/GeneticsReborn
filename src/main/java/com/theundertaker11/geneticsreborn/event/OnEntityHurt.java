@@ -94,8 +94,11 @@ public class OnEntityHurt {
 			//handle thorns
 			if (EnumGenes.THORNS.isActive() && genes.hasGene(EnumGenes.THORNS) && 
 			(!isPlayer || ((EntityPlayer)entity).inventory.armorInventory.get(2) == ItemStack.EMPTY)) {
-				DamageSource dmgThorns = DamageSource.causeThornsDamage((EntityPlayer) event.getEntityLiving());
-				event.getSource().getTrueSource().attackEntityFrom(dmgThorns, GeneticsReborn.thornsDamage);
+				
+				DamageSource dmgThorns = DamageSource.causeThornsDamage((EntityPlayer) entity);
+				//Issue #187 - Don't damage yourself
+				if (event.getSource().getTrueSource() != entity)
+					event.getSource().getTrueSource().attackEntityFrom(dmgThorns, GeneticsReborn.thornsDamage);
 			}
 			
 			//handle claws (bleed)

@@ -1,5 +1,6 @@
 package com.theundertaker11.geneticsreborn.potions;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
@@ -14,7 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
-import scala.actors.threadpool.Arrays;
 
 public class ComplexBrew implements IBrewingRecipe {
 	private PotionType pot;

@@ -183,7 +183,6 @@ public class MobToGeneRegistry {
 
 	public static void registerMoCreatures() {
 		//Mo'Creatures mod mobs
-		registerMob(new MobToGeneObject("MoCEntityFly", EnumGenes.FLY));
 		registerMob(new MobToGeneObject("MoCEntityAnchovy", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("MoCEntityAngelFish", EnumGenes.WATER_BREATHING));
 		registerMob(new MobToGeneObject("MoCEntityAngler", new EnumGenes[] {EnumGenes.WATER_BREATHING, EnumGenes.BIOLUMIN}));

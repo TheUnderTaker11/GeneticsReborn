@@ -29,7 +29,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -49,15 +48,39 @@ public class OnWorldTickEvent {
 		if (event.phase != Phase.START || event.world.isRemote) return;
 		checkFlight(event);
 		
-		for (Entity ent : ImmutableList.copyOf(event.world.loadedEntityList)) {
+		World w = event.world;
+		for (Entity ent : ImmutableList.copyOf(w.loadedEntityList)) {
 			if (ent instanceof EntityLivingBase) {
 				EntityLivingBase e = (EntityLivingBase)ent;
 				IGenes genes = ModUtils.getIGenes(e);
-				if (genes.getGeneNumber() > 0  && !e.isDead) worldTickGeneLogic(genes, e, event.world);
+				if (genes.getGeneNumber() > 0  && !e.isDead) worldTickGeneLogic(genes, e, w);
+				
+				//BIOLUMIN gene check
+				if (!EnumGenes.BIOLUMIN.isActive()) continue;
+				if (!e.isDead && GRTileEntityLightBlock.needsLight(e)) {
+				      BlockPos loc = new BlockPos(
+				              MathHelper.floor(e.posX), 
+				              MathHelper.floor(e.posY - 0.2D - e.getYOffset()), 
+				              MathHelper.floor(e.posZ))
+				    		  .up();
+				      Block block = w.getBlockState(loc).getBlock();
+				
+				      if (block == GRBlocks.lightBlock)
+				    	  continue;
+				      else if (block == Blocks.AIR)
+				          placeLightBlock(e, loc);
+				      else {
+				    	  loc = loc.up();
+				          block = w.getBlockState(loc).getBlock();
+				          
+				          if (block == Blocks.AIR)
+				              placeLightBlock(e, loc);
+				     }
+				}
+				
 			}
 		}			
 		
-        trackLightBlocks(event.world);
 	}
 	
 
@@ -94,31 +117,6 @@ public class OnWorldTickEvent {
 		}		
 	}
 
-
-
-	
-	private static final void trackLightBlocks(World w) {
-        for (EntityLivingBase e : w.getEntities(EntityLivingBase.class, EntitySelectors.IS_ALIVE)) {
-			if (GRTileEntityLightBlock.needsLight(e)) {
-			      BlockPos loc = new BlockPos(
-			              MathHelper.floor(e.posX), 
-			              MathHelper.floor(e.posY - 0.2D - e.getYOffset()), 
-			              MathHelper.floor(e.posZ))
-			    		  .up();
-			      Block block = w.getBlockState(loc).getBlock();
-			
-			      if (block == Blocks.AIR)
-			          placeLightBlock(e, loc);
-			      else {
-			    	  loc = loc.up();
-			          block = w.getBlockState(loc).getBlock();
-			          
-			          if (block == Blocks.AIR)
-			              placeLightBlock(e, loc);
-			     }
-			}
-      	}
-	}
 
 	private static void placeLightBlock(EntityLivingBase entity, BlockPos pos) {
 		entity.world.setBlockState(pos, GRBlocks.lightBlock.getDefaultState());

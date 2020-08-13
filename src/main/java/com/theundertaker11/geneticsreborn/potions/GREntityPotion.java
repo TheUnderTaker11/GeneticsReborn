@@ -88,15 +88,19 @@ public class GREntityPotion extends EntityPotion {
             
         	//special handling for viral potions
             if (blastRange != 0.0) this.makeAreaOfEffectCloud(itemstack, potiontype);
-            this.applySplash(result, list);
-
-            int i = potiontype.hasInstantEffect() ? 2007 : 2002;
-            this.world.playEvent(i, new BlockPos(this), PotionUtils.getColor(itemstack));
+            if (result.typeOfHit != RayTraceResult.Type.MISS) {
+            	BlockPos pos = (result.typeOfHit == RayTraceResult.Type.BLOCK) ? result.getBlockPos() : 
+            		result.entityHit.getPosition();
+	            this.applySplash(pos, list);
+	
+	            int i = potiontype.hasInstantEffect() ? 2007 : 2002;
+	            this.world.playEvent(i, new BlockPos(this), PotionUtils.getColor(itemstack));
+            }
             this.setDead();
         }
     }	
 	
-    private void applySplash(RayTraceResult rayTrace, List<PotionEffect> potionEffects) {
+    private void applySplash(BlockPos pos, List<PotionEffect> potionEffects) {
     	if (blastRange > 0.0) {
 	        AxisAlignedBB aabb = this.getEntityBoundingBox().grow(blastRange, blastRange * 0.667, blastRange);
 	        List<EntityLivingBase> list = this.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLivingBase.class, aabb);
@@ -111,10 +115,10 @@ public class GREntityPotion extends EntityPotion {
 	        }
     	} else {
     		//single target block
-    		if (rayTrace.getBlockPos() == BlockPos.ORIGIN) return;
+    		if (pos == null || pos == BlockPos.ORIGIN) return;
     		PotionEffect effect = potionEffects.get(0);
-    		if (effect.getPotion() == GRPotions.GROWTH_EFFECT) applyGrowth(rayTrace.getBlockPos());
-    		if (effect.getPotion() == GRPotions.MUTATION_EFFECT) applyMutation(rayTrace.getBlockPos());
+    		if (effect.getPotion() == GRPotions.GROWTH_EFFECT) applyGrowth(pos);
+    		if (effect.getPotion() == GRPotions.MUTATION_EFFECT) applyMutation(pos);
     	}
     }
     

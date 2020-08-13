@@ -184,6 +184,7 @@ public class GRTileEntityAirDispersal extends GRTileEntityBasicEnergyReceiver im
     
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+    	if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing == EnumFacing.DOWN) return false;    	
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)  return true;
         else if (capability == CapabilityEnergy.ENERGY) return true;
         return super.hasCapability(capability, facing);

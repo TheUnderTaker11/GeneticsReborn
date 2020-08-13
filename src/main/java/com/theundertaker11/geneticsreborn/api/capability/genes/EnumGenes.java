@@ -185,7 +185,8 @@ public enum EnumGenes {
 		case MEATY_2 : return genes.hasGene(MEATY) || syringeGenes.hasGene(MEATY);
 		case MORE_HEARTS_2: return genes.hasGene(MORE_HEARTS) || syringeGenes.hasGene(MORE_HEARTS);
 		case INVISIBLE : return true;
-		case FLY : return genes.hasGene(JUMP_BOOST) || genes.hasGene(TELEPORTER) || syringeGenes.hasGene(JUMP_BOOST) || syringeGenes.hasGene(TELEPORTER);
+		case FLY : return genes.hasGene(JUMP_BOOST) || genes.hasGene(TELEPORTER) || genes.hasGene(NO_FALL_DAMAGE) || 
+				syringeGenes.hasGene(JUMP_BOOST) || syringeGenes.hasGene(TELEPORTER) || syringeGenes.hasGene(NO_FALL_DAMAGE);
 		case LUCK : return true;
 		case SCARE_ZOMBIES: return genes.hasGene(SCARE_CREEPERS) || syringeGenes.hasGene(SCARE_CREEPERS);
 		case SCARE_SPIDERS: return genes.hasGene(SCARE_SKELETONS) || syringeGenes.hasGene(SCARE_SKELETONS);
@@ -193,6 +194,7 @@ public enum EnumGenes {
 		case CLAWS_2: return genes.hasGene(CLAWS) || syringeGenes.hasGene(CLAWS);
 		default: return true;
 		}
+		
 	}
 
 	public static final int getNumberNeeded(EnumGenes gene) {

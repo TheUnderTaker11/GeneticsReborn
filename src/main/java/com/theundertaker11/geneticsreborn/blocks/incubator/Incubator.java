@@ -76,13 +76,14 @@ public class Incubator extends StorageBlockBase {
 			GRTileEntityIncubator tileInventory = (GRTileEntityIncubator)tile;
 			IItemHandler itemhandlerfuel = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
 			IItemHandler itemhandlerinput = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			IItemHandler itemhandleringredient = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+			//This is handled by the base class Issue #196
+			//IItemHandler itemhandleringredient = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 			
 			dropItem(tileInventory, itemhandlerfuel.getStackInSlot(0));
 			dropItem(tileInventory, itemhandlerinput.getStackInSlot(0));
 			dropItem(tileInventory, itemhandlerinput.getStackInSlot(1));
 			dropItem(tileInventory, itemhandlerinput.getStackInSlot(2));
-			dropItem(tileInventory, itemhandleringredient.getStackInSlot(0));
+			//dropItem(tileInventory, itemhandleringredient.getStackInSlot(0));
 		}
 		for (EnumFacing enumfacing : EnumFacing.values())
             worldIn.neighborChanged(pos.offset(enumfacing), this, pos);
