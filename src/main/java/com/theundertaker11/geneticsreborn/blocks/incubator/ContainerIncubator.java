@@ -1,6 +1,7 @@
 package com.theundertaker11.geneticsreborn.blocks.incubator;
 
 import com.theundertaker11.geneticsreborn.blocks.BaseContainer;
+import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +31,14 @@ public class ContainerIncubator extends BaseContainer  {
 
 		attachPlayerInventory(invPlayer);
 
-		IItemHandler itemhandlerfuel = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
+
+		IItemHandler itemhandlerfuel;
+		EnumFacing blockFacing = tileInventory.getWorld().getBlockState(tileInventory.getPos()).getValue(StorageBlockBase.FACING);
+		if (blockFacing == EnumFacing.NORTH || blockFacing == EnumFacing.SOUTH) {
+			itemhandlerfuel = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
+		} else {
+			itemhandlerfuel = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.WEST);
+		}
 		IItemHandler itemhandlerinput = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		IItemHandler itemhandleringredient = tileInventory.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 
