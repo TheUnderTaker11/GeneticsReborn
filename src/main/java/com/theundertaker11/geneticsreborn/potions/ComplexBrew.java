@@ -1,8 +1,5 @@
 package com.theundertaker11.geneticsreborn.potions;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
 import com.theundertaker11.geneticsreborn.api.capability.genes.Genes;
 import com.theundertaker11.geneticsreborn.items.GRItems;
@@ -15,6 +12,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionType;
 import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class ComplexBrew implements IBrewingRecipe {
 	private PotionType pot;
@@ -114,17 +114,19 @@ public class ComplexBrew implements IBrewingRecipe {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean isIngredient(ItemStack ingredient) {
-		if (ingredient.getItem() == GRItems.GlassSyringe) {
+		if (item == GRItems.GlassSyringe && ingredient.getItem() == GRItems.GlassSyringe) {
 			//special case - Black Death
 			List<EnumGenes> required = Arrays.asList(REQUIRED_GENES);
 			int found = 0;
 			NBTTagCompound tag = ingredient.getTagCompound();
-			for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
-				String nbtname = "";
-				if (tag.hasKey(Integer.toString(i))) 
-					nbtname = tag.getString(Integer.toString(i));
-				EnumGenes gene = EnumGenes.fromGeneName(nbtname);
-				if (required.contains(gene)) found++;
+			if (tag != null) {
+				for (int i = 0; i < Genes.TotalNumberOfGenes; i++) {
+					String nbtname = "";
+					if (tag.hasKey(Integer.toString(i)))
+						nbtname = tag.getString(Integer.toString(i));
+					EnumGenes gene = EnumGenes.fromGeneName(nbtname);
+					if (required.contains(gene)) found++;
+				}
 			}
 			return found == required.size();
 		} else if (inputGene != null) {
@@ -143,7 +145,7 @@ public class ComplexBrew implements IBrewingRecipe {
 		if (!isInput(input) || !isIngredient(ingredient)) return ItemStack.EMPTY;
 		
 		ItemStack result = output.copy();
-		
+
 		//this handles cell copying
 		if (ingredient.hasTagCompound() && output.getItem() == GRItems.Cell) {
 			result.setTagCompound(ingredient.getTagCompound());
