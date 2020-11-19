@@ -72,14 +72,14 @@ public class AIChangeEvents {
 				EntityAIBase ai = ((EntityAITaskEntry) a).action;
 				if (ai instanceof EntityAINearestAttackableTarget) { 
 					entity.targetTasks.removeTask(ai);
-					entity.targetTasks.addTask(0, new AIChangeEvents.AITargetAggressor<>(entity, EntityPlayer.class, 10, false, false, predicate));
+					entity.targetTasks.addTask(0, new AIChangeEvents.AITargetAggressor<>(entity, EntityPlayer.class, 10, true, false, predicate));
 				}			
 		} else 
 			for (Object a : entity.targetTasks.taskEntries.toArray()) {
 				EntityAIBase ai = ((EntityAITaskEntry) a).action;
 				if (ai instanceof EntityAINearestAttackableTarget) { 
 					entity.targetTasks.removeTask(ai);
-					entity.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(entity, EntityPlayer.class, 10, false, false, player -> !predicate.test(player)));
+					entity.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(entity, EntityPlayer.class, 10, true, false, player -> !predicate.test(player)));
 				}
 		}
 	}
