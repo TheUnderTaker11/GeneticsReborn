@@ -140,8 +140,8 @@ public class OnWorldTickEvent {
 		long now = world.getWorldTime();
 		PotionEffect pe= null;
 		int luck = 0;
-		boolean potionReset = world.getWorldTime() % 1800 == 1;
-		 
+		boolean potionReset = world.getWorldTime() % 1800 == 0;
+
 		for (EnumGenes gene : genes.getGeneList()) {
 			if (!gene.isActive()) continue;
 			switch (gene) {
@@ -246,13 +246,13 @@ public class OnWorldTickEvent {
 					entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.resistance), 110, 1+GeneticsReborn.mutationAmp, false, false)));
 					break;
 				case SLOWNESS:
-					if (potionReset) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.poison), 2400, 1, false, false)));
+					if (potionReset) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSlowness), 2400, 1, false, false)));
 					break;
 				case SLOWNESS_4:
-					if (potionReset) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.poison), 2400, 3+GeneticsReborn.mutationAmp, false, false)));
+					if (potionReset) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSlowness), 2400, 3+GeneticsReborn.mutationAmp, false, false)));
 					break;
 				case SLOWNESS_6:
-					if (potionReset) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.poison), 2400, 5+GeneticsReborn.mutationAmp, false, false)));
+					if (potionReset) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSlowness), 2400, 5+GeneticsReborn.mutationAmp, false, false)));
 					break;
 				case SPEED:
 					if (!genes.hasGene(EnumGenes.SPEED_4) && !genes.hasGene(EnumGenes.SPEED_2)) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSpeed), 110, 0, false, false)));
