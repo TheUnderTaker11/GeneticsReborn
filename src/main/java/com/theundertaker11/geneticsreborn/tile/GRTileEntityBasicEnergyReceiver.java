@@ -106,13 +106,13 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity {
         return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
     }
 
-    private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
+    protected ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
         @Override
         protected void onContentsChanged(int slot) {
             markDirty();
         }
     };
-    private ItemStackHandler itemStackHandlerOutput =
+    protected ItemStackHandler itemStackHandlerOutput =
             new ItemStackHandler(SIZE) {
                 @Override
                 protected void onContentsChanged(int slot) {
@@ -122,11 +122,8 @@ public class GRTileEntityBasicEnergyReceiver extends TileEntity {
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {  //||capability==CapabilityEnergy.ENERGY) {
-            return true;
-        } else if (capability == CapabilityEnergy.ENERGY) {
-            return true;
-        }
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return true;
+        if (capability == CapabilityEnergy.ENERGY) return true;
         return super.hasCapability(capability, facing);
     }
 

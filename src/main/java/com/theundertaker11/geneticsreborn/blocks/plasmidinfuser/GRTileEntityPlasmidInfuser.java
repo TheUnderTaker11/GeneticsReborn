@@ -2,16 +2,23 @@ package com.theundertaker11.geneticsreborn.blocks.plasmidinfuser;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
 import com.theundertaker11.geneticsreborn.api.capability.genes.EnumGenes;
+import com.theundertaker11.geneticsreborn.blocks.ItemStackHandlerControl;
+import com.theundertaker11.geneticsreborn.blocks.StorageBlockBase;
 import com.theundertaker11.geneticsreborn.items.GRItems;
 import com.theundertaker11.geneticsreborn.tile.GRTileEntityBasicEnergyReceiver;
 import com.theundertaker11.geneticsreborn.util.ModUtils;
 
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver implements ITickable {
 
@@ -160,5 +167,26 @@ public class GRTileEntityPlasmidInfuser extends GRTileEntityBasicEnergyReceiver 
 		} else super.setField(id, value);		
 
 	}
+    	
+    //these are the output slots, output only allowed when plasmid is done
+    private ItemStackHandler outputStackHandler =  new ItemStackHandlerControl(itemStackHandlerOutput) {
 
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+       	  	if (num < numNeeded) return ItemStack.EMPTY;
+       	  	return super.extractItem(slot, amount, simulate);
+        }
+    };	
+
+    @SuppressWarnings("unchecked")
+	@Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (facing == null) return (T) itemStackHandlerOutput;            
+            if (facing == EnumFacing.DOWN) return (T) outputStackHandler;            
+        }
+
+        return super.getCapability(capability, facing);
+    }
+    
 }

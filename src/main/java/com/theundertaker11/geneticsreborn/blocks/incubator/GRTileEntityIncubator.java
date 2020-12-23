@@ -230,13 +230,6 @@ public class GRTileEntityIncubator extends GRTileEntityBasicEnergyReceiver imple
         }
     };
     
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)  return true;
-        else if (capability == CapabilityEnergy.ENERGY) return true;
-        return super.hasCapability(capability, facing);
-    }
-
     @SuppressWarnings("unchecked")
 	@Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
