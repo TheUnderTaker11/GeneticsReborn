@@ -97,7 +97,7 @@ public class OnEntityHurt {
 				
 				DamageSource dmgThorns = DamageSource.causeThornsDamage((EntityPlayer) entity);
 				//Issue #187 - Don't damage yourself
-				if (event.getSource().getTrueSource() != entity)
+				if (event.getSource().getTrueSource() != null && event.getSource().getTrueSource() != entity)
 					event.getSource().getTrueSource().attackEntityFrom(dmgThorns, GeneticsReborn.thornsDamage);
 			}
 			
