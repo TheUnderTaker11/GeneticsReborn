@@ -261,7 +261,7 @@ public class OnWorldTickEvent {
 					if (!genes.hasGene(EnumGenes.SPEED_4)) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSpeed), 110, 1+GeneticsReborn.mutationAmp, false, false)));
 					break;
 				case SPEED_4:
-					entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSpeed), 110, GeneticsReborn.mutationAmp*2, false, false)));
+					entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.moveSpeed), 110, 3+GeneticsReborn.mutationAmp*2, false, false)));
 					break;
 				case STRENGTH:
 					if (!genes.hasGene(EnumGenes.STRENGTH_2)) entity.addPotionEffect((new PotionEffect(Potion.getPotionById(ModUtils.strength), 110, 0, false, false)));
