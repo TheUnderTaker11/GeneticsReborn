@@ -67,17 +67,26 @@ public class AIChangeEvents {
 		if (entity instanceof EntityCreeper)
 			entity.tasks.addTask(3, new EntityAIAvoidEntity<>(entity, EntityPlayer.class, predicate, 6.0F, 1.0D, 1.2D));
 
-		if (entity instanceof EntityPigZombie) 
+		if (entity instanceof EntityPigZombie)
 			for (Object a : entity.targetTasks.taskEntries.toArray()) {
 				EntityAIBase ai = ((EntityAITaskEntry) a).action;
-				if (ai instanceof EntityAINearestAttackableTarget) { 
+				if (ai instanceof EntityAINearestAttackableTarget) {
 					entity.targetTasks.removeTask(ai);
 					entity.targetTasks.addTask(0, new AIChangeEvents.AITargetAggressor<>(entity, EntityPlayer.class, 10, true, false, predicate));
-				}			
-		} else 
+				}
+			}
+		else if (entity instanceof EntitySpider)
 			for (Object a : entity.targetTasks.taskEntries.toArray()) {
 				EntityAIBase ai = ((EntityAITaskEntry) a).action;
-				if (ai instanceof EntityAINearestAttackableTarget) { 
+				if (ai instanceof EntityAINearestAttackableTarget) {
+					entity.targetTasks.removeTask(ai);
+					entity.targetTasks.addTask(0, new AIChangeEvents.AISpiderTarget<>(entity, EntityPlayer.class, 10, true, false, player -> !predicate.test(player)));
+				}
+			}
+		else
+			for (Object a : entity.targetTasks.taskEntries.toArray()) {
+				EntityAIBase ai = ((EntityAITaskEntry) a).action;
+				if (ai instanceof EntityAINearestAttackableTarget) {
 					entity.targetTasks.removeTask(ai);
 					entity.targetTasks.addTask(0, new EntityAINearestAttackableTarget<>(entity, EntityPlayer.class, 10, true, false, player -> !predicate.test(player)));
 				}
@@ -93,5 +102,16 @@ public class AIChangeEvents {
 		public boolean shouldExecute() {
             return ((EntityPigZombie)this.taskOwner).isAngry() && super.shouldExecute();
         }
-    }	
+    }
+
+	static class AISpiderTarget<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
+		public AISpiderTarget(EntityCreature creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, Predicate<? super T> targetSelector) {
+			super(creature, classTarget, chance, checkSight, onlyNearby, targetSelector);
+		}
+
+		public boolean shouldExecute() {
+			float f = this.taskOwner.getBrightness();
+			return !(f >= 0.5F) && super.shouldExecute();
+		}
+	}
 }
