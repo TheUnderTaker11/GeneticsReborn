@@ -1,6 +1,8 @@
 package com.theundertaker11.geneticsreborn.potions;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.theundertaker11.geneticsreborn.GeneticsReborn;
@@ -25,6 +27,7 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
@@ -175,7 +178,9 @@ public class GRPotions {
 	
 	@SubscribeEvent
 	public void handleCurePotion(WorldTickEvent event) {
-		for (Entity ent : event.world.loadedEntityList) {
+		if (event.side != Side.SERVER || event.phase != TickEvent.Phase.END || event.world.getWorldTime() % 20 != 0) return;
+		List<Entity> entLoaded = new ArrayList<>(event.world.loadedEntityList);
+		for (Entity ent : entLoaded) {
 			if (ent instanceof EntityLivingBase) {
 				EntityLivingBase e = (EntityLivingBase)ent;
 				if (e.isPotionActive(CURE_EFFECT)) {
