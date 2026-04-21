@@ -1,0 +1,49 @@
+itemGroup.GRtab=Genetics Reborn
+
+item.debugger.name=Чит-инструмент
+item.glasssyringe.name=Стеклянный шприц
+item.glasssyringeFull.name=Стеклянный шприц (полный)
+item.plasmid.name=ДНК Плазмида
+item.metalscraper.name=Металлический скребок
+item.advancedscraper.name=Расширенный скребок
+item.organicmatter.name=Органическая материя
+item.cell.name=Клетка
+item.overclocker.name=Оверклокер
+item.dragonhealthcrystal.name=Кристалл здоровья дракона
+item.dnahelix.name=Спираль ДНК
+item.antiplasmid.name=Анти-плазмида
+item.metalsyringe.name=Металлический шприц
+item.antifield.name=Анти-полевая сфера
+
+tile.cellanalyser.name=Анализатор клеток
+tile.dnaextractor.name=Экстрактор ДНК
+tile.dnadecrypter.name=Расшифровщик ДНК
+tile.plasmidinfuser.name=Плазмидный инфузер
+tile.bloodpurifier.name=очиститель крови
+tile.plasmidinjector.name=Плазмидный инжектор
+tile.cloningmachine.name=Клонирующая машина
+tile.antifieldblock.name=Анти-блокировка поля
+tile.coalgenerator.name=Угольный генератор
+
+tile.incubator.name=Инкубатор
+tile.advincubator.name=Продвинутый инкубатор
+tile.airdispersal.name=Устройство воздушного рассеивания
+
+potion.effect.geneticsreborn:substrate=Органический субстрат
+potion.effect.geneticsreborn:growth=Зелье клеточного роста
+potion.effect.geneticsreborn:mutation=Зелье мутации
+potion.effect.geneticsreborn:viral=Бутылка вирусного агента
+effect.geneticsreborn:substrate=Нет эффекта
+effect.geneticsreborn:growth=Мега костная еда
+effect.geneticsreborn:mutation=Cursed Earth
+effect.geneticsreborn:viral=Нет эффекта
+potion.viral.name=Вирус:
+effect.geneticsreborn:cure=Защита от вируса
+potion.effect.geneticsreborn:cure=Лечение
+splash_potion.effect.geneticsreborn:cure=Лечение
+splash_potion.effect.geneticsreborn:substrate=Органический субстрат
+splash_potion.effect.geneticsreborn:growth=Зелье клеточного роста
+splash_potion.effect.geneticsreborn:mutation=Зелье мутации
+splash_potion.effect.geneticsreborn:viral=Бутылка вирусного агента
+death.attack.virus=%s умер от инфекции
+death.attack.virus.player=%1$s был убит %2$s с помощью вирусных агентов
